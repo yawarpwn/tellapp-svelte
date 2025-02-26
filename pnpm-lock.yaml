@@ -15,7 +15,7 @@ importers:
         specifier: ^9.18.0
         version: 9.21.0
       '@sveltejs/adapter-cloudflare-workers':
-        specifier: ^2.7.0
+        specifier: ^2.8.0
         version: 2.8.0(@sveltejs/kit@2.17.3(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.20.4)(vite@6.2.0(jiti@2.4.2)(lightningcss@1.29.1)))(svelte@5.20.4)(vite@6.2.0(jiti@2.4.2)(lightningcss@1.29.1)))(wrangler@3.110.0(@cloudflare/workers-types@4.20250224.0))
       '@sveltejs/kit':
         specifier: ^2.16.0

@@ -1,0 +1,10 @@
+name = "app-tell"
+account_id = "10dc06fe3d7b1fb0a4b7aa5205cb6ba0"
+
+main = "./.cloudflare/worker.js"
+site.bucket = "./.cloudflare/public"
+
+build.command = "npm run build"
+
+compatibility_date = "2021-11-12"
+workers_dev = true
