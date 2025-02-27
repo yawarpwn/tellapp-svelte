@@ -1,9 +1,9 @@
-import { fetchProductById, fetchProducts } from '$lib/data'
+import { fetchCustomers, fetchProductById, fetchProducts } from '$lib/data'
 import type { Actions, PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
 	const products = await fetchProducts('kakapichipoto')
-	const customers = await fetchProducts('kakapichipoto')
+	const customers = await fetchCustomers('kakapichipoto')
 	return {
 		customers,
 		products

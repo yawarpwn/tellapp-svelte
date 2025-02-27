@@ -38,7 +38,7 @@
 	<header class="flex justify-between">
 		<!-- <BackTo to="/quotations" /> -->
 		<div class="">
-			<CustomerPickDialog />
+			<CustomerPickDialog {customers} {quotation} />
 			<!--   <CustomerPickerDialog -->
 			<!--     customersPromise={customers} -->
 			<!--     onCustomerPick={pickCustomer} -->
