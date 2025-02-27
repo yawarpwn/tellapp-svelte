@@ -17,7 +17,7 @@
 	<a href="/">Home</a>
 	<a href="/quotations">Cotizaciones</a>
 	<a href="/products">Productos</a>
-	<button onclick={handleClick}>Salir</button>
+	<button class="btn" onclick={handleClick}>Salir</button>
 </nav>
 
 {@render children()}

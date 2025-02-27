@@ -413,6 +413,5 @@ export async function login({ email, password }: { email: string; password: stri
 		headers: { 'Content-Type': 'application/json' }
 	})
 
-	await new Promise((resolve) => setTimeout(resolve, 2000))
 	return data.token
 }
