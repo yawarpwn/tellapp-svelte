@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Customer } from '$lib/types'
+	import { XIcon } from 'lucide-svelte'
 
 	type Props = {
 		customers: Customer[]
@@ -16,8 +17,6 @@
 			customer.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
 		)
 	)
-
-	$inspect(filteredCustomers)
 </script>
 
 <button
@@ -27,7 +26,7 @@
 	}}>Clientes</button
 >
 <dialog bind:this={modalRef} class="modal">
-	<div class="modal-box max-h-[90dvh]">
+	<div class="modal-box relative max-h-[90dvh]">
 		<form
 			onsubmit={(ev) => {
 				ev.preventDefault()
@@ -52,9 +51,11 @@
 				</li>
 			{/each}
 		</ul>
-		<form method="dialog">
+		<form method="dialog" class="absolute top-2 right-2">
 			<!-- if there is a button in form, it will close the modal -->
-			<button class="btn">Close</button>
+			<button class="btn btn-xs btn-circle">
+				<XIcon />
+			</button>
 		</form>
 	</div>
 </dialog>

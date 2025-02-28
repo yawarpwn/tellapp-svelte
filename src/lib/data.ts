@@ -129,6 +129,7 @@ export async function searchCustomerByDniOrRuc(dniRuc: string, apiKey: string) {
 			'TELL-API-KEY': apiKey
 		}
 	})
+	await new Promise((r) => setTimeout(r, 2000))
 	return {
 		id: customer.id,
 		ruc: customer.ruc,

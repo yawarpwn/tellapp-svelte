@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { CreateQuotationClient, Customer } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
-	const { data } = $props()
+	import { Loader2Icon, SearchIcon } from 'lucide-svelte'
+	import { enhance } from '$app/forms'
+	import { toast } from '@zerodevx/svelte-toast'
+	const { data, form } = $props()
 	let count = $state(0)
 	const { customers, products } = data
 
@@ -15,7 +18,7 @@
 		customer: undefined
 	})
 
-	let pending = false
+	let pending = $state(false)
 
 	const handleSubmit = () => {
 		const formData = new FormData()
@@ -47,34 +50,77 @@
 	<prev>
 		{JSON.stringify({ ...quotation, count }, null, 2)}
 	</prev>
+	<button onclick={() => {}}>click</button>
 </div>
 <div class="pb-8">
 	<header class="flex justify-between">
 		<!-- <BackTo to="/quotations" /> -->
-		<div class="">
-			<CustomerPickDialog {customers} {onCustomerPick} />
-			<!--   <CustomerPickerDialog -->
-			<!--     customersPromise={customers} -->
-			<!--     onCustomerPick={pickCustomer} -->
-			<!--     customerId={quotation.customerId} -->
-			<!--   /> -->
-		</div>
+		<a class="btn btn-ghost" href="/quotations">Atras</a>
+		<CustomerPickDialog {customers} {onCustomerPick} />
 	</header>
 	<article class="mt-4 flex flex-col gap-4">
 		<div class="grid grid-cols-6 gap-3 md:gap-4">
-			<div class="col-span-2 grid gap-2 md:col-span-3">
-				<label class="text-muted-foreground">
-					Entrega
-					<input
-						class="input"
-						required
-						type="number"
-						id="deadline"
-						bind:value={quotation.deadline}
-						disabled={pending}
-					/>
+			<form
+				use:enhance={(toast) => {
+					pending = true
+					// `formElement` is this `<form>` element
+					// `formData` is its `FormData` object that's about to be submitted
+					// `action` is the URL to which the form is posted
+					// calling `cancel()` will prevent the submission
+					// `submitter` is the `HTMLElement` that caused the form to be submitted
+					return async ({ result, update }) => {
+						if (result.type === 'success' && result.data) {
+							const fondCustomer = result.data.customer
+							quotation = {
+								...quotation,
+								customer: {
+									...quotation.customer,
+									id: fondCustomer.id,
+									name: fondCustomer.name,
+									ruc: fondCustomer.ruc,
+									addres: fondCustomer.address
+								}
+							}
+						}
+						pending = false
+						// `result` is an `ActionResult` object
+						// `update` is a function which triggers the default logic that would be triggered if this callback wasn't set
+					}
+				}}
+				method="POST"
+				action="?/search"
+				class="col-span-2 grid gap-2 md:col-span-3"
+			>
+				<label class="label grid gap-2">
+					Ruc
+					<div class="relative">
+						<input
+							name="ruc"
+							class="input"
+							value={quotation.customer?.ruc || ''}
+							placeholder="20610555536"
+						/>
+						<button type="submit" class="absolute top-1/2 right-2 -translate-y-1/2">
+							{#if pending}
+								<Loader2Icon class="animate-spin" />
+							{:else}
+								<SearchIcon />
+							{/if}
+						</button>
+					</div>
 				</label>
-			</div>
+			</form>
+			<label class="label grid gap-2">
+				Entrega
+				<input
+					class="input"
+					required
+					type="number"
+					id="deadline"
+					bind:value={quotation.deadline}
+					disabled={pending}
+				/>
+			</label>
 			<div class="col-span-6 grid gap-2 md:col-span-3">
 				<label class="grid gap-2">
 					Cliente
@@ -162,7 +208,7 @@
 			<button disabled={false} type="button" class="px-12">
 				<a href="/quotations">Cancelar</a>
 			</button>
-			<button on:click={handleSubmit}>Crear</button>
+			<button onclick={handleSubmit}>Crear</button>
 		</footer>
 	</article>
 </div>

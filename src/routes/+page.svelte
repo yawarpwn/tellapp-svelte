@@ -15,6 +15,7 @@
 <form
 	id="auth"
 	method="POST"
+	action="?/login"
 	use:enhance={() => {
 		loading = true
 

@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 }
 
 export const actions = {
-	default: async ({ request, cookies, url }) => {
+	login: async ({ request, cookies, url }) => {
 		const formData = await request.formData()
 		const email = formData.get('email') as string
 		const password = formData.get('password') as string
@@ -43,5 +43,8 @@ export const actions = {
 				error: true
 			}
 		}
+	},
+	logout: async ({ cookies }) => {
+		cookies.delete('__svelte_session__', { path: '/' })
 	}
 } satisfies Actions

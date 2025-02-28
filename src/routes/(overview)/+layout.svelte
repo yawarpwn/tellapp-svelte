@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
+	import { SvelteToast } from '@zerodevx/svelte-toast'
 	import { type Icon as IconType, ShoppingCartIcon, HomeIcon, TruckIcon } from 'lucide-svelte'
 
 	type MenuItem = {
@@ -52,8 +53,12 @@
 			</a>
 		{/each}
 		<button class="btn" onclick={handleClick}>Salir</button>
+		<form method="POST" action="?/logout">
+			<button> Logout </button>
+		</form>
 	</nav>
 	<main class="">
 		{@render children()}
 	</main>
 </div>
+<SvelteToast />
