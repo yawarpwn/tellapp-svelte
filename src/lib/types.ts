@@ -8,7 +8,7 @@ export type CustomerFromService = {
 	name: string
 	address?: string
 }
-export interface QuotationClient {
+export type QuotationClient = {
 	id: string
 	number: number
 	deadline: number
@@ -69,25 +69,25 @@ export type Customer = {
 export type InsertCustomer = Omit<Customer, 'id' | 'createdAt' | 'updatedAt'>
 export type UpdateCustomer = Partial<InsertCustomer> & { id: string }
 
-export interface QuotationItem {
+export type QuotationItem = {
 	id: string
 	description: string
 	price: number
 	cost?: number
 	link?: string | null
 	qty: number
-	code: string
+	// code: string
 	unitSize: string
 }
-export interface DataResponse<T> {
+export type DataResponse<T> = {
 	items: T[]
 	meta: Meta
 	links: Links
 }
 
-export interface Links {}
+export type Links = {}
 
-export interface Meta {
+export type Meta = {
 	totalItems: number
 }
 
@@ -100,7 +100,7 @@ export type FieldErrorsProps = {
 
 //---------------------------- Agencies  -------------------------------------->
 
-export interface Agency {
+export type Agency = {
 	id: string
 	name: string
 	ruc: string
@@ -114,7 +114,7 @@ export type CreateAgency = Omit<Agency, 'id' | 'createdAt' | 'updatedAt'>
 export type UpdateAgency = Partial<CreateAgency>
 
 // -------------------------- Labels  --------------------------------------//
-export interface LabelType {
+export type LabelType = {
 	id: string
 	recipient: string
 	destination: string

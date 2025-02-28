@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { Loader2Icon, SearchIcon } from 'lucide-svelte'
-	import type { CreateQuotationClient, Customer } from '$lib/types'
+	import type { CreateQuotationClient, Customer, QuotationItem } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
+	import CreateEditItem from '$lib/components/CreateEditItem.svelte'
 	const { data, form } = $props()
 	let count = $state(0)
 
@@ -40,6 +41,13 @@
 				ruc: customer.ruc,
 				isRegular: false
 			}
+		}
+	}
+
+	function onAddItem(item: QuotationItem) {
+		quotation = {
+			...quotation,
+			items: [...quotation.items, item]
 		}
 	}
 </script>
@@ -195,7 +203,16 @@
 				</label>
 			</div>
 		</div>
-		<div class="flex items-center justify-between">Items</div>
+		<div class="flex items-center justify-between">
+			Items
+			<div>
+				{#await data.products}
+					...loading
+				{:then products}
+					<CreateEditItem {products} {onAddItem} />
+				{/await}
+			</div>
+		</div>
 		{#if quotation.items.length > 0}
 			<div>items</div>
 		{:else}

@@ -1,13 +1,13 @@
-import { clsx, type ClassValue } from 'clsx'
+import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+
+import type { QuotationItem } from '$lib/types'
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
-import { type QuotationItem } from '$lib/types'
-
-export const formatDateToLocal = (date: Date | string, options?: Intl.DateTimeFormatOptions) => {
+export function formatDateToLocal(date: Date | string, options?: Intl.DateTimeFormatOptions) {
 	const formatter = new Intl.DateTimeFormat('es-PE', {
 		day: '2-digit',
 		month: '2-digit',
@@ -24,11 +24,11 @@ export function formatNumberToLocal(price: number) {
 	}).format(price)
 }
 
-export const getFormatedDate = (date: string | Date) => {
+export function getFormatedDate(date: string | Date) {
 	const currentDate = date ? new Date(date) : new Date()
 	const year = currentDate.getFullYear()
-	let month = currentDate.getMonth() + 1
-	let day = currentDate.getDate()
+	const month = currentDate.getMonth() + 1
+	const day = currentDate.getDate()
 
 	const formatedDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
 	return formatedDate
@@ -143,7 +143,7 @@ export function resizeImageFile(
 }
 
 export const cache = {
-	set: (key: string, value: Object) => {
+	set: (key: string, value: object) => {
 		localStorage.setItem(key, JSON.stringify(value))
 	},
 	get: (key: string) => {
