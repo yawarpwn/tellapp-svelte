@@ -7,8 +7,8 @@ import {
 import type { Actions, PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
-	const products = await fetchProducts('kakapichipoto')
-	const customers = await fetchCustomers('kakapichipoto')
+	const products = fetchProducts('kakapichipoto')
+	const customers = fetchCustomers('kakapichipoto')
 	return {
 		customers,
 		products
@@ -31,10 +31,8 @@ export const actions = {
 			}
 		}
 
-		const customer = await searchCustomerByDniOrRuc(ruc, platform?.env.TELL_API_KEY!)
-		return {
-			customer
-		}
+		await searchCustomerByDniOrRuc(ruc, platform?.env.TELL_API_KEY!)
+		console.log(ruc)
 		// TODO register the user
 	}
 } satisfies Actions

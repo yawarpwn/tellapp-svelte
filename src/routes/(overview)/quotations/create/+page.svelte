@@ -6,7 +6,6 @@
 	import { toast } from '@zerodevx/svelte-toast'
 	const { data, form } = $props()
 	let count = $state(0)
-	const { customers, products } = data
 
 	let quotation: CreateQuotationClient = $state({
 		credit: undefined,
@@ -56,7 +55,11 @@
 	<header class="flex justify-between">
 		<!-- <BackTo to="/quotations" /> -->
 		<a class="btn btn-ghost" href="/quotations">Atras</a>
-		<CustomerPickDialog {customers} {onCustomerPick} />
+		{#await data.customers}
+			loading..
+		{:then customers}
+			<CustomerPickDialog {customers} {onCustomerPick} />
+		{/await}
 	</header>
 	<article class="mt-4 flex flex-col gap-4">
 		<div class="grid grid-cols-6 gap-3 md:gap-4">
@@ -193,6 +196,15 @@
 				</label>
 			</div>
 		</div>
+		<div class="flex items-center justify-between">
+			Items
+			<button class="btn"> Agrega Producto</button>
+		</div>
+		{#if quotation.items.length > 0}
+			<div>items</div>
+		{:else}
+			<div>no items</div>
+		{/if}
 
 		<!-- <ItemsQuotationTable -->
 		<!--   productsPromise={products} -->

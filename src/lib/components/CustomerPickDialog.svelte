@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Customer } from '$lib/types'
 	import { XIcon } from 'lucide-svelte'
+	import type { Customer } from '$lib/types'
 
 	type Props = {
 		customers: Customer[]
