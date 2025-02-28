@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types'
 import { fetchQuotations } from '$lib/data'
 
 export const load: PageServerLoad = async ({ params, platform }) => {
-	const quotations = await fetchQuotations(platform?.env?.TELL_API_KEY!)
+	const quotations = fetchQuotations(platform?.env?.TELL_API_KEY!)
 	try {
 		return {
 			quotations

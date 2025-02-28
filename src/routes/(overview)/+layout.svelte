@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation'
 	import { SvelteToast } from '@zerodevx/svelte-toast'
 	import { type Icon as IconType, ShoppingCartIcon, HomeIcon, TruckIcon } from 'lucide-svelte'
+	import { enhance } from '$app/forms'
 
 	type MenuItem = {
 		name: string
@@ -53,7 +54,7 @@
 			</a>
 		{/each}
 		<button class="btn" onclick={handleClick}>Salir</button>
-		<form method="POST" action="?/logout">
+		<form method="POST" use:enhance action="/actions?/logout">
 			<button> Logout </button>
 		</form>
 	</nav>

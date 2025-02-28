@@ -39,9 +39,7 @@ export const actions = {
 				success: true
 			}
 		} catch (error) {
-			return {
-				error: true
-			}
+			return fail(400, { email, incorrect: true })
 		}
 	},
 	logout: async ({ cookies }) => {
