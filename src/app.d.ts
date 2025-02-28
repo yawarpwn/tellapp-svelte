@@ -6,8 +6,12 @@ declare global {
 		// interface Locals {}
 		// interface PageData {}
 		// interface PageState {}
-		// interface Platform {}
+		interface Platform {
+			env: {
+				TELL_API_KEY: string
+			}
+		}
 	}
 }
 
-export {};
+export {}

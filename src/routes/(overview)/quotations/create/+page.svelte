@@ -1,10 +1,11 @@
 <script lang="ts">
-	import type { CreateQuotationClient } from '$lib/types'
+	import type { CreateQuotationClient, Customer } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	const { data } = $props()
+	let count = $state(0)
 	const { customers, products } = data
 
-	const quotation: CreateQuotationClient = $state({
+	let quotation: CreateQuotationClient = $state({
 		credit: undefined,
 		deadline: 1,
 		isPaymentPending: false,
@@ -27,18 +28,31 @@
 			}
 		})
 	}
+
+	const onCustomerPick = (customer: Pick<Customer, 'id' | 'name' | 'ruc' | 'address'>) => {
+		quotation = {
+			...quotation,
+			customer: {
+				address: customer.address,
+				id: customer.id,
+				name: customer.name,
+				ruc: customer.ruc,
+				isRegular: false
+			}
+		}
+	}
 </script>
 
 <div>
 	<prev>
-		{JSON.stringify(quotation, null, 2)}
+		{JSON.stringify({ ...quotation, count }, null, 2)}
 	</prev>
 </div>
 <div class="pb-8">
 	<header class="flex justify-between">
 		<!-- <BackTo to="/quotations" /> -->
 		<div class="">
-			<CustomerPickDialog {customers} {quotation} />
+			<CustomerPickDialog {customers} {onCustomerPick} />
 			<!--   <CustomerPickerDialog -->
 			<!--     customersPromise={customers} -->
 			<!--     onCustomerPick={pickCustomer} -->
@@ -76,7 +90,13 @@
 			<div class="col-span-6 grid gap-2 md:col-span-3">
 				<label class="label grid gap-2">
 					Dirección
-					<input class="input" id="address" name="address" type="text" />
+					<input
+						value={quotation.customer?.address || ''}
+						class="input"
+						id="address"
+						name="address"
+						type="text"
+					/>
 				</label>
 			</div>
 			<div class="col-span-3 flex items-center gap-2">

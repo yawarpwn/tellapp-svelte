@@ -1,7 +1,23 @@
 <script lang="ts">
-	let { customers, quotation } = $props()
+	import type { Customer } from '$lib/types'
+
+	type Props = {
+		customers: Customer[]
+		onCustomerPick: (customer: Pick<Customer, 'id' | 'name' | 'ruc' | 'address'>) => void
+	}
+
+	let { customers, onCustomerPick }: Props = $props()
 	let modalRef: HTMLDialogElement
-	console.log(customers)
+
+	let searchTerm = $state('')
+
+	const filteredCustomers = $derived(
+		customers.filter((customer) =>
+			customer.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
+		)
+	)
+
+	$inspect(filteredCustomers)
 </script>
 
 <button
@@ -12,17 +28,23 @@
 >
 <dialog bind:this={modalRef} class="modal">
 	<div class="modal-box max-h-[90dvh]">
-		clientes
+		<form
+			onsubmit={(ev) => {
+				ev.preventDefault()
+			}}
+		>
+			<input class="input" bind:value={searchTerm} type="search" />
+			<button>Buscar</button>
+		</form>
 		<ul>
-			{#each customers as { name }}
+			{#each filteredCustomers as { name, address, id, ruc }}
 				<li>
 					>
 					<button
 						class="btn"
 						onclick={() => {
-							quotation = {}
-
 							modalRef.close()
+							onCustomerPick({ id, name, address, ruc })
 						}}
 					>
 						{name}
