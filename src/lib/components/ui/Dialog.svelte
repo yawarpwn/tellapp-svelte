@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { XIcon } from 'lucide-svelte'
-	const { children } = $props()
+	const { children, trigger } = $props()
 	let modalRef: HTMLDialogElement
 </script>
 
@@ -8,7 +8,7 @@
 	class="btn"
 	onclick={() => {
 		modalRef.showModal()
-	}}>Clientes</button
+	}}>{@render trigger()}</button
 >
 <dialog bind:this={modalRef} class="modal">
 	<div class="modal-box relative max-h-[90dvh]">

@@ -1,9 +1,8 @@
 <script lang="ts">
+	import { Loader2Icon, SearchIcon } from 'lucide-svelte'
 	import type { CreateQuotationClient, Customer } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
-	import { Loader2Icon, SearchIcon } from 'lucide-svelte'
 	import { enhance } from '$app/forms'
-	import { toast } from '@zerodevx/svelte-toast'
 	const { data, form } = $props()
 	let count = $state(0)
 
@@ -19,7 +18,7 @@
 
 	let pending = $state(false)
 
-	const handleSubmit = () => {
+	function handleSubmit() {
 		const formData = new FormData()
 		formData.set('quotation', JSON.stringify(quotation))
 		fetch('?/create', {
@@ -31,7 +30,7 @@
 		})
 	}
 
-	const onCustomerPick = (customer: Pick<Customer, 'id' | 'name' | 'ruc' | 'address'>) => {
+	function onCustomerPick(customer: Pick<Customer, 'id' | 'name' | 'ruc' | 'address'>) {
 		quotation = {
 			...quotation,
 			customer: {
@@ -196,10 +195,7 @@
 				</label>
 			</div>
 		</div>
-		<div class="flex items-center justify-between">
-			Items
-			<button class="btn"> Agrega Producto</button>
-		</div>
+		<div class="flex items-center justify-between">Items</div>
 		{#if quotation.items.length > 0}
 			<div>items</div>
 		{:else}
