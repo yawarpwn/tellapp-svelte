@@ -82,10 +82,7 @@ export type QuotationItem = {
 export type DataResponse<T> = {
 	items: T[]
 	meta: Meta
-	links: Links
 }
-
-export type Links = {}
 
 export type Meta = {
 	totalItems: number

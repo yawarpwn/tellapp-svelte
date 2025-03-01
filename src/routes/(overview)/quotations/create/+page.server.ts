@@ -1,10 +1,10 @@
+import type { Actions, PageServerLoad } from './$types'
 import {
 	fetchCustomers,
 	fetchProductById,
 	fetchProducts,
 	searchCustomerByDniOrRuc
 } from '$lib/data'
-import type { Actions, PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
 	const products = fetchProducts('kakapichipoto')
@@ -18,7 +18,6 @@ export const load: PageServerLoad = async () => {
 export const actions = {
 	create: async ({ cookies, request, platform }) => {
 		const formData = await request.formData()
-		console.log(formData)
 	},
 	search: async ({ request, platform }) => {
 		const formData = await request.formData()
@@ -31,8 +30,8 @@ export const actions = {
 			}
 		}
 
-		await searchCustomerByDniOrRuc(ruc, platform?.env.TELL_API_KEY!)
-		console.log(ruc)
+		const customer = await searchCustomerByDniOrRuc(ruc, platform?.env.TELL_API_KEY)
+		return customer
 		// TODO register the user
 	}
 } satisfies Actions

@@ -39,4 +39,10 @@
 // )
 import config, { DEFAULT_IGNORES } from '@huntabyte/eslint-config'
 
-export default config({ svelte: true, ignorePatterns: [...DEFAULT_IGNORES, '.github/**/*'] })
+export default config({
+	svelte: true,
+	ignorePatterns: [...DEFAULT_IGNORES, '.github/**/*'],
+	rules: {
+		'no-unused-vars': 'warn'
+	}
+})

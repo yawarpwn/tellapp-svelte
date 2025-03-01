@@ -4,6 +4,7 @@
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
 	import CreateEditItem from '$lib/components/CreateEditItem.svelte'
+	import ItemsQuotationTable from '$lib/components/ui/ItemsQuotationTable.svelte'
 	const { data, form } = $props()
 	let count = $state(0)
 
@@ -13,7 +14,17 @@
 		isPaymentPending: false,
 		customerId: undefined,
 		includeIgv: true,
-		items: [],
+		items: [
+			{
+				id: 'fjeoeuz',
+				qty: 1,
+				unitSize: 'und',
+				price: 10,
+				link: '',
+				description:
+					'Fibra de vidrio con lamina reflectiva tipo IV HIp primatico fjoaueqo nuevo de fabricacion rusa sin cambio qjiqjldahjlad  2pulgadas x 2mm x 3mts de laro como tu qlo aguit apa ti'
+			}
+		],
 		customer: undefined
 	})
 
@@ -50,6 +61,37 @@
 			items: [...quotation.items, item]
 		}
 	}
+
+	function onEditItem(item: QuotationItem) {
+		quotation = {
+			...quotation,
+			items: quotation.items.map((i) => {
+				if (i.id === item.id) return item
+				return i
+			})
+		}
+	}
+
+	function onDeleteItem(id: string) {
+		quotation = {
+			...quotation,
+			items: quotation.items.filter((item) => item.id !== id)
+		}
+	}
+	function onDuplicateItem(id: string) {
+		const foundItem = quotation.items.find((item) => item.id === id)
+		if (!foundItem) return
+		quotation = {
+			...quotation,
+			items: [
+				...quotation.items,
+				{
+					...foundItem,
+					id: crypto.randomUUID()
+				}
+			]
+		}
+	}
 </script>
 
 <div>
@@ -71,16 +113,16 @@
 	<article class="mt-4 flex flex-col gap-4">
 		<div class="grid grid-cols-6 gap-3 md:gap-4">
 			<form
-				use:enhance={(toast) => {
+				use:enhance={() => {
 					pending = true
 					// `formElement` is this `<form>` element
 					// `formData` is its `FormData` object that's about to be submitted
 					// `action` is the URL to which the form is posted
 					// calling `cancel()` will prevent the submission
 					// `submitter` is the `HTMLElement` that caused the form to be submitted
-					return async ({ result, update }) => {
+					return async ({ result }) => {
 						if (result.type === 'success' && result.data) {
-							const fondCustomer = result.data.customer
+							const fondCustomer = result.data.customer as Customer
 							quotation = {
 								...quotation,
 								customer: {
@@ -88,7 +130,8 @@
 									id: fondCustomer.id,
 									name: fondCustomer.name,
 									ruc: fondCustomer.ruc,
-									addres: fondCustomer.address
+									address: fondCustomer.address,
+									isRegular: true
 								}
 							}
 						}
@@ -214,26 +257,16 @@
 			</div>
 		</div>
 		{#if quotation.items.length > 0}
-			<div>items</div>
+			<ItemsQuotationTable items={quotation.items} {onEditItem} {onDeleteItem} {onDuplicateItem} />
 		{:else}
 			<div>no items</div>
 		{/if}
 
-		<!-- <ItemsQuotationTable -->
-		<!--   productsPromise={products} -->
-		<!--   onAddItem={addItem} -->
-		<!--   items={quotation.items} -->
-		<!--   onEditItem={editItem} -->
-		<!--   onDeleteItem={deleteItem} -->
-		<!--   onDuplicateItem={duplicateItem} -->
-		<!--   onMoveDownItem={moveDownItem} -->
-		<!--   onMoveUpItem={moveUpItem} -->
-		<!-- /> -->
 		<footer class="flex items-center justify-between">
-			<button disabled={false} type="button" class="px-12">
+			<button disabled={false} type="button" class="btn btn-wide">
 				<a href="/quotations">Cancelar</a>
 			</button>
-			<button onclick={handleSubmit}>Crear</button>
+			<button class="btn btn-wide bg-primary" onclick={handleSubmit}>Crear</button>
 		</footer>
 	</article>
 </div>
