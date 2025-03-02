@@ -1,23 +1,72 @@
 <script lang="ts">
-	import { XIcon } from 'lucide-svelte'
-	const { children, trigger } = $props()
-	let modalRef: HTMLDialogElement
+	type Props = {
+		showModal: boolean
+		children: () => any
+	}
+	let { children, showModal = $bindable() }: Props = $props()
+	let dialog: HTMLDialogElement | null = $state(null)
+
+	$effect(() => {
+		if (showModal) {
+			dialog?.showModal()
+		} else {
+			dialog?.close()
+		}
+	})
+
+	$inspect(showModal)
 </script>
 
-<button
-	class="btn"
-	onclick={() => {
-		modalRef.showModal()
-	}}>{@render trigger()}</button
+<dialog
+	bind:this={dialog}
+	onclose={() => (showModal = false)}
+	onclick={(e) => {
+		if (e.target === dialog) dialog?.close()
+	}}
+	class="modal"
 >
-<dialog bind:this={modalRef} class="modal">
-	<div class="modal-box relative max-h-[90dvh]">
+	<div class="modal-box">
 		{@render children()}
-		<form method="dialog" class="absolute top-2 right-2">
-			<!-- if there is a button in form, it will close the modal -->
-			<button class="btn btn-xs btn-circle">
-				<XIcon />
-			</button>
-		</form>
 	</div>
 </dialog>
+
+<!-- <style> -->
+<!-- 	dialog { -->
+<!-- 		max-width: 32em; -->
+<!-- 		border-radius: 0.2em; -->
+<!-- 		border: none; -->
+<!-- 		padding: 0; -->
+<!-- 	} -->
+<!-- 	dialog::backdrop { -->
+<!-- 		background: rgba(0, 0, 0, 0.3); -->
+<!-- 	} -->
+<!-- 	dialog > div { -->
+<!-- 		padding: 1em; -->
+<!-- 		border: 1px solid lime; -->
+<!-- 	} -->
+<!-- 	dialog[open] { -->
+<!-- 		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); -->
+<!-- 	} -->
+<!-- 	@keyframes zoom { -->
+<!-- 		from { -->
+<!-- 			transform: scale(0.95); -->
+<!-- 		} -->
+<!-- 		to { -->
+<!-- 			transform: scale(1); -->
+<!-- 		} -->
+<!-- 	} -->
+<!-- 	dialog[open]::backdrop { -->
+<!-- 		animation: fade 0.2s ease-out; -->
+<!-- 	} -->
+<!-- 	@keyframes fade { -->
+<!-- 		from { -->
+<!-- 			opacity: 0; -->
+<!-- 		} -->
+<!-- 		to { -->
+<!-- 			opacity: 1; -->
+<!-- 		} -->
+<!-- 	} -->
+<!-- 	button { -->
+<!-- 		display: block; -->
+<!-- 	} -->
+<!-- </style> -->

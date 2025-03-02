@@ -3,11 +3,11 @@
 	import type { CreateQuotationClient, Customer, QuotationItem } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
-	import CreateEditItem from '$lib/components/CreateEditItem.svelte'
+	import CreateEditItemDialog from '$lib/components/CreateEditItem.svelte'
 	import ItemsQuotationTable from '$lib/components/ui/ItemsQuotationTable.svelte'
 	const { data, form } = $props()
-	let count = $state(0)
 
+	//States
 	let quotation: CreateQuotationClient = $state({
 		credit: undefined,
 		deadline: 1,
@@ -28,8 +28,14 @@
 		customer: undefined
 	})
 
+	let selectedItemId = $state<null | string>(null)
+	const selectedItem = $derived(quotation.items.find((i) => i.id === selectedItemId))
 	let pending = $state(false)
+	let showModal = $state(false)
 
+	$inspect({ selectedItem })
+
+	//Funcitions
 	function handleSubmit() {
 		const formData = new FormData()
 		formData.set('quotation', JSON.stringify(quotation))
@@ -40,6 +46,11 @@
 				'Content-Type': 'multipart/form-data'
 			}
 		})
+	}
+
+	function handleSelectItem(id: string) {
+		selectedItemId = id
+		showModal = true
 	}
 
 	function onCustomerPick(customer: Pick<Customer, 'id' | 'name' | 'ruc' | 'address'>) {
@@ -96,7 +107,7 @@
 
 <div>
 	<prev>
-		{JSON.stringify({ ...quotation, count }, null, 2)}
+		{JSON.stringify({ ...quotation }, null, 2)}
 	</prev>
 	<button onclick={() => {}}>click</button>
 </div>
@@ -246,18 +257,33 @@
 				</label>
 			</div>
 		</div>
+		<div class="modal" role="dialog">
+			<div class="modal-box">
+				<h3 class="text-lg font-bold">Hello!</h3>
+				<p class="py-4">This modal works with a hidden checkbox!</p>
+				<div class="modal-action">
+					<label for="my_modal_6" class="btn">Close!</label>
+				</div>
+			</div>
+		</div>
 		<div class="flex items-center justify-between">
 			Items
 			<div>
 				{#await data.products}
 					...loading
 				{:then products}
-					<CreateEditItem {products} {onAddItem} />
+					<CreateEditItemDialog bind:showModal item={selectedItem} {products} {onAddItem} />
 				{/await}
 			</div>
 		</div>
 		{#if quotation.items.length > 0}
-			<ItemsQuotationTable items={quotation.items} {onEditItem} {onDeleteItem} {onDuplicateItem} />
+			<ItemsQuotationTable
+				onSelectItem={handleSelectItem}
+				items={quotation.items}
+				{onEditItem}
+				{onDeleteItem}
+				{onDuplicateItem}
+			/>
 		{:else}
 			<div>no items</div>
 		{/if}

@@ -1,34 +1,37 @@
 <script lang="ts">
-	import { PlusIcon, SearchIcon, XIcon } from 'lucide-svelte'
+	import { PlusIcon, SearchIcon } from 'lucide-svelte'
+	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import type { Product, QuotationItem } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
 
 	type Props = {
 		products: Product[]
-		onAddItem: (item: QuotationItem) => void
+		showModal: boolean
+		item?: QuotationItem | null
+		onAddItem: (_item: QuotationItem) => void
 	}
-	const { products, onAddItem }: Props = $props()
-	let modalRef: HTMLDialogElement
+	let { products, onAddItem, item, showModal = $bindable() }: Props = $props()
 
 	let inputSearch: HTMLInputElement
 	let qtyInput: HTMLInputElement
 
 	//States
-	let description = $state('')
-	let price = $state(0)
-	let cost = $state(0)
-	let qty = $state(0)
-	let unitSize = $state('')
+	let description = $state(item?.description || '')
+	let price = $state(item?.price || 0)
+	let cost = $state(item?.cost || 0)
+	let qty = $state(item?.qty || 0)
+	let unitSize = $state(item?.unitSize || '')
 	let searchTerm = $state('')
 	let link = $state('')
 
-	function reset() {
-		description = ''
-		price = 0
-		cost = 0
-		qty = 0
-		unitSize = ''
-	}
+	$effect(() => {
+		description = item?.description || ''
+		price = item?.price || 0
+		cost = item?.cost || 0
+		qty = item?.qty || 0
+		unitSize = item?.unitSize || ''
+		inputSearch.focus()
+	})
 
 	const hits = $derived(
 		products.filter(
@@ -38,20 +41,15 @@
 		)
 	)
 
-	$inspect({ description, price, cost, qty, unitSize })
+	$inspect({ showModal })
 </script>
 
-<button
-	class="btn"
-	onclick={() => {
-		modalRef.showModal()
-	}}
->
+<button onclick={() => (showModal = true)} class="btn">
 	<PlusIcon />
-	Agregar
 </button>
-<dialog bind:this={modalRef} class="modal">
-	<div class="modal-box relative flex h-[95svh] flex-col gap-2">
+
+<Dialog bind:showModal>
+	<div class="flex h-[95svh] flex-col gap-2">
 		<!-- Search Product -->
 		<header class="">
 			<div class="flex h-9 w-full items-center rounded-md border pl-2">
@@ -114,9 +112,8 @@
 					qty,
 					unitSize
 				})
-
 				ev.currentTarget.reset()
-				modalRef.close()
+				showModal = false
 			}}
 		>
 			<div>
@@ -156,20 +153,9 @@
 				</div>
 			</div>
 			<footer class="flex items-center justify-between">
-				<button type="submit" class="btn btn-primary">Agregar</button>
-				<button
-					class="btn"
-					type="button"
-					onclick={() => {
-						modalRef.close()
-					}}>Cancelar</button
-				>
+				<button type="submit" class="btn btn-primary"> Aceptar </button>
+				<button class="btn" type="button" onclick={() => (showModal = false)}>Cancelar</button>
 			</footer>
 		</form>
 	</div>
-	<form method="dialog" class="absolute top-2 right-2">
-		<button class="btn btn-xs btn-circle">
-			<XIcon />
-		</button>
-	</form>
-</dialog>
+</Dialog>
