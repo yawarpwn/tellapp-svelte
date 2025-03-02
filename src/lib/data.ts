@@ -1,22 +1,22 @@
 import { BASE_URL } from '$lib/constants'
 import type {
-	UpdateWatermark,
-	Watermark,
-	DataResponse,
-	QuotationClient,
+	Agency,
+	CreateAgency,
+	CreateLabel,
 	CreateQuotationClient,
-	UpdateProduct,
-	InsertProduct,
-	UpdateQuotationClient,
 	Customer,
+	CustomerFromService,
+	DataResponse,
+	InsertProduct,
+	LabelType,
 	Product,
 	ProductCategory,
-	CustomerFromService,
+	QuotationClient,
 	UpdateCustomer,
-	Agency,
-	LabelType,
-	CreateAgency,
-	CreateLabel
+	UpdateProduct,
+	UpdateQuotationClient,
+	UpdateWatermark,
+	Watermark
 } from '$lib/types'
 import { fetchData } from '$lib/utils'
 
@@ -30,7 +30,7 @@ export async function fetchQuotations(
 	apiKey: string,
 	queryParams?: FetchQuotationQueryParams
 ): Promise<QuotationClient[]> {
-	const { query = '', page = '', limit = 20 } = queryParams ?? {}
+	const { query = '', page = '' } = queryParams ?? {}
 	const url = `${BASE_URL}/api/quotations?q=${query}&page=${page}&limit=40`
 	const data = await fetchData<DataResponse<QuotationClient>>(url, {
 		headers: {
@@ -129,7 +129,7 @@ export async function searchCustomerByDniOrRuc(dniRuc: string, apiKey: string) {
 			'TELL-API-KEY': apiKey
 		}
 	})
-	await new Promise((r) => setTimeout(r, 2000))
+
 	return {
 		id: customer.id,
 		ruc: customer.ruc,
@@ -206,7 +206,6 @@ export async function createProduct(productToInsert: InsertProduct, apiKey: stri
 }
 
 export async function updateProduct(id: string, productToUpdate: UpdateProduct, apiKey: string) {
-	console.log('update product ')
 	const url = `${BASE_URL}/api/products/${id}`
 	const updatedProduct = await fetchData<Product>(url, {
 		method: 'PUT',

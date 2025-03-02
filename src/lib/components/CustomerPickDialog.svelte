@@ -26,6 +26,9 @@
 	}}>Clientes</button
 >
 <dialog bind:this={modalRef} class="modal">
+	<form method="dialog" class="modal-backdrop">
+		<button> cerrar </button>
+	</form>
 	<div class="modal-box relative max-h-[90dvh]">
 		<form
 			onsubmit={(ev) => {

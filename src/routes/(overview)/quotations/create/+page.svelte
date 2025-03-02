@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Loader2Icon, SearchIcon } from 'lucide-svelte'
+	import { Loader2Icon, PlusIcon, SearchIcon } from 'lucide-svelte'
+	import { toast } from '@zerodevx/svelte-toast'
 	import type { CreateQuotationClient, Customer, QuotationItem } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
-	import CreateEditItemDialog from '$lib/components/CreateEditItem.svelte'
+	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
 	import ItemsQuotationTable from '$lib/components/ui/ItemsQuotationTable.svelte'
 	const { data, form } = $props()
 
@@ -53,7 +54,7 @@
 		showModal = true
 	}
 
-	function onCustomerPick(customer: Pick<Customer, 'id' | 'name' | 'ruc' | 'address'>) {
+	function handleCustomerPick(customer: Pick<Customer, 'id' | 'name' | 'ruc' | 'address'>) {
 		quotation = {
 			...quotation,
 			customer: {
@@ -66,14 +67,14 @@
 		}
 	}
 
-	function onAddItem(item: QuotationItem) {
+	function handleAddItem(item: QuotationItem) {
 		quotation = {
 			...quotation,
 			items: [...quotation.items, item]
 		}
 	}
 
-	function onEditItem(item: QuotationItem) {
+	function handleEditItem(item: QuotationItem) {
 		quotation = {
 			...quotation,
 			items: quotation.items.map((i) => {
@@ -83,13 +84,13 @@
 		}
 	}
 
-	function onDeleteItem(id: string) {
+	function handleDeleteItem(id: string) {
 		quotation = {
 			...quotation,
 			items: quotation.items.filter((item) => item.id !== id)
 		}
 	}
-	function onDuplicateItem(id: string) {
+	function handleDuplicateItem(id: string) {
 		const foundItem = quotation.items.find((item) => item.id === id)
 		if (!foundItem) return
 		quotation = {
@@ -118,7 +119,7 @@
 		{#await data.customers}
 			loading..
 		{:then customers}
-			<CustomerPickDialog {customers} {onCustomerPick} />
+			<CustomerPickDialog {customers} onCustomerPick={handleCustomerPick} />
 		{/await}
 	</header>
 	<article class="mt-4 flex flex-col gap-4">
@@ -132,8 +133,11 @@
 					// calling `cancel()` will prevent the submission
 					// `submitter` is the `HTMLElement` that caused the form to be submitted
 					return async ({ result }) => {
+						if (result.type === 'error') {
+							toast.push('NO se pudo encontrar el ruc')
+						}
 						if (result.type === 'success' && result.data) {
-							const fondCustomer = result.data.customer as Customer
+							const fondCustomer = result.data
 							quotation = {
 								...quotation,
 								customer: {
@@ -146,13 +150,14 @@
 								}
 							}
 						}
+
 						pending = false
 						// `result` is an `ActionResult` object
 						// `update` is a function which triggers the default logic that would be triggered if this callback wasn't set
 					}
 				}}
 				method="POST"
-				action="?/search"
+				action="/actions?/search"
 				class="col-span-2 grid gap-2 md:col-span-3"
 			>
 				<label class="label grid gap-2">
@@ -272,7 +277,18 @@
 				{#await data.products}
 					...loading
 				{:then products}
-					<CreateEditItemDialog bind:showModal item={selectedItem} {products} {onAddItem} />
+					<button onclick={() => (showModal = true)} class="btn">
+						<PlusIcon />
+					</button>
+					{#if showModal}
+						<CreateEditItemDialog
+							bind:showModal
+							item={selectedItem}
+							{products}
+							onEditItem={handleEditItem}
+							onAddItem={handleAddItem}
+						/>
+					{/if}
 				{/await}
 			</div>
 		</div>
@@ -280,9 +296,9 @@
 			<ItemsQuotationTable
 				onSelectItem={handleSelectItem}
 				items={quotation.items}
-				{onEditItem}
-				{onDeleteItem}
-				{onDuplicateItem}
+				onEditItem={handleEditItem}
+				onDeleteItem={handleDeleteItem}
+				onDuplicateItem={handleDuplicateItem}
 			/>
 		{:else}
 			<div>no items</div>
