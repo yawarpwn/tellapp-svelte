@@ -40,8 +40,13 @@
 			item = {
 				...itemToEdit
 			}
-			inputSearch.focus()
 		}
+		console.log('inputSearch', inputSearch)
+	})
+
+	$effect(() => {
+		inputSearch.focus()
+		console.log('2do effect')
 	})
 
 	const hits = $derived(
@@ -51,8 +56,6 @@
 				product.code.toLowerCase().includes(searchTerm.trim().toLowerCase())
 		)
 	)
-
-	$inspect({ showModal })
 </script>
 
 <Dialog bind:showModal>

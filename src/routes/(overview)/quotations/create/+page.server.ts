@@ -18,5 +18,7 @@ export const load: PageServerLoad = async () => {
 export const actions = {
 	create: async ({ cookies, request, platform }) => {
 		const formData = await request.formData()
+		const quotation = JSON.parse(formData.get('quotation') as string)
+		console.log(quotation)
 	}
 } satisfies Actions
