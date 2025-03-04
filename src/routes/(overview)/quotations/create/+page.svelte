@@ -1,20 +1,38 @@
 <script lang="ts">
-	import { PlusIcon, StarIcon } from 'lucide-svelte'
-	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
-	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
-	import ItemsQuotationTable from '$lib/components/ui/ItemsQuotationTable.svelte'
-	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
+	import { Loader2Icon, PlusIcon, SearchIcon, StarIcon } from 'lucide-svelte'
+	import type { ActionData, PageData } from './$types'
 	import { enhance } from '$app/forms'
-	const { data, form } = $props()
 
-	import {
-		onAddItem,
-		onCustomerPick,
-		onDeleteItem,
-		onDuplicateItem,
-		onEditItem,
-		quotation
-	} from '$lib/stores/quotation.svelte'
+	type Props = {
+		form: ActionData
+		data: PageData
+	}
+	const { data, form }: Props = $props()
+
+	import { setQuotationContext } from '$lib/contexts/quotation'
+	import type { CreateQuotationClient } from '$lib/types'
+	import ItemsQuotationTable from '$lib/components/ui/ItemsQuotationTable.svelte'
+
+	export const quotation: CreateQuotationClient = $state({
+		credit: undefined,
+		deadline: 1,
+		isPaymentPending: false,
+		customerId: undefined,
+		includeIgv: true,
+		items: [
+			{
+				id: 'e0313080',
+				description: 'default desc',
+				quantity: 1,
+				price: 10,
+				cost: 100,
+				unitPrice: 'und'
+			}
+		],
+		customer: {}
+	})
+
+	setQuotationContext(quotation)
 
 	//States
 
@@ -43,6 +61,18 @@
 		selectedItemId = id
 		showModal = true
 	}
+
+	$effect(() => {
+		if (form && form.customer) {
+			quotation.customer = {
+				isRegular: form.customer.isRegular,
+				name: form.customer.name,
+				ruc: form.customer.ruc,
+				address: form.customer.address || ''
+			}
+			quotation.customerId = form.customer.id
+		}
+	})
 </script>
 
 <div>
@@ -57,13 +87,49 @@
 		{#await data.customers}
 			loading..
 		{:then customers}
-			<CustomerPickDialog {customers} {onCustomerPick} />
+			<!-- <CustomerPickDialog {customers} {onCustomerPick} /> -->
 		{/await}
 	</header>
 	<article class="">
 		<!-- Inputs -->
 		<div class="grid grid-cols-12 gap-3">
-			<SearchCustomer />
+			<!-- Search form -->
+			<form
+				use:enhance={() => {
+					pending = true
+					return async ({ update }) => {
+						pending = false
+						update()
+					}
+				}}
+				method="POST"
+				action="?/search"
+				class="col-span-6 grid gap-2"
+			>
+				<label class="label" for="ruc"> Ruc </label>
+				<div class="relative">
+					<input
+						id="ruc"
+						name="ruc"
+						class="input w-full"
+						oninput={(ev) => {
+							quotation.customer = {
+								...quotation.customer,
+								ruc: ev.currentTarget.value
+							}
+						}}
+						value={quotation.customer?.ruc || ''}
+						placeholder="20610555536"
+					/>
+					<button type="submit" class="absolute top-1/2 right-2 -translate-y-1/2">
+						{#if pending}
+							<Loader2Icon class="animate-spin" />
+						{:else}
+							<SearchIcon />
+						{/if}
+					</button>
+				</div>
+			</form>
 			<div class="col-span-6 grid gap-2">
 				<label class="label grid gap-2" for="deadline"> Entrega </label>
 				<input
@@ -146,25 +212,19 @@
 						<PlusIcon />
 					</button>
 					{#if showModal}
-						<CreateEditItemDialog
-							bind:showModal
-							item={selectedItem}
-							{products}
-							{onEditItem}
-							{onAddItem}
-						/>
+						<!-- <CreateEditItemDialog -->
+						<!-- 	bind:showModal -->
+						<!-- 	item={selectedItem} -->
+						<!-- 	{products} -->
+						<!-- 	{onEditItem} -->
+						<!-- 	{onAddItem} -->
+						<!-- /> -->
 					{/if}
 				{/await}
 			</div>
 		</div>
 		{#if quotation.items.length > 0}
-			<ItemsQuotationTable
-				onSelectItem={handleSelectItem}
-				items={quotation.items}
-				{onEditItem}
-				{onDeleteItem}
-				{onDuplicateItem}
-			/>
+			<ItemsQuotationTable />
 		{:else}
 			<div>no items</div>
 		{/if}
@@ -176,11 +236,12 @@
 			<form
 				method="POST"
 				action="?/create"
-				use:enhance={({ action, submitter, cancel, formData, controller, formElement }) => {
-					return ({ result, action, formData, formElement, update }) => {
-						console.info({ result, action, formData, formElement, update })
+				use:enhance={() => {
+					pending = true
+					return ({ update }) => {
+						pending = false
 						update({
-							reset: true
+							reset: false
 						})
 					}
 				}}

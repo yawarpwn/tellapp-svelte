@@ -30,6 +30,7 @@ export async function fetchQuotations(
 	apiKey: string,
 	queryParams?: FetchQuotationQueryParams
 ): Promise<QuotationClient[]> {
+	console.info('fetch quotations --->')
 	const { query = '', page = '' } = queryParams ?? {}
 	const url = `${BASE_URL}/api/quotations?q=${query}&page=${page}&limit=40`
 	const data = await fetchData<DataResponse<QuotationClient>>(url, {
@@ -110,6 +111,7 @@ export async function fetchCustomers(
 	apiKey: string,
 	options?: FetchCustomerOptions
 ): Promise<Customer[]> {
+	console.info('fetch customers --->')
 	const { onlyRegular = false } = options ?? {}
 	const url = `${BASE_URL}/api/customers${onlyRegular ? '?isRegular=true' : ''}`
 	const data = await fetchData<DataResponse<Customer>>(url, {
@@ -130,12 +132,7 @@ export async function searchCustomerByDniOrRuc(dniRuc: string, apiKey: string) {
 		}
 	})
 
-	return {
-		id: customer.id,
-		ruc: customer.ruc,
-		name: customer.name,
-		address: customer.address
-	}
+	return customer
 }
 
 export async function fetchCustomerById(id: string, apiKey: string) {
@@ -163,6 +160,7 @@ export async function updateCustomer(id: string, customerToUpdate: UpdateCustome
 
 //----------------------------- Products ----------------------------->
 export async function fetchProducts(apiKey: string): Promise<Product[]> {
+	console.info('fetch products --->')
 	const url = `${BASE_URL}/api/products`
 	const data = await fetchData<DataResponse<Product>>(url, {
 		headers: {

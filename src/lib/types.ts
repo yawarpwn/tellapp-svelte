@@ -7,6 +7,7 @@ export type CustomerFromService = {
 	ruc: string
 	name: string
 	address?: string
+	isRegular: boolean
 }
 export type QuotationClient = {
 	id: string
@@ -18,7 +19,7 @@ export type QuotationClient = {
 	items: QuotationItem[]
 	createdAt: string
 	updatedAt: string
-	customer: Omit<Customer, 'createdAt' | 'updatedAt'> | undefined
+	customer: Omit<Customer, 'createdAt' | 'updatedAt' | 'id'> | null
 	customerId?: string | null
 }
 
