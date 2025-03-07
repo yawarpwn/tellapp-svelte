@@ -4,6 +4,10 @@
 	let { data }: PageProps = $props()
 </script>
 
+<svelte:head>
+	<title>Cotizaciones</title>
+</svelte:head>
+
 <div class="overflow-x-auto">
 	<div class="flex items-center justify-end">
 		<a class="btn" href="/quotations/create">Crear</a>

@@ -75,6 +75,10 @@
 	})
 </script>
 
+<svelte:head>
+	<tile>Crear Cotizacion</tile>
+</svelte:head>
+
 <div>
 	<prev>
 		{JSON.stringify({ ...quotation }, null, 2)}
