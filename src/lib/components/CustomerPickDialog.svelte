@@ -4,10 +4,13 @@
 
 	type Props = {
 		customers: Customer[]
-		onCustomerPick: (customer: Pick<Customer, 'id' | 'name' | 'ruc' | 'address'>) => void
+		setCustomer: (
+			_customer: Pick<Customer, 'name' | 'ruc' | 'address' | 'isRegular'>,
+			_customerId?: string
+		) => void
 	}
 
-	let { customers, onCustomerPick }: Props = $props()
+	let { customers, setCustomer }: Props = $props()
 	let modalRef: HTMLDialogElement
 
 	let searchTerm = $state('')
@@ -39,14 +42,14 @@
 			<button>Buscar</button>
 		</form>
 		<ul>
-			{#each filteredCustomers as { name, address, id, ruc }}
+			{#each filteredCustomers as { name, address, id, ruc, isRegular }}
 				<li>
 					>
 					<button
 						class="btn"
 						onclick={() => {
 							modalRef.close()
-							onCustomerPick({ id, name, address, ruc })
+							setCustomer({ name, address, ruc, isRegular }, id)
 						}}
 					>
 						{name}

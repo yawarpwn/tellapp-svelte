@@ -6,7 +6,7 @@
 
 	type Props = {
 		products: Product[]
-		showModal: boolean
+		showCreateEditModal: boolean
 		item?: QuotationItem | null
 		onAddItem: (_item: QuotationItem) => void
 		onEditItem: (_item: QuotationItem) => void
@@ -16,7 +16,7 @@
 		onAddItem,
 		onEditItem,
 		item: itemToEdit,
-		showModal = $bindable()
+		showCreateEditModal = $bindable()
 	}: Props = $props()
 
 	let inputSearch: HTMLInputElement
@@ -41,12 +41,10 @@
 				...itemToEdit
 			}
 		}
-		console.log('inputSearch', inputSearch)
 	})
 
 	$effect(() => {
 		inputSearch.focus()
-		console.log('2do effect')
 	})
 
 	const hits = $derived(
@@ -58,7 +56,7 @@
 	)
 </script>
 
-<Dialog bind:showModal>
+<Dialog bind:showModal={showCreateEditModal}>
 	<div class="flex h-[95svh] flex-col gap-2">
 		<!-- Search Product -->
 		<header class="">
@@ -124,7 +122,7 @@
 					})
 				}
 				ev.currentTarget.reset()
-				showModal = false
+				showCreateEditModal = false
 			}}
 		>
 			<div>
@@ -173,7 +171,9 @@
 				<button type="submit" class="btn btn-primary">
 					{itemToEdit ? 'Actualizar' : 'Agregar'}
 				</button>
-				<button class="btn" type="button" onclick={() => (showModal = false)}>Cancelar</button>
+				<button class="btn" type="button" onclick={() => (showCreateEditModal = false)}
+					>Cancelar</button
+				>
 			</footer>
 		</form>
 	</div>
