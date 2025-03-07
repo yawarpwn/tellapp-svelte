@@ -27,7 +27,7 @@
 				</label>
 			</div>
 		</header>
-		<main class="px-2 lg:ml-20">
+		<main class="px-4 py-6 lg:ml-20">
 			{@render children()}
 		</main>
 	</div>
