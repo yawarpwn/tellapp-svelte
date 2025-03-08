@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { HomeIcon, type Icon as IconType, ShoppingCartIcon, TruckIcon } from 'lucide-svelte'
+	import Logout from '$lib/components/Logout.svelte'
 	import { page } from '$app/stores'
 
 	const { closeDrawer } = $props()
@@ -48,4 +49,5 @@
 			</a>
 		</li>
 	{/each}
+	<Logout />
 </ul>

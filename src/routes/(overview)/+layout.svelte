@@ -16,7 +16,7 @@
 	<input id="my-drawer-3" type="checkbox" class="drawer-toggle" bind:checked />
 	<div class="drawer-content flex flex-col">
 		<!-- Navbar -->
-		<header class="navbar bg-base-200 sticky top-0 w-full lg:hidden">
+		<header class="navbar bg-base-200 sticky top-0 z-40 w-full lg:hidden">
 			<div class="mx-2 flex-1 px-2">
 				<a href="/" class="text-primary text-2xl font-bold"> TellAPP </a>
 			</div>
