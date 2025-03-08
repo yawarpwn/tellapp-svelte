@@ -18,10 +18,19 @@ export const actions = {
 			return fail(400, { email, missing: true })
 		}
 
-		const authToken = await login({
+		const [error, authToken] = await login({
 			email,
 			password
 		})
+
+		if (error) {
+			return fail(403, {
+				email,
+				error: error
+			})
+		}
+
+		console.log({ error, authToken })
 
 		cookies.set('__svelte_session__', authToken, {
 			path: '/',

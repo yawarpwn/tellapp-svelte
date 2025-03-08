@@ -403,13 +403,33 @@ export async function deleteWatermark(id: string, apiKey: string) {
 
 //----------------------------- Auth -----------------------------\
 
+class AuthError extends Error {}
 export async function login({ email, password }: { email: string; password: string }) {
 	const url = `${BASE_URL}/auth/login`
-	const data = await fetchData<{ token: string }>(url, {
-		method: 'POST',
-		body: JSON.stringify({ email, password }),
-		headers: { 'Content-Type': 'application/json' }
-	})
 
-	return data.token
+	try {
+		const res = await fetch(url, {
+			method: 'POST',
+			body: JSON.stringify({ email, password }),
+			headers: { 'Content-Type': 'application/json' }
+		})
+
+		if (res.status === 403) {
+			throw new AuthError('Email o contraseña incorrectos')
+		}
+
+		if (!res.ok) {
+			throw new Error('Error en el servidor')
+		}
+
+		const data = (await res.json()) as { token: string }
+
+		return [null, data.token]
+	} catch (error) {
+		if (error instanceof AuthError) {
+			return [error.message, null]
+		}
+
+		return ['Error desconocido', null]
+	}
 }
