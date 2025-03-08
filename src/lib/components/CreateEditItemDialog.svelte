@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SearchIcon } from 'lucide-svelte'
+	import { OctagonAlertIcon, SearchIcon } from 'lucide-svelte'
 	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import type { Product, QuotationItem } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
@@ -41,10 +41,14 @@
 				...itemToEdit
 			}
 		}
-	})
-
-	$effect(() => {
-		inputSearch.focus()
+		const timer = setTimeout(() => {
+			console.info('focus')
+			inputSearch.focus()
+		}, 100)
+		return () => {
+			console.info('clear')
+			clearTimeout(timer)
+		}
 	})
 
 	const hits = $derived(
@@ -57,12 +61,14 @@
 </script>
 
 <Dialog bind:showModal={showCreateEditModal}>
-	<div class="flex h-[95svh] flex-col gap-2">
+	<div class="flex h-[90svh] flex-col gap-2">
 		<!-- Search Product -->
 		<header class="">
 			<div class="flex h-9 w-full items-center rounded-md border pl-2">
 				<SearchIcon class="" size={20} />
 				<input
+					bind:this={inputSearch}
+					tabindex="0"
 					bind:this={inputSearch}
 					bind:value={searchTerm}
 					class="ml-2 w-full border-none outline-none"
@@ -76,11 +82,15 @@
 			{#if hits.length > 0}
 				{#each hits as hit}
 					<button
-						class="flex flex-col gap-2 rounded-sm border border-neutral-600 p-2"
+						class="hover:bg-base-300 bg-base-200 flex cursor-pointer flex-col gap-1 rounded-sm p-2"
 						onclick={() => {
 							item = {
-								...hit,
-								qty: 1
+								price: hit.price,
+								qty: 1,
+								unitSize: hit.unitSize,
+								cost: hit.cost,
+								description: hit.description,
+								link: hit.link
 							}
 							qtyInput.focus()
 						}}
@@ -102,7 +112,10 @@
 					</button>
 				{/each}
 			{:else}
-				<p>sin results</p>
+				<div class="flex h-full items-center justify-center gap-2">
+					<strong>Sin Resultados</strong>
+					<OctagonAlertIcon />
+				</div>
 			{/if}
 		</div>
 		<form

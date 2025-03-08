@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ChevronDown, ChevronUp, EditIcon, FilesIcon, TrashIcon } from 'lucide-svelte'
+	import { slide } from 'svelte/transition'
 	import TextEditInput from './TextEditInput.svelte'
 	import type { QuotationItem } from '$lib/types'
 
@@ -9,21 +10,41 @@
 		onEditItem: (_quo: QuotationItem) => void
 		onDeleteItem: (_id: string) => void
 		onDuplicateItem: (_id: string) => void
+		onMoveDownItem: (_index: number) => void
+		onMoveUpItem: (_index: number) => void
 	}
 
-	const { items, onDeleteItem, onDuplicateItem, onEditItem, onSelectItem }: Props = $props()
+	const {
+		items,
+		onDeleteItem,
+		onDuplicateItem,
+		onEditItem,
+		onSelectItem,
+		onMoveDownItem,
+		onMoveUpItem
+	}: Props = $props()
 </script>
 
-<div class="flex flex-col gap-4">
-	{#each items as item}
-		<article class="card bg-base-300">
+<div class="flex flex-col gap-2">
+	{#each items as item, index}
+		<article class="card bg-base-200 shadow-xs" transition:slide|local>
 			<div class="grid gap-4 p-4">
 				<div class="flex items-center justify-between [&_button]:size-7 [&_button_svg]:size-4">
 					<div class="flex items-center gap-1">
-						<button class="btn btn-square" type="button" onclick={() => {}}>
+						<button
+							disabled={index === 0}
+							class="btn btn-square"
+							type="button"
+							onclick={() => onMoveUpItem(index)}
+						>
 							<ChevronUp />
 						</button>
-						<button class="btn btn-square" type="button" onclick={() => {}}>
+						<button
+							disabled={index === items.length - 1}
+							class="btn btn-square"
+							type="button"
+							onclick={() => onMoveDownItem(index)}
+						>
 							<ChevronDown />
 						</button>
 					</div>
@@ -49,7 +70,7 @@
 						<TextEditInput
 							as="textarea"
 							value={item.description}
-							onInputChange={(value) => onEditItem({ ...item, description: value })}
+							onEdit={(value) => onEditItem({ ...item, description: value })}
 							name="description"
 						/>
 					</div>
@@ -57,7 +78,7 @@
 
 				<div class="flex h-5 items-center gap-4 text-sm">
 					<TextEditInput
-						onInputChange={(value) => onEditItem({ ...item, unitSize: value })}
+						onEdit={(value) => onEditItem({ ...item, unitSize: value })}
 						value={item.unitSize}
 						type="text"
 						name="unitSize"
@@ -65,7 +86,7 @@
 
 					<TextEditInput
 						value={item.qty}
-						onInputChange={(value) => {
+						onEdit={(value) => {
 							if (Number.isNaN(Number(value))) return
 							onEditItem({ ...item, qty: Number(value) })
 						}}
@@ -73,7 +94,7 @@
 						type="number"
 					/>
 					<TextEditInput
-						onInputChange={(value) => {
+						onEdit={(value) => {
 							if (Number.isNaN(Number(value))) return
 							onEditItem({ ...item, price: Number(value) })
 						}}

@@ -1,67 +1,35 @@
 <script lang="ts">
-	import { XIcon } from 'lucide-svelte'
 	import type { Customer } from '$lib/types'
+	import Dialog from '$lib/components/ui/Dialog.svelte'
+	import CustomerRestults from './CustomerRestults.svelte'
 
 	type Props = {
-		customers: Customer[]
+		customersPromise: Promise<Customer[]>
+		showModal: boolean
 		setCustomer: (
 			_customer: Pick<Customer, 'name' | 'ruc' | 'address' | 'isRegular'>,
 			_customerId?: string
 		) => void
 	}
 
-	let { customers, setCustomer }: Props = $props()
-	let modalRef: HTMLDialogElement
+	let { customersPromise, setCustomer, showModal = $bindable() }: Props = $props()
 
-	let searchTerm = $state('')
-
-	const filteredCustomers = $derived(
-		customers.filter((customer) =>
-			customer.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
-		)
-	)
+	function closeModal() {
+		showModal = false
+	}
 </script>
 
-<button
-	class="btn"
-	onclick={() => {
-		modalRef.showModal()
-	}}>Clientes</button
->
-<dialog bind:this={modalRef} class="modal">
-	<form method="dialog" class="modal-backdrop">
-		<button> cerrar </button>
-	</form>
-	<div class="modal-box relative max-h-[90dvh]">
-		<form
-			onsubmit={(ev) => {
-				ev.preventDefault()
-			}}
-		>
-			<input class="input" bind:value={searchTerm} type="search" />
-			<button>Buscar</button>
-		</form>
-		<ul>
-			{#each filteredCustomers as { name, address, id, ruc, isRegular }}
-				<li>
-					>
-					<button
-						class="btn"
-						onclick={() => {
-							modalRef.close()
-							setCustomer({ name, address, ruc, isRegular }, id)
-						}}
-					>
-						{name}
-					</button>
-				</li>
-			{/each}
-		</ul>
-		<form method="dialog" class="absolute top-2 right-2">
-			<!-- if there is a button in form, it will close the modal -->
-			<button class="btn btn-xs btn-circle">
-				<XIcon />
-			</button>
-		</form>
+<Dialog bind:showModal>
+	<div class="flex max-h-[90svh] flex-col gap-4">
+		{#await customersPromise}
+			<div class="skeleton h-12"></div>
+			<div class="flex flex-col gap-2">
+				{#each { length: 20 }, rank}
+					<div class="skeleton h-10"></div>
+				{/each}
+			</div>
+		{:then customers}
+			<CustomerRestults {closeModal} {customers} {setCustomer} />
+		{/await}
 	</div>
-</dialog>
+</Dialog>

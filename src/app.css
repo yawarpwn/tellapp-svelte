@@ -1,5 +1,7 @@
 @import 'tailwindcss';
-@plugin "daisyui";
+@plugin "daisyui" {
+	themes: coffee --default;
+}
 
 /* Para Chrome, Safari, Edge, Opera */
 input[type='number']::-webkit-outer-spin-button,
@@ -15,6 +17,5 @@ input[type='number'] {
 
 @layer base {
 	body {
-		@apply bg-base-200;
 	}
 }

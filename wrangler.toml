@@ -1,4 +1,4 @@
-name = "app-tell"
+name = "tell"
 account_id = "10dc06fe3d7b1fb0a4b7aa5205cb6ba0"
 
 main = "./.cloudflare/worker.js"

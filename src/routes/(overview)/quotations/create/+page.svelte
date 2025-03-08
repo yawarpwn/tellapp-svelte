@@ -37,8 +37,10 @@
 		}
 	})
 
+	//$states
 	let showCreateEditModal = $state(false)
 	let showCreditOption = $state(false)
+	let showCustomerPickDialog = $state(false)
 	let selectedItemId = $state<null | string>(null)
 	const selectedItem = $derived(quotation.items.find((i) => i.id === selectedItemId))
 	let pending = $state(false)
@@ -105,6 +107,25 @@
 		]
 	}
 
+	function move(currentIndex: number, nextIndex: number) {
+		const newItems = [...quotation.items]
+		newItems[currentIndex] = quotation.items[nextIndex]
+		newItems[nextIndex] = quotation.items[currentIndex]
+		quotation.items = newItems
+	}
+
+	function handleMoveUpItem(index: number) {
+		if (index > 0) {
+			move(index, index - 1)
+		}
+	}
+
+	function handleMoveDownItem(index: number) {
+		if (index < quotation.items.length - 1) {
+			move(index, index + 1)
+		}
+	}
+
 	$effect(() => {
 		if (form && form.customer) {
 			quotation.customer = {
@@ -122,20 +143,29 @@
 	<title>Crear Cotizacion</title>
 </svelte:head>
 
-<div>
+<div class="bg-base-300/80 absolute bottom-0 left-0 z-40 h-[500px] max-w-sm p-2 text-blue-300">
 	<prev>
 		{JSON.stringify({ ...quotation }, null, 2)}
 	</prev>
 </div>
-<div class="pb-8">
+<div class="flex flex-col gap-8 pb-8">
 	<header class="flex justify-between">
 		<!-- <BackTo to="/quotations" /> -->
 		<a class="btn btn-ghost" href="/quotations">Atras</a>
-		{#await data.customers}
-			loading..
-		{:then customers}
-			<CustomerPickDialog {customers} {setCustomer} />
-		{/await}
+		{#if showCustomerPickDialog}
+			<CustomerPickDialog
+				customersPromise={data.customers}
+				bind:showModal={showCustomerPickDialog}
+				{setCustomer}
+			/>
+		{/if}
+		<button
+			aria-label="seleccionar cliente"
+			class="btn"
+			onclick={() => (showCustomerPickDialog = true)}
+		>
+			Clientes
+		</button>
 	</header>
 	<article class="">
 		<!-- Inputs -->
@@ -249,7 +279,7 @@
 		</div>
 
 		<!-- Items  -->
-		<div class="flex items-center justify-between">
+		<div class="my-4 flex items-center justify-between">
 			Items
 			<div>
 				{#await data.products}
@@ -257,6 +287,7 @@
 				{:then products}
 					<button onclick={() => (showCreateEditModal = true)} class="btn">
 						<PlusIcon />
+						<span class="hidden lg:block">Agregar Item</span>
 					</button>
 					{#if showCreateEditModal}
 						<CreateEditItemDialog
@@ -276,18 +307,21 @@
 				onEditItem={handleEditItem}
 				onDeleteItem={handleDeleteItem}
 				onDuplicateItem={handleDuplicateItem}
+				onMoveDownItem={handleMoveDownItem}
+				onMoveUpItem={handleMoveUpItem}
 				{onSelectItem}
 			/>
 		{:else}
 			<div>no items</div>
 		{/if}
 
-		<footer class="flex items-center justify-between">
-			<button disabled={false} type="button" class="btn btn-wide">
+		<footer class="mt-4 flex items-center justify-between">
+			<button disabled={false} type="button" class="btn">
 				<a href="/quotations">Cancelar</a>
 			</button>
 			<form
 				method="POST"
+				class="btn btn-primary"
 				action="?/create"
 				use:enhance={() => {
 					pending = true
@@ -303,7 +337,7 @@
 				<button
 					disabled={quotation.items.length === 0}
 					type="submit"
-					class="btn btn-wide bg-primary"
+					class=""
 					onclick={handleSubmit}>Crear</button
 				>
 			</form>
