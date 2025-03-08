@@ -72,13 +72,13 @@ export async function fetchData<T>(url: string, options?: RequestInit): Promise<
 			...options?.headers
 		}
 	})
-	console.log(
+	console.info(
 		`OK:${response.ok} - statusCode:${response.status} - ${response.url} - ${response.statusText}`
 	)
 	if (!response.ok) {
 		throw new Error(`Error en la peticion: ${url} - ${response.statusText}`)
 	}
-	await new Promise((r) => setTimeout(r, 3000))
+	// await new Promise((r) => setTimeout(r, 3000))
 	return response.json() as T
 }
 
