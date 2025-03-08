@@ -1,8 +1,8 @@
-export const PRODUCTION_URL = 'https://app.tellsenales.workers.dev';
+import { browser, building, dev, version } from '$app/environment'
 
-const isDev = import.meta.env.MODE === 'development';
+export const PRODUCTION_URL = 'https://app.tellsenales.workers.dev'
 // export const BASE_URL = 'https://api.tellsignals.workers.dev'
-export const BASE_URL = isDev ? 'http://localhost:8787' : 'https://api.tellsignals.workers.dev';
+export const BASE_URL = dev ? 'http://localhost:8787' : 'https://api.tellsignals.workers.dev'
 
 export const PRODUCT_CATEGORIES = {
 	CINTAS_SEGURIDAD: 'cintas seguridad',
@@ -19,7 +19,7 @@ export const PRODUCT_CATEGORIES = {
 	ROPA_SEGURIDAD: 'ropa seguridad',
 	CONVENCIONALES: 'convencionales',
 	ACRILICOS: 'acrilicos'
-};
+}
 
 export const PRODUCT_CATEGORIES_TABLE = {
 	CINTAS_SEGURIDAD: 1,
@@ -36,9 +36,9 @@ export const PRODUCT_CATEGORIES_TABLE = {
 	ROPA_SEGURIDAD: 12,
 	CONVENCIONALES: 13,
 	ACRILICOS: 14
-} as const;
+} as const
 
-export const PRODUCTS_KEY = '__TELL_PRODUCTS__';
-export const CUSTOMERS_KEY = '__TELL_CUSTOMERS__';
-export const QUOTATIONS_KEY = '__QUOS__';
-export const SAVED_QUOTATION_KEY = '__TELL_SAVED_QUOTATION__';
+export const PRODUCTS_KEY = '__TELL_PRODUCTS__'
+export const CUSTOMERS_KEY = '__TELL_CUSTOMERS__'
+export const QUOTATIONS_KEY = '__QUOS__'
+export const SAVED_QUOTATION_KEY = '__TELL_SAVED_QUOTATION__'
