@@ -5,6 +5,7 @@
 	import { enhance } from '$app/forms'
 	import ItemsQuotationTable from '$lib/components/ui/ItemsQuotationTable.svelte'
 	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
+	import SearchCustomer from './SearchCustomer.svelte'
 
 	type Props = {
 		quotation: CreateQuotationClient | undefined
@@ -127,18 +128,6 @@
 			move(index, index + 1)
 		}
 	}
-
-	// $effect(() => {
-	// 	if (form && form.customer) {
-	// 		quotation.customer = {
-	// 			isRegular: form.customer.isRegular,
-	// 			name: form.customer.name,
-	// 			ruc: form.customer.ruc,
-	// 			address: form.customer.address || ''
-	// 		}
-	// 		quotation.customerId = form.customer.id
-	// 	}
-	// })
 </script>
 
 <svelte:head>
@@ -173,42 +162,7 @@
 		<!-- Inputs -->
 		<div class="grid grid-cols-12 gap-3">
 			<!-- Search form -->
-			<form
-				use:enhance={() => {
-					pending = true
-					return async ({ update }) => {
-						pending = false
-						update()
-					}
-				}}
-				method="POST"
-				action="?/search"
-				class="col-span-6 grid gap-2"
-			>
-				<label class="label" for="ruc"> Ruc </label>
-				<div class="relative">
-					<input
-						id="ruc"
-						name="ruc"
-						class="input w-full"
-						oninput={(ev) => {
-							quotation.customer = {
-								...quotation.customer,
-								ruc: ev.currentTarget.value
-							}
-						}}
-						value={quotation.customer?.ruc || ''}
-						placeholder="20610555536"
-					/>
-					<button type="submit" class="absolute top-1/2 right-2 -translate-y-1/2">
-						{#if pending}
-							<Loader2Icon class="animate-spin" />
-						{:else}
-							<SearchIcon />
-						{/if}
-					</button>
-				</div>
-			</form>
+			<SearchCustomer onSearchCustomer={setCustomer} ruc={quotation.customer?.ruc} />
 			<div class="col-span-6 grid gap-2">
 				<label class="label grid gap-2" for="deadline"> Entrega </label>
 				<input

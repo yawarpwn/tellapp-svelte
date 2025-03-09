@@ -1,62 +1,68 @@
 <script lang="ts">
-	let pending = $state(false)
 	import { Loader2Icon, SearchIcon } from 'lucide-svelte'
 	import { toast } from '@zerodevx/svelte-toast'
-	import { enhance } from '$app/forms'
-	import { quotation } from '$lib/stores/quotation.svelte'
-</script>
 
-<form
-	use:enhance={() => {
+	type Props = {
+		onSearchCustomer: (customer: {
+			name: string
+			ruc: string
+			address?: string
+			isRegular: boolean
+		}) => void
+
+		ruc?: string
+	}
+	const { onSearchCustomer, ruc }: Props = $props()
+
+	let pending = $state(false)
+
+	async function handleSubmit(ev: SubmitEvent) {
+		ev.preventDefault()
+		const formData = new FormData(ev.currentTarget as HTMLFormElement)
+		const ruc = formData.get('ruc') as string
+
+		// Válida si el ruc es de 11 digitos
+		if (ruc.length !== 11) {
+			toast.push('Ruc inválido', {
+				theme: {
+					'--toastBackground': 'red',
+					'--toastProgressBackground': 'white'
+				}
+			})
+			return
+		}
+
 		pending = true
-		// `formElement` is this `<form>` element
-		// `formData` is its `FormData` object that's about to be submitted
-		// `action` is the URL to which the form is posted
-		// calling `cancel()` will prevent the submission
-		// `submitter` is the `HTMLElement` that caused the form to be submitted
-		return async ({ result, update }) => {
-			if (result.type === 'error') {
-				toast.push('NO se pudo encontrar el ruc')
-			}
-			if (result.type === 'success' && result.data) {
-				const fondCustomer = result.data as {
-					id: string
-					name: string
-					ruc: string
-					address: string
-					isRegular: boolean
+		const res = await fetch(`/api/search-customer/${ruc}`)
+		const data = await res.json()
+
+		if (!data) {
+			toast.push('Cliente no encontrado', {
+				theme: {
+					'--toastBackground': 'red',
+					'--toastProgressBackground': 'white'
 				}
-				quotation.customerId = fondCustomer.id
-				quotation.customer = {
-					...quotation.customer,
-					id: fondCustomer.id,
-					name: fondCustomer.name,
-					ruc: fondCustomer.ruc,
-					address: fondCustomer.address,
-					isRegular: fondCustomer.isRegular
-				}
-				update()
-			}
+			})
 
 			pending = false
-			// `result` is an `ActionResult` object
-			// `update` is a function which triggers the default logic that would be triggered if this callback wasn't set
+			return
 		}
-	}}
-	method="POST"
-	action="/actions?/search"
-	class="col-span-6 grid gap-2"
->
+		pending = false
+		onSearchCustomer(data)
+	}
+</script>
+
+<form onsubmit={handleSubmit} class="col-span-6 grid gap-2">
 	<label class="label" for="ruc"> Ruc </label>
 	<div class="relative">
 		<input
 			id="ruc"
 			name="ruc"
 			class="input w-full"
-			value={quotation.customer?.ruc || ''}
+			defaultValue={ruc ?? ''}
 			placeholder="20610555536"
 		/>
-		<button type="submit" class="absolute top-1/2 right-2 -translate-y-1/2">
+		<button disabled={pending} type="submit" class="absolute top-1/2 right-2 -translate-y-1/2">
 			{#if pending}
 				<Loader2Icon class="animate-spin" />
 			{:else}

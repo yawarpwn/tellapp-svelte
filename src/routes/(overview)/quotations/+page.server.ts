@@ -1,7 +1,7 @@
 import { error, redirect, type Action } from '@sveltejs/kit'
 import type { Actions } from './$types'
 import type { PageServerLoad } from './$types'
-import { deleteQuotation, fetchQuotations } from '$lib/data'
+import { deleteQuotation, fetchQuotations, searchCustomerByDniOrRuc } from '$lib/data'
 
 export const load: PageServerLoad = async ({ params, platform, request }) => {
 	const url = new URL(request.url)
@@ -31,5 +31,11 @@ export const actions = {
 	},
 	search: async ({ request, platform }) => {
 		console.log('search')
+		const formData = await request.formData()
+		const ruc = String(formData.get('ruc'))
+		const customer = await searchCustomerByDniOrRuc(ruc, platform?.env.TELL_API_KEY!)
+		return {
+			customer
+		}
 	}
 } satisfies Actions
