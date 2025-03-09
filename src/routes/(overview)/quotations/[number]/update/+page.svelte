@@ -1,9 +1,31 @@
 <script lang="ts">
-	import type { PageProps } from './$types'
-	let { data }: PageProps = $props()
-	const { quotation } = data
-	const { items, customer, customerId, includeIgv, number, updatedAt, createdAt, credit } =
-		quotation
+	import type { ActionData, PageData } from './$types'
+	import CreateUpdateQuotation from '$lib/components/CreateUpdateQuotation.svelte'
+
+	type Props = {
+		form: ActionData
+		data: PageData
+	}
+	const { data, form }: Props = $props()
+
+	// $effect(() => {
+	// 	if (form && form.customer) {
+	// 		quotation.customer = {
+	// 			isRegular: form.customer.isRegular,
+	// 			name: form.customer.name,
+	// 			ruc: form.customer.ruc,
+	// 			address: form.customer.address || ''
+	// 		}
+	// 		quotation.customerId = form.customer.id
+	// 	}
+	// })
 </script>
 
-<h1>Update page</h1>
+<svelte:head>
+	<title>Crear Cotizacion</title>
+</svelte:head>
+<CreateUpdateQuotation
+	quotation={data.quotation}
+	productsPromise={data.productsPromise}
+	customersPromise={data.customersPromise}
+/>

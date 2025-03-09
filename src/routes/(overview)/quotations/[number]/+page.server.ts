@@ -22,10 +22,13 @@ export const actions = {
 	'toggle-regular-customer': async ({ request, platform, url, params }) => {
 		const formData = await request.formData()
 		const id = formData.get('id') as string
+		const status = formData.get('status') as string
+		//not-favorite == favorite // false
+		//favorite   == favorite // true
 		updateCustomer(
 			id,
 			{
-				isRegular: true
+				isRegular: status !== 'favorite'
 			},
 			platform?.env.TELL_API_KEY!
 		)

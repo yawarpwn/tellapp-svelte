@@ -47,7 +47,7 @@
 						clearTimeout(timeout)
 					}
 
-					timeout = setTimeout(() => {
+					timeout = window.setTimeout(() => {
 						form.submit()
 					}, 200)
 				}}
