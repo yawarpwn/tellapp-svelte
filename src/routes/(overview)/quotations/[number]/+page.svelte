@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { EditIcon, ExternalLinkIcon } from 'lucide-svelte'
+	import { EditIcon, ExternalLinkIcon, FilesIcon, TrashIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
 	import { formatDateToLocal, formatNumberToLocal, getIgv } from '$lib/utils'
 	import DownloadAndShareButton from '$lib/components/DownloadAndShareButton.svelte'
+	import ToggleRegularCustomerButton from '$lib/components/ToggleRegularCustomerButton.svelte'
+	import ConfirmAction from '$lib/components/ConfirmAction.svelte'
 	let { data }: PageProps = $props()
 	const { quotation } = data
 
@@ -17,20 +19,29 @@
 				<span class="hidden lg:block">Editar</span>
 			</a>
 			<DownloadAndShareButton {quotation} />
-			<!--   <DownloadAndShareButtons quotation={quotation} /> -->
-			<!--   <ActionButton -->
-			<!--     message={`¿Deseas duplicar la cotización ${quotation.number}?`} -->
-			<!--     action={`/action/${quotation.number}/duplicate-quotation`} -->
-			<!--     text="Duplicar" -->
-			<!--     icon={<FilesIcon size={18} />} -->
-			<!--   /> -->
-			<!--   {quotation?.customerId && ( -->
-			<!--     <ToggleRegularCustomerButton -->
-			<!--       isRegular={quotation.customer.isRegular} -->
-			<!--       customerId={quotation.customerId} -->
-			<!--     /> -->
-			<!--   )} -->
-			<!-- </div> -->
+			<ConfirmAction action={`?/destroy`} message={`Eliminar la cotización ${quotation.number}?`}>
+				{#snippet trigger({ openModal })}
+					<button onclick={openModal} class="btn btn-sm flex items-center gap-2">
+						<TrashIcon size={18} />
+						<span class="hidden lg:block">Eliminar</span>
+					</button>
+				{/snippet}
+			</ConfirmAction>
+
+			<ConfirmAction action={`?/duplicate`} message={`Duplicar la cotización ${quotation.number}?`}>
+				{#snippet trigger({ openModal })}
+					<button onclick={openModal} class="btn btn-sm flex items-center gap-2">
+						<FilesIcon size={18} />
+						<span class="hidden lg:block">Duplicar</span>
+					</button>
+				{/snippet}
+			</ConfirmAction>
+			{#if quotation.customerId && quotation.customer}
+				<ToggleRegularCustomerButton
+					isRegular={quotation.customer?.isRegular}
+					customerId={quotation.customerId}
+				/>
+			{/if}
 		</div>
 	</header>
 

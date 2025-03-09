@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { EditIcon, EyeIcon, MoreHorizontal, PlusIcon, SearchIcon } from 'lucide-svelte'
+	import { EditIcon, EyeIcon, MoreHorizontal, PlusIcon, SearchIcon, StarIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
 	import { enhance } from '$app/forms'
 	import { formatDateToLocal, getIgv } from '$lib/utils'
@@ -69,6 +69,7 @@
 			<!-- head -->
 			<thead>
 				<tr>
+					<th></th>
 					<th>Nro</th>
 					<th>Client</th>
 					<th>Monto</th>
@@ -78,10 +79,19 @@
 			</thead>
 			<tbody>
 				<!-- row 1 -->
-				{#each quotations as { id, number, customer, items, createdAt }}
+				{#each quotations as { id, number, customer, items, createdAt, customerId }}
 					{@const { formatedTotal } = getIgv(items)}
 					<tr>
-						<th>{number}</th>
+						<td>
+							{#if customerId && customer}
+								{#if customer.isRegular}
+									<StarIcon size={16} fill="var(--color-primary)" />
+								{:else}
+									<StarIcon size={16} />
+								{/if}
+							{/if}
+						</td>
+						<td>{number}</td>
 						<td class="min-w-[250px]">
 							<p>
 								{customer?.name || ''}

@@ -1,4 +1,4 @@
-import { error, type Action } from '@sveltejs/kit'
+import { error, redirect, type Action } from '@sveltejs/kit'
 import type { Actions } from './$types'
 import type { PageServerLoad } from './$types'
 import { deleteQuotation, fetchQuotations } from '$lib/data'
@@ -27,6 +27,7 @@ export const actions = {
 		const number = Number(formData.get('number'))
 
 		await deleteQuotation(number, platform?.env.TELL_API_KEY!)
+		redirect(303, '/quotations')
 	},
 	search: async ({ request, platform }) => {
 		console.log('search')

@@ -4,8 +4,6 @@
 	let loading = $state(false)
 
 	let { data, form }: PageProps = $props()
-
-	console.log({ form })
 </script>
 
 <div

@@ -68,7 +68,7 @@ export type Customer = {
 	updatedAt: string
 }
 export type InsertCustomer = Omit<Customer, 'id' | 'createdAt' | 'updatedAt'>
-export type UpdateCustomer = Partial<InsertCustomer> & { id: string }
+export type UpdateCustomer = Partial<InsertCustomer>
 
 export type QuotationItem = {
 	id: string

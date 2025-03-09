@@ -66,12 +66,12 @@
 	}
 </script>
 
-<button onclick={downloadPdf}>
+<button class="btn btn-sm" onclick={downloadPdf}>
 	<DownloadIcon size={20} />
 	<span class="hidden lg:block">Descargar</span>
 </button>
 
-<button onclick={handleSharePdf}>
+<button class="btn btn-sm" onclick={handleSharePdf}>
 	<Share2Icon size={20} />
 	<span class=" hidden lg:block">Compartir</span>
 </button>
