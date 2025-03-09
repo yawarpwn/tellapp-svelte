@@ -1,0 +1,83 @@
+[33mcommit 5812f579208f753ca772afb49832f0f2c3c13ae2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Sat Mar 1 21:55:12 2025 -0500
+
+    implement dialog component
+
+[33mcommit f8465ae46ebdd6fcc6560ec6f0ddcffbf804cec0[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Fri Feb 28 22:46:40 2025 -0500
+
+    save
+
+[33mcommit 0a432c5b9bf3c73acc735bfbc20e0556968e64d6[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Fri Feb 28 18:52:35 2025 -0500
+
+    add create edit Item
+
+[33mcommit 5bbfb94161f3764f07c3b7875dd6db6d7348e475[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Fri Feb 28 13:14:59 2025 -0500
+
+    save
+
+[33mcommit f30c753240ef24124bddb8272ab8a31a157d2187[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Fri Feb 28 12:43:03 2025 -0500
+
+    before add shadcn-svelte
+
+[33mcommit e8635341f4e6497e11b7fc9fdd8ed345821d214c[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Fri Feb 28 04:27:08 2025 -0500
+
+    add await un quos
+
+[33mcommit fa5004e1cc011773b4a36b74ecad8b6ad7c9894e[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Thu Feb 27 21:35:07 2025 -0500
+
+    q
+
+[33mcommit 4bc6932b64fad763280a42f7ebbec8a43d08e0ba[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Thu Feb 27 20:05:00 2025 -0500
+
+    add pick customer
+
+[33mcommit d54662f2f725bc6b7d6f2213c0815383a70335b3[m
+Author: johneyder <john.kazz@gmail.com>
+Date:   Thu Feb 27 14:35:05 2025 -0500
+
+    try mutate customer pick
+
+[33mcommit 6f0e7c4e58dc2d733cafe9274c807a0e72114d0d[m
+Author: johneyder <john.kazz@gmail.com>
+Date:   Thu Feb 27 13:56:10 2025 -0500
+
+    add customersPick dialog
+
+[33mcommit 45a1034e59f8d32b8a7b27fdfd345801bb5e83c4[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Thu Feb 27 01:20:37 2025 -0500
+
+    add basic app
+
+[33mcommit 6572cb930a1008c08c7ebc4d80ce9819626aa2d8[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Thu Feb 27 00:35:46 2025 -0500
+
+    authentificateimplemented
+
+[33mcommit 1f1ea1640a09bcb38119dc729d0fa457ecb4e750[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Wed Feb 26 18:52:09 2025 -0500
+
+    add wrangler config
+
+[33mcommit 4fb66fe393c583fd8c6a5f07db51a6d522cfa824[m
+Author: yawarpwn <john.kazz@gmail.com>
+Date:   Wed Feb 26 18:05:37 2025 -0500
+
+    first commit

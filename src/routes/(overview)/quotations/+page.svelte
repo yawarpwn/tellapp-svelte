@@ -5,7 +5,6 @@
 	import { formatDateToLocal, getIgv } from '$lib/utils'
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
-	import debounce from 'just-debounce-it'
 
 	let value = $derived($page.url.searchParams.get('q') || '')
 	let timeout = $state<null | number>(null)
