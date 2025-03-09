@@ -2,6 +2,7 @@
 	import { EditIcon, ExternalLinkIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
 	import { formatDateToLocal, formatNumberToLocal, getIgv } from '$lib/utils'
+	import DownloadAndShareButton from '$lib/components/DownloadAndShareButton.svelte'
 	let { data }: PageProps = $props()
 	const { quotation } = data
 
@@ -15,6 +16,7 @@
 				<EditIcon size={18} />
 				<span class="hidden lg:block">Editar</span>
 			</a>
+			<DownloadAndShareButton {quotation} />
 			<!--   <DownloadAndShareButtons quotation={quotation} /> -->
 			<!--   <ActionButton -->
 			<!--     message={`¿Deseas duplicar la cotización ${quotation.number}?`} -->
