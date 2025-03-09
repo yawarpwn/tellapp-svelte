@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { EditIcon, ExternalLinkIcon, FilesIcon, TrashIcon } from 'lucide-svelte'
+	import { ArrowLeftIcon, EditIcon, ExternalLinkIcon, FilesIcon, TrashIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
 	import { formatDateToLocal, formatNumberToLocal, getIgv } from '$lib/utils'
 	import DownloadAndShareButton from '$lib/components/DownloadAndShareButton.svelte'
@@ -12,8 +12,12 @@
 </script>
 
 <div class="flex flex-col gap-6">
-	<header class="flex justify-end gap-x-2">
-		<div class="flex gap-2">
+	<header class="flex justify-between gap-x-2">
+		<a href="/quotations" class="btn btn-ghost btn-sm">
+			<ArrowLeftIcon />
+			Volver</a
+		>
+		<div class="flex gap-1">
 			<a class="btn btn-sm" href={`/quotations/${quotation.number}/update`}>
 				<EditIcon size={18} />
 				<span class="hidden lg:block">Editar</span>

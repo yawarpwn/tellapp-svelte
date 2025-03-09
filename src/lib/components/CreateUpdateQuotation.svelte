@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Loader2Icon, PlusIcon, SearchIcon, StarIcon } from 'lucide-svelte'
+	import { ArrowLeft, Loader2Icon, PlusIcon, StarIcon } from 'lucide-svelte'
 	import type { CreateQuotationClient, Customer, Product, QuotationItem } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
@@ -21,16 +21,7 @@
 			isPaymentPending: false,
 			customerId: undefined,
 			includeIgv: true,
-			items: [
-				{
-					id: 'e0313080',
-					description: 'default desc',
-					qty: 1,
-					price: 10,
-					cost: 100,
-					unitSize: 'und'
-				}
-			],
+			items: [],
 			customer: {
 				address: '',
 				name: '',
@@ -142,7 +133,10 @@
 <div class="flex flex-col gap-8 pb-8">
 	<header class="flex justify-between">
 		<!-- <BackTo to="/quotations" /> -->
-		<a class="btn btn-ghost" href="/quotations">Atras</a>
+		<a class="btn btn-ghost" href="/quotations">
+			<ArrowLeft />
+			<span> Atras </span>
+		</a>
 		{#if showCustomerPickDialog}
 			<CustomerPickDialog
 				{customersPromise}
@@ -257,28 +251,22 @@
 				{/await}
 			</div>
 		</div>
-		{#if quotation.items.length > 0}
-			<ItemsQuotationTable
-				items={quotation.items}
-				onEditItem={handleEditItem}
-				onDeleteItem={handleDeleteItem}
-				onDuplicateItem={handleDuplicateItem}
-				onMoveDownItem={handleMoveDownItem}
-				onMoveUpItem={handleMoveUpItem}
-				{onSelectItem}
-			/>
-		{:else}
-			<div>no items</div>
-		{/if}
+		<ItemsQuotationTable
+			items={quotation.items}
+			onEditItem={handleEditItem}
+			onDeleteItem={handleDeleteItem}
+			onDuplicateItem={handleDuplicateItem}
+			onMoveDownItem={handleMoveDownItem}
+			onMoveUpItem={handleMoveUpItem}
+			{onSelectItem}
+		/>
 
 		<footer class="mt-4 flex items-center justify-between">
-			<button disabled={false} type="button" class="btn">
+			<button disabled={pending} type="button" class="btn">
 				<a href="/quotations">Cancelar</a>
 			</button>
 			<form
 				method="POST"
-				class="btn btn-primary"
-				action="?/create"
 				use:enhance={() => {
 					pending = true
 					return ({ update }) => {
@@ -291,11 +279,16 @@
 			>
 				<input type="hidden" name="quotation" value={JSON.stringify(quotation)} />
 				<button
-					disabled={quotation.items.length === 0}
+					class="btn btn-primary"
+					disabled={quotation.items.length === 0 || pending}
 					type="submit"
-					class=""
-					onclick={handleSubmit}>Crear</button
+					onclick={handleSubmit}
 				>
+					{quotation ? 'Actualizar' : 'Crear'}
+					{#if pending}
+						<Loader2Icon class="animate-spin" />
+					{/if}
+				</button>
 			</form>
 		</footer>
 	</article>

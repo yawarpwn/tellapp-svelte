@@ -1,5 +1,6 @@
 import type { Actions, PageServerLoad } from './$types'
-import { fetchCustomers, fetchProducts, searchCustomerByDniOrRuc } from '$lib/data'
+import { createQuotation, fetchCustomers, fetchProducts, searchCustomerByDniOrRuc } from '$lib/data'
+import { redirect } from '@sveltejs/kit'
 
 export const load: PageServerLoad = async ({ cookies, platform }) => {
 	const productsPromise = fetchProducts(platform?.env.TELL_API_KEY!)
@@ -12,16 +13,10 @@ export const load: PageServerLoad = async ({ cookies, platform }) => {
 }
 
 export const actions = {
-	create: async ({ cookies, request, platform }) => {
+	default: async ({ cookies, request, platform }) => {
 		const formData = await request.formData()
 		const quotation = JSON.parse(formData.get('quotation') as string)
-	},
-	search: async ({ request, platform }) => {
-		const formData = await request.formData()
-		const ruc = String(formData.get('ruc'))
-		const customer = await searchCustomerByDniOrRuc(ruc, platform?.env.TELL_API_KEY!)
-		return {
-			customer
-		}
+		const insertedCustomer = await createQuotation(quotation, platform?.env.TELL_API_KEY!)
+		return redirect(303, `/quotations/${insertedCustomer}`)
 	}
 } satisfies Actions

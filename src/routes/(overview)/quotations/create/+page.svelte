@@ -7,18 +7,6 @@
 		data: PageData
 	}
 	const { data, form }: Props = $props()
-
-	// $effect(() => {
-	// 	if (form && form.customer) {
-	// 		quotation.customer = {
-	// 			isRegular: form.customer.isRegular,
-	// 			name: form.customer.name,
-	// 			ruc: form.customer.ruc,
-	// 			address: form.customer.address || ''
-	// 		}
-	// 		quotation.customerId = form.customer.id
-	// 	}
-	// })
 </script>
 
 <svelte:head>
@@ -28,4 +16,5 @@
 	quotation={undefined}
 	productsPromise={data.productsPromise}
 	customersPromise={data.customersPromise}
+	action="?/create"
 />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ChevronDown, ChevronUp, EditIcon, FilesIcon, TrashIcon } from 'lucide-svelte'
+	import { ChevronDown, ChevronUp, CircleOff, EditIcon, FilesIcon, TrashIcon } from 'lucide-svelte'
 	import { slide } from 'svelte/transition'
 	import TextEditInput from './TextEditInput.svelte'
 	import type { QuotationItem } from '$lib/types'
@@ -108,5 +108,10 @@
 				</div>
 			</div>
 		</article>
+	{:else}
+		<div class="h-[300px] bg-base-200 card flex items-center justify-center gap-4">
+			<span>Sin Item aún</span>
+			<CircleOff size={50} />
+		</div>
 	{/each}
 </div>

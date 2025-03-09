@@ -7,7 +7,6 @@
 	import { onNavigate } from '$app/navigation'
 
 	import { page } from '$app/stores'
-	console.log($page.data.meta)
 
 	let checked = $state(false)
 	function closeDrawer() {
@@ -53,7 +52,7 @@
 	</div>
 	<div class="drawer-side z-40" style="view-transition-name: sidebar;">
 		<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-		<aside class="bg-base-100/60 h-screen w-60 border-r border-zinc-800 backdrop-blur-md">
+		<aside class="bg-base-100/80 h-screen w-60 border-r border-zinc-800 backdrop-blur-md">
 			<Sidebar {closeDrawer} />
 			<!-- <div -->
 			<!-- 	class="bg-base-100 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]" -->
@@ -98,5 +97,9 @@
 		animation:
 			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
 			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+	}
+
+	.navbar {
+		view-transition-name: header;
 	}
 </style>
