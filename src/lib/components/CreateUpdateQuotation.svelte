@@ -45,18 +45,6 @@
 	}
 
 	//Mathods
-	function handleSubmit() {
-		const formData = new FormData()
-		formData.set('quotation', JSON.stringify(quotation))
-		fetch('?/create', {
-			method: 'POST',
-			body: formData,
-			headers: {
-				'Content-Type': 'multipart/form-data'
-			}
-		})
-	}
-
 	function setCustomer(
 		customer: {
 			name: string
@@ -121,15 +109,6 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Crear Cotizacion</title>
-</svelte:head>
-
-<!-- <div class="bg-base-300/80 absolute bottom-0 left-0 z-40 h-[500px] max-w-sm p-2 text-blue-300"> -->
-<!-- 	<prev> -->
-<!-- 		{JSON.stringify({ ...quotation }, null, 2)} -->
-<!-- 	</prev> -->
-<!-- </div> -->
 <div class="flex flex-col gap-8 pb-8">
 	<header class="flex justify-between">
 		<!-- <BackTo to="/quotations" /> -->
@@ -282,7 +261,6 @@
 					class="btn btn-primary"
 					disabled={quotation.items.length === 0 || pending}
 					type="submit"
-					onclick={handleSubmit}
 				>
 					{quotation ? 'Actualizar' : 'Crear'}
 					{#if pending}

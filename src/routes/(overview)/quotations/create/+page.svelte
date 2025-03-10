@@ -16,5 +16,4 @@
 	quotation={undefined}
 	productsPromise={data.productsPromise}
 	customersPromise={data.customersPromise}
-	action="?/create"
 />

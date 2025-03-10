@@ -5,6 +5,7 @@
 	import DownloadAndShareButton from '$lib/components/DownloadAndShareButton.svelte'
 	import ToggleRegularCustomerButton from '$lib/components/ToggleRegularCustomerButton.svelte'
 	import ConfirmAction from '$lib/components/ConfirmAction.svelte'
+	import CopyText from '$lib/components/CopyText.svelte'
 	let { data }: PageProps = $props()
 	const { quotation } = data
 
@@ -12,11 +13,7 @@
 </script>
 
 <div class="flex flex-col gap-6">
-	<header class="flex justify-between gap-x-2">
-		<a href="/quotations" class="btn btn-ghost btn-sm">
-			<ArrowLeftIcon />
-			Volver</a
-		>
+	<header class="flex justify-end gap-x-2">
 		<div class="flex gap-1">
 			<a class="btn btn-sm" href={`/quotations/${quotation.number}/update`}>
 				<EditIcon size={18} />
@@ -110,12 +107,12 @@
 					<th class="text-center">MONTO</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="font-mono">
 				{#each quotation.items as item}
 					<tr>
 						<td>
 							<div class="min-w-[250px]">
-								<!-- <CopyText unitSize={item.unitSize} text={item.description} /> -->
+								<CopyText text={item.description} unitSize={item.unitSize} />
 							</div>
 						</td>
 						<td class="text-center">
@@ -128,7 +125,7 @@
 						<td class="text-center">{item.unitSize}</td>
 						<td class="text-center">{item.qty.toString().padStart(2, '0')}</td>
 						<td class="text-center">
-							<!-- <CopyText text={(item.price / 1.18).toFixed(4)} /> -->
+							<CopyText text={(item.price / 1.18).toFixed(4)} />
 						</td>
 						<td class="text-center">{formatNumberToLocal(item.price)}</td>
 						<td class="text-center">

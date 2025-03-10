@@ -27,7 +27,7 @@
 	<div class="flex flex-col gap-4 p-2">
 		<header class="text-center">{message}</header>
 		<div class="flex items-center justify-between">
-			<button onclick={closeModal} class="btn">Cancelar</button>
+			<button onclick={closeModal} class="btn" disabled={loading}>Cancelar</button>
 			<form
 				use:enhance={() => {
 					loading = true
@@ -39,7 +39,7 @@
 				method="POST"
 				{action}
 			>
-				<button type="submit" class="btn btn-warning">
+				<button type="submit" class="btn btn-warning" disabled={loading}>
 					Aceptar
 					{#if loading}
 						<LoaderCircleIcon class="animate-spin" />

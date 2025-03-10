@@ -34,7 +34,7 @@
 		<!-- Navbar -->
 		<header
 			style="view-transition-name: header;"
-			class="navbar bg-base-200 sticky top-0 z-40 w-full lg:hidden"
+			class="navbar bg-base-200 sticky top-0 z-40 h-14 w-full lg:hidden"
 		>
 			<div class="mx-2 flex-1 px-2">
 				<a href="/" class="text-primary text-2xl font-bold"> TellAPP </a>
@@ -54,9 +54,6 @@
 		<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
 		<aside class="bg-base-100/80 h-screen w-60 border-r border-zinc-800 backdrop-blur-md">
 			<Sidebar {closeDrawer} />
-			<!-- <div -->
-			<!-- 	class="bg-base-100 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]" -->
-			<!-- ></div> -->
 		</aside>
 	</div>
 </div>
@@ -97,9 +94,5 @@
 		animation:
 			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
 			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
-	}
-
-	.navbar {
-		view-transition-name: header;
 	}
 </style>
