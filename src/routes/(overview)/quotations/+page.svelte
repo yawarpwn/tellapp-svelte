@@ -3,6 +3,7 @@
 	import type { PageProps } from './$types'
 	import { page } from '$app/stores'
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
+	import DataTableSkeleton from '$lib/components/DataTableSkeleton.svelte'
 
 	let { data }: PageProps = $props()
 	let value = $derived($page.url.searchParams.get('q') || '')
@@ -49,7 +50,11 @@
 </div>
 <div class="overflow-x-auto">
 	{#await data.quotations}
-		<div>loading...</div>
+		<DataTableSkeleton
+			columnCount={6}
+			rowCount={20}
+			cellWidths={['20px', '50px', '350px', '80px', '80px', '80px']}
+		/>
 	{:then quotations}
 		<QuotationDataTable {quotations} />
 	{/await}

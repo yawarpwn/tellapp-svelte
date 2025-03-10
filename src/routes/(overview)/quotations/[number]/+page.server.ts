@@ -4,8 +4,8 @@ import type { Actions } from './$types'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ request, params }) => {
-	const quotation = await fetchQuotaitonByNumber(+params.number, 'kakapichipoto')
-	return { quotation }
+	const quotationPromise = fetchQuotaitonByNumber(+params.number, 'kakapichipoto')
+	return { quotationPromise }
 }
 
 export const actions = {
