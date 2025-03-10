@@ -16,7 +16,7 @@ export const actions = {
 	duplicate: async ({ request, platform, url, params }) => {
 		const quotation = await fetchQuotaitonByNumber(+params.number, platform?.env.TELL_API_KEY!)
 		const insertedQuotation = await createQuotation(quotation, platform?.env.TELL_API_KEY!)
-		redirect(307, `/quotations`)
+		redirect(307, `/quotations/${insertedQuotation}`)
 	},
 
 	'toggle-regular-customer': async ({ request, platform, url, params }) => {

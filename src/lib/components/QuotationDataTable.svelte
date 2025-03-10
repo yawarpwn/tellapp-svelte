@@ -32,7 +32,11 @@
 		<!-- row 1 -->
 		{#each quotations as { id, number, customer, items, createdAt, customerId }}
 			{@const { formatedTotal } = getIgv(items)}
-			<tr class="hover:bg-base-200" onclick={() => (selectedRowId = id)}>
+			<tr
+				data-active={id === selectedRowId ? 'true' : 'false'}
+				class="hover:bg-base-200 data-[active=true]:bg-base-200"
+				onclick={() => (selectedRowId = id)}
+			>
 				<td>
 					{#if customerId && customer}
 						{#if customer.isRegular}
