@@ -7,7 +7,7 @@
 
 	let { data }: PageProps = $props()
 	let value = $derived($page.url.searchParams.get('q') || '')
-	let timeout = $state<null | number>(null)
+	let timeout = $state<null | ReturnType<typeof setTimeout>>(null)
 	let form: HTMLFormElement
 </script>
 
@@ -34,11 +34,11 @@
 						clearTimeout(timeout)
 					}
 
-					timeout = window.setTimeout(() => {
+					timeout = setTimeout(() => {
 						form.submit()
-					}, 200)
+					}, 300)
 				}}
-				{value}
+				value={$page.url.searchParams.get('q') || ''}
 			/>
 		</label>
 		<SearchIcon class="absolute top-1/2 right-2 -translate-y-1/2" />
@@ -48,14 +48,12 @@
 		Crear</a
 	>
 </div>
-<div class="overflow-x-auto">
-	{#await data.quotations}
-		<DataTableSkeleton
-			columnCount={6}
-			rowCount={20}
-			cellWidths={['20px', '50px', '350px', '80px', '80px', '80px']}
-		/>
-	{:then quotations}
-		<QuotationDataTable {quotations} />
-	{/await}
-</div>
+{#await data.quotations}
+	<DataTableSkeleton
+		columnCount={6}
+		rowCount={20}
+		cellWidths={['20px', '50px', '350px', '80px', '80px', '80px']}
+	/>
+{:then quotations}
+	<QuotationDataTable {quotations} />
+{/await}

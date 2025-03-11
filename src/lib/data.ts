@@ -32,7 +32,7 @@ export async function fetchQuotations(
 ): Promise<QuotationClient[]> {
 	console.info('fetch quotations --->')
 	const { query = '', page = '' } = queryParams ?? {}
-	const url = `${BASE_URL}/api/quotations?q=${query}&page=${page}&limit=40`
+	const url = `${BASE_URL}/api/quotations?q=${query}&page=${page}&limit=10`
 	const data = await fetchData<DataResponse<QuotationClient>>(url, {
 		headers: {
 			'TELL-API-KEY': apiKey

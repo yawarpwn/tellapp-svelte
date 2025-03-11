@@ -14,7 +14,11 @@
 	}
 
 	onNavigate((navigation) => {
-		if (!document.startViewTransition) return
+		if (
+			!document.startViewTransition ||
+			navigation.to?.url.pathname === navigation.from?.url.pathname
+		)
+			return
 
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {
