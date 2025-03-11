@@ -23,7 +23,7 @@ import { fetchData } from '$lib/utils'
 //----------------------------- Quotations ----------------------------->
 type FetchQuotationQueryParams = {
 	query?: string
-	page?: number
+	page: string
 	limit?: number
 }
 export async function fetchQuotations(

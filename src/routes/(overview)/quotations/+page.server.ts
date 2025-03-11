@@ -6,8 +6,10 @@ import { deleteQuotation, fetchQuotations, searchCustomerByDniOrRuc } from '$lib
 export const load: PageServerLoad = async ({ params, platform, request }) => {
 	const url = new URL(request.url)
 	const query = url.searchParams.get('q') || ''
+	const page = url.searchParams.get('page') || '1'
 	const quotations = fetchQuotations(platform?.env?.TELL_API_KEY!, {
-		query
+		query,
+		page
 	})
 	try {
 		return {

@@ -5,6 +5,10 @@
 	// import { page } from '$app/stores'
 	import { pushState, replaceState } from '$app/navigation'
 	import { page } from '$app/stores'
+	type Props = {
+		currentPage: number
+	}
+	const { currentPage }: Props = $props()
 
 	export const generatePagination = (currentPage: number, totalPages: number) => {
 		// If the total number of pages is 7 or less,
@@ -36,50 +40,56 @@
 		return `${$page.url.pathname}?${params.toString()}`
 	}
 
-	const currentPage = 1
 	const totalPages = 200
 	const allPages = generatePagination(currentPage, totalPages)
 
 	type PaginationArrowProps = {
 		direction: 'left' | 'right'
-		href: string
+		page: number
 		isDisabled?: boolean
 	}
 
 	type PaginationNumberProps = {
 		page: number | string
 		isActive: boolean
-		href: string
 	}
 </script>
 
 <!-- PaginationArrow -->
-{#snippet paginationArrow({ direction, href, isDisabled }: PaginationArrowProps)}
+{#snippet paginationArrow({ direction, page, isDisabled }: PaginationArrowProps)}
 	{@const className = cn('flex h-10 w-10 justify-center items-center border rounded-md', {
 		'cursor-not-allowed opacity-60': isDisabled,
-		'hover:bg-base-200': !isDisabled
+		'hover:bg-base-300': !isDisabled
 	})}
-	<svelte:element this={isDisabled ? 'div' : 'a'} href="/" class={className}>
-		{#if direction === 'left'}
-			<ArrowLeftIcon class="size-4" />
-		{:else}
-			<ArrowRightIcon class="size-4" />
-		{/if}
-	</svelte:element>
+
+	<form method="GET" data-sveltekit-reload>
+		<input type="hidden" name="page" value={page} />
+		<button type="submit" class={className}>
+			{#if direction === 'left'}
+				<ArrowLeftIcon class="size-4" />
+			{:else}
+				<ArrowRightIcon class="size-4" />
+			{/if}
+		</button>
+	</form>
 {/snippet}
 
 <!-- PaginationNumber -->
-{#snippet paginationNumber({ isActive, page, href }: PaginationNumberProps)}
+{#snippet paginationNumber({ isActive, page }: PaginationNumberProps)}
 	{@const className = cn(
 		'flex h-10 w-10 flex items-center justify-center text-sm border rounded-md ',
 		{
-			'bg-primary border-primary text-primary-content': isActive
+			'bg-primary border-primary text-primary-content': isActive,
+			'hover:bg-base-300 cursor-pointer': !isActive
 		}
 	)}
-	{#if isActive}
+	{#if isActive || page === '...'}
 		<div class={className}>{page}</div>
 	{:else}
-		<a class={className} {href}>{page}</a>
+		<form method="GET" data-sveltekit-reload>
+			<input name="page" type="hidden" value={page} />
+			<button type="submit" class={className}>{page}</button>
+		</form>
 	{/if}
 {/snippet}
 
@@ -87,21 +97,20 @@
 	<div class="inline-flex items-center gap-2">
 		{@render paginationArrow({
 			direction: 'left',
-			href: createPageURL(currentPage - 1),
+			page: currentPage - 1,
 			isDisabled: currentPage <= 1
 		})}
 		<div class="flex gap-2">
 			{#each allPages as page}
 				{@render paginationNumber({
 					page,
-					isActive: page === currentPage,
-					href: createPageURL(page)
+					isActive: page === currentPage
 				})}
 			{/each}
 		</div>
 		{@render paginationArrow({
 			direction: 'right',
-			href: createPageURL(currentPage + 1),
+			page: currentPage + 1,
 			isDisabled: currentPage >= totalPages
 		})}
 	</div>

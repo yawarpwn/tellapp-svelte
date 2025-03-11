@@ -28,6 +28,7 @@
 				name="q"
 				type="text"
 				class="input input-primary"
+				data-sveltekit-replacestate
 				placeholder="Buscar..."
 				oninput={(ev) => {
 					if (timeout) {
