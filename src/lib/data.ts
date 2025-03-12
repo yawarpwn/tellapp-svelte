@@ -29,17 +29,17 @@ type FetchQuotationQueryParams = {
 export async function fetchQuotations(
 	apiKey: string,
 	queryParams?: FetchQuotationQueryParams
-): Promise<QuotationClient[]> {
+): Promise<DataResponse<QuotationClient>> {
 	console.info('fetch quotations --->')
-	const { query = '', page = '' } = queryParams ?? {}
-	const url = `${BASE_URL}/api/quotations?q=${query}&page=${page}&limit=10`
+	const { query = '', page = 1, limit = 20 } = queryParams ?? {}
+	const url = `${BASE_URL}/api/quotations?q=${query}&page=${page}&limit=${limit}`
 	const data = await fetchData<DataResponse<QuotationClient>>(url, {
 		headers: {
 			'TELL-API-KEY': apiKey
 		}
 	})
 
-	return data.items
+	return data
 }
 
 export async function fetchQuotaitonByNumber(quotationNumber: number, apiKey: string) {

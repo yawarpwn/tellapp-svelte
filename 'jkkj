@@ -5,14 +5,11 @@
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
 	import DataTableSkeleton from '$lib/components/DataTableSkeleton.svelte'
 	import { goto } from '$app/navigation'
-	import Pagination from '$lib/components/Pagination.svelte'
 
 	let { data }: PageProps = $props()
-	let query = $state($page.url.searchParams.get('q') || '')
-	const currentPage = $derived($page.url.searchParams.get('page') || 1)
-	let timeout: ReturnType<typeof setTimeout>
+	let value = $derived($page.url.searchParams.get('q') || '')
+	let timeout = $state<null | ReturnType<typeof setTimeout>>(null)
 	let form: HTMLFormElement
-	$inspect(query)
 </script>
 
 <svelte:head>
@@ -26,7 +23,6 @@
 		action={$page.url.pathname}
 		class="relative"
 		data-sveltekit-keepfocus
-		data-sveltekit-noscroll
 	>
 		<label>
 			<input
@@ -35,17 +31,18 @@
 				class="input input-primary"
 				data-sveltekit-replacestate
 				placeholder="Buscar..."
-				oninput={(ev) => {
-					clearTimeout(timeout)
-					timeout = setTimeout(() => {
-						form.submit()
-					}, 300)
+				onchange={(ev) => {
+					$page.url.searchParams.set('q', ev.currentTarget.value)
+					const nextUrl = new URL($page.url)
+					nextUrl.searchParams.set('q', ev.currentTarget.value)
+					goto(nextUrl, { invalidateAll: true })
 				}}
-				value={query}
+				value={$page.url.searchParams.get('q') || ''}
 			/>
-			<input name="page" value={1} type="hidden" />
 		</label>
-		<SearchIcon class="absolute top-1/2 right-3.5 size-4.5 -translate-y-1/2" />
+		<SearchIcon
+			class="absolute top-1/2 right-3.5 size-4.5 -translate-y-1/2 peer-hover:text-orange-500"
+		/>
 	</form>
 	<a class="btn btn-primary" href="/quotations/create">
 		<PlusIcon />
@@ -59,6 +56,5 @@
 		cellWidths={['20px', '50px', '350px', '80px', '80px', '80px']}
 	/>
 {:then quotations}
-	<QuotationDataTable quotations={data.quotations} />
-	<Pagination totalPages={data.totalPages} {query} currentPage={Number(currentPage)} />
+	<QuotationDataTable {quotations} />
 {/await}

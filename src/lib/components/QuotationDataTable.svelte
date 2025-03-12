@@ -4,7 +4,6 @@
 	import type { QuotationClient } from '$lib/types'
 	import FloatingBar from '$lib//components/FloatingBar.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
-	import { page } from '$app/stores'
 
 	type Props = {
 		quotations: QuotationClient[]
@@ -13,7 +12,6 @@
 
 	let selectedRowId = $state<string | null>(null)
 	const selectedRow = $derived(quotations.find((quo) => quo.id === selectedRowId))
-	let currentPage = $derived($page.url.searchParams.get('page') ?? 1)
 </script>
 
 {#if selectedRow}
@@ -85,4 +83,3 @@
 		</tbody>
 	</table>
 </div>
-<Pagination currentPage={Number(currentPage)} />

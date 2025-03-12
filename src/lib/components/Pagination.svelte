@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-svelte'
 	import { cn } from '$lib/utils'
-	import PaginationNumber from './PaginationNumber.svelte'
-	// import { page } from '$app/stores'
-	import { pushState, replaceState } from '$app/navigation'
 	import { page } from '$app/stores'
 	type Props = {
 		currentPage: number
+		totalPages: number
+		query: string
 	}
-	const { currentPage }: Props = $props()
+	const { currentPage, query, totalPages }: Props = $props()
 
 	export const generatePagination = (currentPage: number, totalPages: number) => {
 		// If the total number of pages is 7 or less,
@@ -34,35 +33,32 @@
 		// another ellipsis, and the last page.
 		return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages]
 	}
-	const createPageURL = (pageNumber: number | string) => {
-		const params = new URLSearchParams($page.url.searchParams)
-		params.set('page', pageNumber.toString())
-		return `${$page.url.pathname}?${params.toString()}`
-	}
 
-	const totalPages = 200
 	const allPages = generatePagination(currentPage, totalPages)
 
 	type PaginationArrowProps = {
 		direction: 'left' | 'right'
 		page: number
 		isDisabled?: boolean
+		query: string
 	}
 
 	type PaginationNumberProps = {
 		page: number | string
+		query: string
 		isActive: boolean
 	}
 </script>
 
 <!-- PaginationArrow -->
-{#snippet paginationArrow({ direction, page, isDisabled }: PaginationArrowProps)}
+{#snippet paginationArrow({ direction, page, isDisabled, query }: PaginationArrowProps)}
 	{@const className = cn('flex h-10 w-10 justify-center items-center border rounded-md', {
 		'cursor-not-allowed opacity-60': isDisabled,
 		'hover:bg-base-300': !isDisabled
 	})}
 
 	<form method="GET" data-sveltekit-reload>
+		<input type="hidden" name="q" value={query} />
 		<input type="hidden" name="page" value={page} />
 		<button type="submit" class={className}>
 			{#if direction === 'left'}
@@ -75,7 +71,7 @@
 {/snippet}
 
 <!-- PaginationNumber -->
-{#snippet paginationNumber({ isActive, page }: PaginationNumberProps)}
+{#snippet paginationNumber({ isActive, page, query }: PaginationNumberProps)}
 	{@const className = cn(
 		'flex h-10 w-10 flex items-center justify-center text-sm border rounded-md ',
 		{
@@ -87,6 +83,7 @@
 		<div class={className}>{page}</div>
 	{:else}
 		<form method="GET" data-sveltekit-reload>
+			<input name="q" type="hidden" value={query} />
 			<input name="page" type="hidden" value={page} />
 			<button type="submit" class={className}>{page}</button>
 		</form>
@@ -98,12 +95,14 @@
 		{@render paginationArrow({
 			direction: 'left',
 			page: currentPage - 1,
-			isDisabled: currentPage <= 1
+			isDisabled: currentPage <= 1,
+			query
 		})}
 		<div class="flex gap-2">
 			{#each allPages as page}
 				{@render paginationNumber({
 					page,
+					query,
 					isActive: page === currentPage
 				})}
 			{/each}
@@ -111,7 +110,8 @@
 		{@render paginationArrow({
 			direction: 'right',
 			page: currentPage + 1,
-			isDisabled: currentPage >= totalPages
+			isDisabled: currentPage >= totalPages,
+			query
 		})}
 	</div>
 </div>

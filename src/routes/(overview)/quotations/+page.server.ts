@@ -3,17 +3,20 @@ import type { Actions } from './$types'
 import type { PageServerLoad } from './$types'
 import { deleteQuotation, fetchQuotations, searchCustomerByDniOrRuc } from '$lib/data'
 
+const ROW_PER_PAGES = 10
 export const load: PageServerLoad = async ({ params, platform, request }) => {
 	const url = new URL(request.url)
 	const query = url.searchParams.get('q') || ''
 	const page = url.searchParams.get('page') || '1'
-	const quotations = fetchQuotations(platform?.env?.TELL_API_KEY!, {
+	const data = await fetchQuotations(platform?.env?.TELL_API_KEY!, {
 		query,
-		page
+		page,
+		limit: ROW_PER_PAGES
 	})
 	try {
 		return {
-			quotations,
+			quotations: data.items,
+			totalPages: Math.ceil(data.meta.totalItems / ROW_PER_PAGES),
 			meta: {
 				title: 'Quotations'
 			}
