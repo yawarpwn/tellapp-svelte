@@ -78,7 +78,7 @@ export async function fetchData<T>(url: string, options?: RequestInit): Promise<
 	if (!response.ok) {
 		throw new Error(`Error en la peticion: ${url} - ${response.statusText}`)
 	}
-	await new Promise((r) => setTimeout(r, 1000))
+	// await new Promise((r) => setTimeout(r, 1000))
 	return response.json() as T
 }
 
