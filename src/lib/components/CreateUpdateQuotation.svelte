@@ -108,7 +108,7 @@
 		}
 	}
 
-	function onCloseCreateEditItem() {
+	function onCloseCreateEditItemDialog() {
 		showCreateEditModal = false
 		selectedItemId = null
 	}
@@ -228,7 +228,7 @@
 							bind:showCreateEditModal
 							item={selectedItem}
 							{products}
-							onCloseModal={onCloseCreateEditItem}
+							closeModal={onCloseCreateEditItemDialog}
 							onEditItem={handleEditItem}
 							onAddItem={handleAddItem}
 						/>

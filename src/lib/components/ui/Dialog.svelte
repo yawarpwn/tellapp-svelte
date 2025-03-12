@@ -19,10 +19,13 @@
 <dialog
 	bind:this={dialog}
 	onclose={() => (showModal = false)}
-	onclick={() => {
-		if (closeModal) {
+	onclick={(ev) => {
+		if (closeModal && ev.target === dialog) {
 			closeModal()
-		} else {
+			return
+		}
+
+		if (ev.target === dialog) {
 			showModal = false
 		}
 	}}

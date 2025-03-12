@@ -8,7 +8,7 @@
 	type Props = {
 		products: Product[]
 		showCreateEditModal: boolean
-		onCloseModal: () => void
+		closeModal: () => void
 		item?: QuotationItem | null
 		onAddItem: (_item: QuotationItem) => void
 		onEditItem: (_item: QuotationItem) => void
@@ -17,7 +17,7 @@
 		products,
 		onAddItem,
 		onEditItem,
-		onCloseModal,
+		closeModal,
 		item: itemToEdit,
 		showCreateEditModal = $bindable()
 	}: Props = $props()
@@ -63,7 +63,7 @@
 	)
 </script>
 
-<Dialog bind:showModal={showCreateEditModal} closeModal={onCloseModal}>
+<Dialog bind:showModal={showCreateEditModal} {closeModal}>
 	<div class="flex h-[90svh] flex-col gap-2">
 		<!-- Search Product -->
 		<header class="">
@@ -187,7 +187,7 @@
 				<button type="submit" class="btn btn-primary">
 					{itemToEdit ? 'Actualizar' : 'Agregar'}
 				</button>
-				<button class="btn" type="button" onclick={onCloseModal}>Cancelar</button>
+				<button class="btn" type="button" onclick={closeModal}>Cancelar</button>
 			</footer>
 		</form>
 	</div>
