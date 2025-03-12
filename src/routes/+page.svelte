@@ -70,7 +70,7 @@
 		display: block;
 		position: absolute;
 		inset: 0;
-		background-color: oklch(0 0 0 / 0.95);
+		background-color: oklch(0 0 0 / 0.85);
 		opacity: 0.9;
 		z-index: 0;
 	}

@@ -107,6 +107,11 @@
 			move(index, index + 1)
 		}
 	}
+
+	function onCloseCreateEditItem() {
+		showCreateEditModal = false
+		selectedItemId = null
+	}
 </script>
 
 <div class="flex flex-col gap-8 pb-8">
@@ -223,6 +228,7 @@
 							bind:showCreateEditModal
 							item={selectedItem}
 							{products}
+							onCloseModal={onCloseCreateEditItem}
 							onEditItem={handleEditItem}
 							onAddItem={handleAddItem}
 						/>

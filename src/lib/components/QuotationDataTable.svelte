@@ -4,6 +4,7 @@
 	import type { QuotationClient } from '$lib/types'
 	import FloatingBar from '$lib//components/FloatingBar.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
+	import { quotation } from '$lib/stores/quotation.svelte'
 
 	type Props = {
 		quotations: QuotationClient[]
@@ -21,13 +22,16 @@
 	<div class="flex flex-col gap-2 lg:hidden">
 		{#each quotations as { id, number, customer, items, createdAt, customerId }}
 			{@const { formatedTotal } = getIgv(items)}
-			<div class="card bg-base-200 shadow">
+			<article class="card bg-base-200 shadow">
 				<div class="card-body">
-					<div>
-						<p class="font-medium">
-							{customer?.name || 'SIN RUC'}
-						</p>
-						<span>{customer?.ruc}</span>
+					<div class="flex justify-between gap-8">
+						<div>
+							<p class="font-medium">
+								{customer?.name || 'SIN RUC'}
+							</p>
+							<span class="text-base-content/70">{customer?.ruc}</span>
+						</div>
+						<span class="text-primary text-lg">#{number}</span>
 					</div>
 					<div class="bg-base-content/30 h-px"></div>
 					<div class="flex items-center justify-between">
@@ -56,7 +60,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</article>
 		{/each}
 	</div>
 	<table class="hidden lg:table">

@@ -3,10 +3,12 @@
 	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import type { Product, QuotationItem } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
+	import { on } from 'svelte/events'
 
 	type Props = {
 		products: Product[]
 		showCreateEditModal: boolean
+		onCloseModal: () => void
 		item?: QuotationItem | null
 		onAddItem: (_item: QuotationItem) => void
 		onEditItem: (_item: QuotationItem) => void
@@ -15,6 +17,7 @@
 		products,
 		onAddItem,
 		onEditItem,
+		onCloseModal,
 		item: itemToEdit,
 		showCreateEditModal = $bindable()
 	}: Props = $props()
@@ -60,7 +63,7 @@
 	)
 </script>
 
-<Dialog bind:showModal={showCreateEditModal}>
+<Dialog bind:showModal={showCreateEditModal} closeModal={onCloseModal}>
 	<div class="flex h-[90svh] flex-col gap-2">
 		<!-- Search Product -->
 		<header class="">
@@ -184,9 +187,7 @@
 				<button type="submit" class="btn btn-primary">
 					{itemToEdit ? 'Actualizar' : 'Agregar'}
 				</button>
-				<button class="btn" type="button" onclick={() => (showCreateEditModal = false)}
-					>Cancelar</button
-				>
+				<button class="btn" type="button" onclick={onCloseModal}>Cancelar</button>
 			</footer>
 		</form>
 	</div>

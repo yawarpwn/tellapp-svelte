@@ -1,9 +1,10 @@
 <script lang="ts">
 	type Props = {
 		showModal: boolean
+		closeModal?: () => void
 		children: () => any
 	}
-	let { children, showModal = $bindable() }: Props = $props()
+	let { children, showModal = $bindable(), closeModal }: Props = $props()
 	let dialog: HTMLDialogElement
 
 	$effect(() => {
@@ -18,8 +19,12 @@
 <dialog
 	bind:this={dialog}
 	onclose={() => (showModal = false)}
-	onclick={(e) => {
-		if (e.target === dialog) dialog?.close()
+	onclick={() => {
+		if (closeModal) {
+			closeModal()
+		} else {
+			showModal = false
+		}
 	}}
 	class="modal"
 >
