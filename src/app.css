@@ -2,6 +2,17 @@
 @plugin "daisyui" {
 	themes: cupcake --default;
 }
+@plugin "daisyui/theme" {
+	name: 'cupcake';
+	default: true;
+
+	--radius-selector: 1rem;
+	--radius-field: 0.5rem;
+	--radius-box: 0.5rem;
+
+	--color-primary: oklch(82.67% 0.1973 288);
+	--color-primary-content: oklch(0% 0 0);
+}
 
 /* Para Chrome, Safari, Edge, Opera */
 input[type='number']::-webkit-outer-spin-button,

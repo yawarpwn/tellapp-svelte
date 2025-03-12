@@ -18,7 +18,48 @@
 	<FloatingBar clearSelectedRow={() => (selectedRowId = null)} quotation={selectedRow} />
 {/if}
 <div class="overflow-x-auto">
-	<table class="table">
+	<div class="flex flex-col gap-2 lg:hidden">
+		{#each quotations as { id, number, customer, items, createdAt, customerId }}
+			{@const { formatedTotal } = getIgv(items)}
+			<div class="card bg-base-200 shadow">
+				<div class="card-body">
+					<div>
+						<p class="font-medium">
+							{customer?.name || 'SIN RUC'}
+						</p>
+						<span>{customer?.ruc}</span>
+					</div>
+					<div class="bg-base-content/30 h-px"></div>
+					<div class="flex items-center justify-between">
+						<div>
+							<div class="text-lg font-bold">
+								{formatedTotal}
+							</div>
+							<div>
+								{formatDateToLocal(createdAt)}
+							</div>
+						</div>
+						<div class="flex items-center gap-2">
+							{#if customerId && customer}
+								{#if customer.isRegular}
+									<StarIcon size={16} fill="var(--color-primary)" />
+								{:else}
+									<StarIcon size={16} />
+								{/if}
+							{/if}
+							<a class="btn btn-square" href={`/quotations/${number}`}>
+								<EyeIcon class="size-4" />
+							</a>
+							<a class="btn btn-square" href={`/quotations/${number}/update`}>
+								<EditIcon class="size-4" />
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{/each}
+	</div>
+	<table class="hidden lg:table">
 		<!-- head -->
 		<thead>
 			<tr>

@@ -36,11 +36,11 @@
 		{@const isActive = $page.url.pathname.startsWith(item.href)}
 		<li>
 			<a
-				class={`group flex items-center gap-2 ${isActive ? 'menu-active' : ''}`}
+				class={`flex items-center gap-2 ${isActive ? 'menu-active' : ''}`}
 				href={item.href}
 				onclick={closeDrawer}
 			>
-				<span class="group-hover:text-primary">
+				<span class="">
 					<Icon />
 				</span>
 				<span>

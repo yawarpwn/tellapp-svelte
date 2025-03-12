@@ -90,7 +90,7 @@
 	{/if}
 {/snippet}
 
-<div class="mt-4 flex justify-center">
+<div class="flex justify-center">
 	<div class="inline-flex items-center gap-2">
 		{@render paginationArrow({
 			direction: 'left',

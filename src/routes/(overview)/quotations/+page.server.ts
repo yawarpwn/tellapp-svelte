@@ -3,7 +3,7 @@ import type { Actions } from './$types'
 import type { PageServerLoad } from './$types'
 import { deleteQuotation, fetchQuotations, searchCustomerByDniOrRuc } from '$lib/data'
 
-const ROW_PER_PAGES = 10
+const ROW_PER_PAGES = 13
 export const load: PageServerLoad = async ({ params, platform, request }) => {
 	const url = new URL(request.url)
 	const query = url.searchParams.get('q') || ''
