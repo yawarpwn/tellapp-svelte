@@ -52,7 +52,7 @@
 	}
 </script>
 
-<form onsubmit={handleSubmit} class="col-span-6 grid gap-2">
+<form onsubmit={handleSubmit} class="col-span-8 grid gap-2 lg:col-span-6">
 	<label class="label" for="ruc"> Ruc </label>
 	<div class="relative">
 		<input
@@ -62,7 +62,11 @@
 			defaultValue={ruc ?? ''}
 			placeholder="20610555536"
 		/>
-		<button disabled={pending} type="submit" class="absolute top-1/2 right-2 -translate-y-1/2">
+		<button
+			disabled={pending}
+			type="submit"
+			class="hover:bg-base-300 absolute top-1/2 right-1 -translate-y-1/2 cursor-pointer rounded-md p-1"
+		>
 			{#if pending}
 				<Loader2Icon class="animate-spin" />
 			{:else}

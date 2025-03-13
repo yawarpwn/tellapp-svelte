@@ -100,8 +100,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="overflow-x-auto">
-		<table class="table">
+	<div class="rounded-box border-base-content/5 bg-base-10 overflow-x-auto border">
+		<table class="table-zebra table">
 			<thead>
 				<tr>
 					<th>DESCRIPCION</th>

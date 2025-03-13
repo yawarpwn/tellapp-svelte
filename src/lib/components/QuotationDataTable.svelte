@@ -33,7 +33,7 @@
 						</div>
 						<span class="text-primary text-lg">#{number}</span>
 					</div>
-					<div class="bg-base-content/30 h-px"></div>
+					<div class="bg-base-content/20 h-px"></div>
 					<div class="flex items-center justify-between">
 						<div>
 							<div class="text-lg font-bold">
@@ -45,11 +45,11 @@
 						</div>
 						<div class="flex items-center gap-2">
 							{#if customerId && customer}
-								{#if customer.isRegular}
-									<StarIcon size={16} fill="var(--color-primary)" />
-								{:else}
-									<StarIcon size={16} />
-								{/if}
+								<StarIcon
+									size={16}
+									class={customer.isRegular ? 'text-primary ' : 'text-base-content/20'}
+									fill={customer.isRegular ? 'var(--color-primary)' : ''}
+								/>
 							{/if}
 							<a class="btn btn-square" href={`/quotations/${number}`}>
 								<EyeIcon class="size-4" />

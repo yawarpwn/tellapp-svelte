@@ -141,7 +141,7 @@
 		<div class="grid grid-cols-12 gap-3">
 			<!-- Search form -->
 			<SearchCustomer onSearchCustomer={setCustomer} ruc={quotation.customer?.ruc} />
-			<div class="col-span-6 grid gap-2">
+			<div class="col-span-4 grid gap-2 lg:col-span-6">
 				<label class="label grid gap-2" for="deadline"> Entrega </label>
 				<input
 					class="input w-full"
@@ -153,7 +153,7 @@
 				/>
 			</div>
 			<div class="col-span-12 grid gap-2 md:col-span-3 lg:col-span-6">
-				<label class="grid gap-2" for="customer.name"> Cliente </label>
+				<label class="label grid gap-2" for="customer.name"> Cliente </label>
 				<input
 					class="input w-full"
 					id="customer.name"
