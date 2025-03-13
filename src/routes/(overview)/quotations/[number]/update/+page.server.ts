@@ -11,7 +11,7 @@ import { redirect } from '@sveltejs/kit'
 
 export const load: PageServerLoad = async ({ cookies, platform, params }) => {
 	const productsPromise = fetchProducts(platform?.env.TELL_API_KEY!)
-	const customersPromise = fetchCustomers(platform?.env.TELL_API_KEY!)
+	const customersPromise = fetchCustomers(platform?.env.TELL_API_KEY!, { onlyRegular: true })
 	const quotation = await fetchQuotaitonByNumber(+params.number, platform?.env.TELL_API_KEY!)
 
 	return {

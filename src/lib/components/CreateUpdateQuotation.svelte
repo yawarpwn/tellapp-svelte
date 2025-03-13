@@ -16,6 +16,7 @@
 
 	const quotation = $state<CreateQuotationClient>(
 		quottationFromD || {
+			id: undefined,
 			credit: undefined,
 			deadline: 1,
 			isPaymentPending: false,
@@ -188,8 +189,13 @@
 						class="flex
 	           items-center gap-2"
 					>
-						<StarIcon class="text-primary size-5" />
-						<span class="text-sm">Cliente Atendido</span>
+						<StarIcon
+							class={quotation.customer?.isRegular ? 'text-primary' : 'text-base-content/50'}
+							fill={quotation.customer?.isRegular ? 'var(--color-primary)' : ''}
+						/>
+						<span class="text-sm"
+							>{quotation.customer?.isRegular ? 'Cliente Frecuente' : 'Cliente Atendido'}</span
+						>
 					</div>
 				{/if}
 			</div>
@@ -268,7 +274,7 @@
 					disabled={quotation.items.length === 0 || pending}
 					type="submit"
 				>
-					{quotation ? 'Actualizar' : 'Crear'}
+					{quotation.id ? 'Actualizar' : 'Crear'}
 					{#if pending}
 						<Loader2Icon class="animate-spin" />
 					{/if}

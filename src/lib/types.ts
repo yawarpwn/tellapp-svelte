@@ -26,7 +26,9 @@ export type QuotationClient = {
 export type CreateQuotationClient = Omit<
 	QuotationClient,
 	'id' | 'number' | 'createdAt' | 'updatedAt'
->
+> & {
+	id?: string | undefined
+}
 
 export type UpdateQuotationClient = Partial<CreateQuotationClient> & {
 	id: string

@@ -4,7 +4,9 @@ import { redirect } from '@sveltejs/kit'
 
 export const load: PageServerLoad = async ({ cookies, platform }) => {
 	const productsPromise = fetchProducts(platform?.env.TELL_API_KEY!)
-	const customersPromise = fetchCustomers(platform?.env.TELL_API_KEY!)
+	const customersPromise = fetchCustomers(platform?.env.TELL_API_KEY!, {
+		onlyRegular: true
+	})
 
 	return {
 		customersPromise,
