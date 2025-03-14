@@ -30,8 +30,6 @@ export const actions = {
 			})
 		}
 
-		console.log({ error, authToken })
-
 		cookies.set('__svelte_session__', authToken, {
 			path: '/',
 			maxAge: 60 * 60 * 24,

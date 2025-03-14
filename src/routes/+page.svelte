@@ -9,7 +9,7 @@
 <div
 	class="masonry-container grid h-screen place-content-center bg-[url(/masonry.jpg)] bg-cover bg-center"
 >
-	<main class="bg-base-100/10 min-w-xs rounded-md p-6 py-20 backdrop-blur-lg">
+	<main class="bg-base-300/50 min-w-xs rounded-md p-6 py-20 backdrop-blur-lg">
 		<h1
 			class="from-primary to-secondary bg-gradient-to-r bg-clip-text text-center text-2xl font-extrabold text-transparent"
 		>
@@ -70,7 +70,7 @@
 		display: block;
 		position: absolute;
 		inset: 0;
-		background-color: oklch(0 0 0 / 0.85);
+		background-color: oklch(0 0 0 / 0.7);
 		opacity: 0.9;
 		z-index: 0;
 	}

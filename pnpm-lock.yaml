@@ -11,9 +11,6 @@ importers:
       '@cloudflare/workers-types':
         specifier: ^4.20250224.0
         version: 4.20250224.0
-      '@zerodevx/svelte-toast':
-        specifier: ^0.9.6
-        version: 0.9.6(svelte@5.20.4)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -23,6 +20,9 @@ importers:
       pdfmake:
         specifier: ^0.2.18
         version: 0.2.18
+      svelte-sonner:
+        specifier: ^0.3.28
+        version: 0.3.28(svelte@5.20.4)
       tailwind-merge:
         specifier: ^3.0.2
         version: 3.0.2
@@ -931,11 +931,6 @@ packages:
   '@types/pdfmake@0.2.11':
     resolution: {integrity: sha512-gglgMQhnG6C2kco13DJlvokqTxL+XKxHwCejElH8fSCNF9ZCkRK6Mzo011jQ0zuug+YlIgn6BpcpZrARyWdW3Q==}
 
-  '@zerodevx/svelte-toast@0.9.6':
-    resolution: {integrity: sha512-nHlTrCjverlPK9yukK6fqbG3e/R+f10ldrc4nJHOe2qNDScuPTuYVSFEk2dDDtzWAwTN5pmdEXgA3M2RbT8jiw==}
-    peerDependencies:
-      svelte: ^3.57.0 || ^4.0.0 || ^5.0.0
-
   acorn-typescript@1.4.13:
     resolution: {integrity: sha512-xsc9Xv0xlVfwp2o7sQ+GCQ1PgbkdcpWdTzrwXxO3xDMTAywVS3oXVOcOHuRjAPkS4P9b+yc/qNF15460v+jp4Q==}
     peerDependencies:
@@ -1535,6 +1530,11 @@ packages:
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
+
+  svelte-sonner@0.3.28:
+    resolution: {integrity: sha512-K3AmlySeFifF/cKgsYNv5uXqMVNln0NBAacOYgmkQStLa/UoU0LhfAACU6Gr+YYC8bOCHdVmFNoKuDbMEsppJg==}
+    peerDependencies:
+      svelte: ^3.0.0 || ^4.0.0 || ^5.0.0-next.1
 
   svelte@5.20.4:
     resolution: {integrity: sha512-2Mo/AfObaw9zuD0u1JJ7sOVzRCGcpETEyDkLbtkcctWpCMCIyT0iz83xD8JT29SR7O4SgswuPRIDYReYF/607A==}
@@ -2247,10 +2247,6 @@ snapshots:
       '@types/node': 22.13.10
       '@types/pdfkit': 0.13.9
 
-  '@zerodevx/svelte-toast@0.9.6(svelte@5.20.4)':
-    dependencies:
-      svelte: 5.20.4
-
   acorn-typescript@1.4.13(acorn@8.14.0):
     dependencies:
       acorn: 8.14.0
@@ -2872,6 +2868,10 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - picomatch
+
+  svelte-sonner@0.3.28(svelte@5.20.4):
+    dependencies:
+      svelte: 5.20.4
 
   svelte@5.20.4:
     dependencies:

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { SvelteToast } from '@zerodevx/svelte-toast'
 	import { MenuIcon } from 'lucide-svelte'
+	import { Toaster } from 'svelte-sonner'
 	import Sidebar from '$lib/components/ui/Sidebar.svelte'
 	import type { LayoutProps } from './$types'
 	const { children }: LayoutProps = $props()
@@ -59,7 +59,23 @@
 		</aside>
 	</div>
 </div>
-<SvelteToast />
+
+<!-- Toaster -->
+<Toaster
+	theme="dark"
+	toastOptions={{
+		unstyled: true,
+		classes: {
+			toast: 'bg-base-200 p-4 rounded-md',
+			title: 'text-red-400',
+			description: 'text-red-400',
+			actionButton: 'bg-zinc-400',
+			cancelButton: 'bg-orange-400',
+			closeButton: 'bg-lime-400'
+		}
+	}}
+	closeButton
+/>
 
 <style>
 	@keyframes fade-in {

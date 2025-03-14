@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Loader2Icon, SearchIcon } from 'lucide-svelte'
-	import { toast } from '@zerodevx/svelte-toast'
+	import { toast } from 'svelte-sonner'
 
 	type Props = {
 		onSearchCustomer: (customer: {
@@ -23,12 +23,7 @@
 
 		// Válida si el ruc es de 11 digitos
 		if (ruc.length !== 11) {
-			toast.push('Ruc inválido', {
-				theme: {
-					'--toastBackground': 'red',
-					'--toastProgressBackground': 'white'
-				}
-			})
+			toast('Ruc inválido')
 			return
 		}
 
@@ -37,12 +32,7 @@
 		const data = await res.json()
 
 		if (!data) {
-			toast.push('Cliente no encontrado', {
-				theme: {
-					'--toastBackground': 'red',
-					'--toastProgressBackground': 'white'
-				}
-			})
+			toast('Cliente no encontrado')
 
 			pending = false
 			return

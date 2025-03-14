@@ -1,12 +1,15 @@
 <script lang="ts">
-	import type { ActionData, PageData } from './$types'
+	import type { ActionData, PageData, PageProps } from './$types'
 	import CreateUpdateQuotation from '$lib/components/CreateUpdateQuotation.svelte'
+	import { toast } from 'svelte-sonner'
 
-	type Props = {
-		form: ActionData
-		data: PageData
-	}
-	const { data, form }: Props = $props()
+	const { data, form }: PageProps = $props()
+
+	$effect(() => {
+		if (form?.error) {
+			toast(form.error)
+		}
+	})
 </script>
 
 <svelte:head>
