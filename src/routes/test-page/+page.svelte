@@ -1,24 +1,13 @@
 <script lang="ts">
-	import { quotation } from '$lib/stores/shared'
+	import { get } from 'svelte/store'
+	import { quotation, addItem, getQuotation } from '$lib/stores/shared'
 
-	let quo
-
-	const usb = quotation.subscribe((value) => {
-		quo = value
-	})
+	// const usb = quotation.subscribe((value) => {
+	// 	quo = value
+	// })
 </script>
 
 <h1>Test Page</h1>
-<button
-	class="btn"
-	onclick={() => {
-		quotation.set({
-			id: '230320',
-			customer: {
-				name: 'que fuee'
-			}
-		})
-	}}>update quotation</button
->
+<button class="btn" onclick={addItem}>update quotation</button>
 
-{JSON.stringify(quo)}
+{JSON.stringify($quotation, null, 2)}
