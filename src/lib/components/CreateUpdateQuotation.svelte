@@ -156,7 +156,7 @@
 			<div class="col-span-12 grid gap-2 md:col-span-3 lg:col-span-6">
 				<label class="label grid gap-2" for="customer.name"> Cliente </label>
 				{#if quotation.customer?.name}
-					<p class="" id="customer.name">{quotation.customer.name}</p>
+					<p class="text-green-200" id="customer.name">{quotation.customer.name}</p>
 				{:else}
 					<div class="bg-base-content/5 h-12 rounded-lg"></div>
 				{/if}
@@ -165,7 +165,7 @@
 				<label class="label grid gap-2" for="address"> Dirección </label>
 
 				{#if quotation.customer?.address}
-					<p class="" id="address">{quotation.customer.address}</p>
+					<p class="text-green-200" id="address">{quotation.customer.address}</p>
 				{:else}
 					<div class="bg-base-content/5 h-12 rounded-lg"></div>
 				{/if}

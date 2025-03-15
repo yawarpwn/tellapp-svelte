@@ -5,6 +5,7 @@
 	import type { LayoutProps } from './$types'
 	const { children }: LayoutProps = $props()
 	import { onNavigate } from '$app/navigation'
+	import Logo from '$lib/components/Logo.svelte'
 
 	let checked = $state(false)
 	function closeDrawer() {
@@ -39,7 +40,9 @@
 			class="navbar bg-base-200 sticky top-0 z-40 h-14 w-full lg:hidden"
 		>
 			<div class="mx-2 flex-1 px-2">
-				<a href="/" class="text-2xl font-bold"> TellAPP </a>
+				<a href="/" class="text-2xl font-bold">
+					<Logo />
+				</a>
 			</div>
 
 			<div class="flex-none">

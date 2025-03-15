@@ -48,7 +48,7 @@
 								<StarIcon
 									size={16}
 									class={customer.isRegular ? 'text-primary ' : 'text-base-content/20'}
-									fill={customer.isRegular ? 'var(--color-primary)' : ''}
+									fill={customer.isRegular ? 'var(--color-primary)' : 'transparent'}
 								/>
 							{/if}
 							<a class="btn btn-square" href={`/quotations/${number}`}>
@@ -86,11 +86,11 @@
 				>
 					<td>
 						{#if customerId && customer}
-							{#if customer.isRegular}
-								<StarIcon size={16} fill="var(--color-primary)" />
-							{:else}
-								<StarIcon size={16} />
-							{/if}
+							<StarIcon
+								size={16}
+								class={customer.isRegular ? 'text-primary ' : 'text-base-content/20'}
+								fill={customer.isRegular ? 'var(--color-primary)' : 'transparent'}
+							/>
 						{/if}
 					</td>
 					<td>{number}</td>
