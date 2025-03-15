@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { MenuIcon } from 'lucide-svelte'
 	import { Toaster } from 'svelte-sonner'
-	import Sidebar from '$lib/components/ui/Sidebar.svelte'
+	import Sidebar from '$lib/components/Sidebar.svelte'
 	import type { LayoutProps } from './$types'
 	const { children }: LayoutProps = $props()
 	import { onNavigate } from '$app/navigation'
@@ -63,10 +63,11 @@
 <!-- Toaster -->
 <Toaster
 	theme="dark"
+	position="bottom-right"
 	toastOptions={{
 		unstyled: true,
 		classes: {
-			toast: 'bg-base-200 p-4 rounded-md',
+			toast: 'bg-base-300 p-4 rounded-md min-w-[300px]',
 			title: 'text-red-400',
 			description: 'text-red-400',
 			actionButton: 'bg-zinc-400',
@@ -74,7 +75,6 @@
 			closeButton: 'bg-lime-400'
 		}
 	}}
-	closeButton
 />
 
 <style>

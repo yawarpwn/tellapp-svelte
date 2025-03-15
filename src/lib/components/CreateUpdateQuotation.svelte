@@ -3,9 +3,9 @@
 	import type { CreateQuotationClient, Customer, Product, QuotationItem } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
-	import ItemsQuotationTable from '$lib/components/ui/ItemsQuotationTable.svelte'
+	import ItemsQuotationTable from '$lib/components/ItemsQuotationTable.svelte'
 	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
-	import SearchCustomer from './SearchCustomer.svelte'
+	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
 
 	type Props = {
 		quotation: CreateQuotationClient | undefined
@@ -188,7 +188,7 @@
 					>
 						<StarIcon
 							class={quotation.customer?.isRegular ? 'text-primary' : 'text-base-content/50'}
-							fill={quotation.customer?.isRegular ? 'var(--color-primary)' : ''}
+							fill={quotation.customer?.isRegular ? 'var(--color-primary)' : 'transparent'}
 						/>
 						<span class="text-sm"
 							>{quotation.customer?.isRegular ? 'Cliente Frecuente' : 'Cliente Atendido'}</span
