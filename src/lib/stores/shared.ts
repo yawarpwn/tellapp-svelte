@@ -5,8 +5,9 @@ import type {
 	QuotationItem,
 	UpdateQuotationClient
 } from '$lib/types'
+import { writable } from 'svelte/store'
 
-export const quotation: CreateQuotationClient = $state({
+export let quotation = writable<CreateQuotationClient>({
 	id: undefined,
 	credit: undefined,
 	deadline: 1,
@@ -21,5 +22,3 @@ export const quotation: CreateQuotationClient = $state({
 		isRegular: true
 	}
 })
-
-export function createQuotationStore(quotation: QuotationClient) {}

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-svelte'
 	import { cn } from '$lib/utils'
-	import { page } from '$app/stores'
 	type Props = {
 		currentPage: number
 		totalPages: number

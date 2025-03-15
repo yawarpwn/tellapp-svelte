@@ -19,7 +19,7 @@ export type QuotationClient = {
 	items: QuotationItem[]
 	createdAt: string
 	updatedAt: string
-	customer: Omit<Customer, 'createdAt' | 'updatedAt' | 'id'> | null
+	customer?: Omit<Customer, 'createdAt' | 'updatedAt' | 'id'> | null
 	customerId?: string | null
 }
 

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { PlusIcon, SearchIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
-	import { page } from '$app/stores'
+	import { page } from '$app/state'
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
 
 	let { data }: PageProps = $props()
-	let query = $state($page.url.searchParams.get('q') || '')
-	const currentPage = $derived($page.url.searchParams.get('page') || 1)
+	let query = $state(page.url.searchParams.get('q') || '')
+	const currentPage = $derived(page.url.searchParams.get('page') || 1)
 	let timeout: ReturnType<typeof setTimeout>
 	let form: HTMLFormElement
 	$inspect(query)
@@ -22,7 +22,7 @@
 		<form
 			bind:this={form}
 			method="GET"
-			action={$page.url.pathname}
+			action={page.url.pathname}
 			class="relative"
 			data-sveltekit-keepfocus
 			data-sveltekit-noscroll
