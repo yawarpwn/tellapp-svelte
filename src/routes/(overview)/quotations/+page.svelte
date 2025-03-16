@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PlusIcon, SearchIcon } from 'lucide-svelte'
+	import { CirclePlusIcon, PlusIcon, SearchIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
 	import { page } from '$app/state'
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
@@ -43,7 +43,7 @@
 			<SearchIcon class="absolute top-1/2 right-3.5 size-4.5 -translate-y-1/2" />
 		</form>
 		<a class="btn btn-primary" href="/quotations/create">
-			<PlusIcon />
+			<CirclePlusIcon />
 			Crear</a
 		>
 	</div>

@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { HomeIcon, type Icon as IconType, ShoppingCartIcon, TruckIcon } from 'lucide-svelte'
+	import {
+		FilesIcon,
+		HomeIcon,
+		type Icon as IconType,
+		ShoppingCartIcon,
+		TruckIcon
+	} from 'lucide-svelte'
 	import Logo from '$lib/components/Logo.svelte'
 	import Logout from '$lib/components/Logout.svelte'
 	import { page } from '$app/state'
@@ -15,7 +21,7 @@
 		{
 			name: 'Cotizaciones',
 			href: '/quotations',
-			icon: HomeIcon
+			icon: FilesIcon
 		},
 		{
 			name: 'Productos',

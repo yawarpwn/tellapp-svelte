@@ -52,7 +52,7 @@
 				</label>
 			</div>
 		</header>
-		<main class="main relative px-4 py-2 lg:ml-20">
+		<main class="main relative px-4 py-2 lg:ml-20 lg:py-8">
 			{@render children()}
 		</main>
 	</div>

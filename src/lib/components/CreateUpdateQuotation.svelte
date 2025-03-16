@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { ArrowLeft, Loader2Icon, PlusIcon, StarIcon } from 'lucide-svelte'
+	import {
+		ArrowLeft,
+		CirclePlusIcon,
+		Loader2Icon,
+		PlusIcon,
+		StarIcon,
+		UsersIcon
+	} from 'lucide-svelte'
 	import type { CreateQuotationClient, Customer, Product, QuotationItem } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
@@ -198,22 +205,21 @@
 		</div>
 
 		<!-- Items  -->
-		<div class="my-4 flex items-center justify-between">
-			Items
+		<div class="my-4 flex items-center justify-end">
 			<div>
 				<button
 					aria-label="seleccionar cliente"
 					class="btn"
 					onclick={() => (showCustomerPickDialog = true)}
 				>
-					Clientes
+					<UsersIcon size={20} /> Clientes
 				</button>
 				{#await productsPromise}
 					...loading
 				{:then products}
 					<button onclick={() => (showCreateEditModal = true)} class="btn">
-						<PlusIcon />
-						<span class="hidden lg:block">Agregar Item</span>
+						<CirclePlusIcon size={20} />
+						<span class="">Agregar</span>
 					</button>
 					{#if showCreateEditModal}
 						<CreateEditItemDialog
