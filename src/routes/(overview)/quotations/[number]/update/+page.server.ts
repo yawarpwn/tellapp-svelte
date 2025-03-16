@@ -17,7 +17,8 @@ export const load: PageServerLoad = async ({ cookies, platform, params }) => {
 	return {
 		customersPromise,
 		productsPromise,
-		quotation
+		quotation,
+		quotationNumber: params.number
 	}
 }
 

@@ -115,31 +115,13 @@
 	}
 </script>
 
-<div class="flex flex-col gap-8 pb-8">
-	<header class="flex justify-between">
-		<!-- <BackTo to="/quotations" /> -->
-		<a class="btn btn-ghost" href="/quotations">
-			<ArrowLeft />
-			<span> Atras </span>
-		</a>
-		{#if showCustomerPickDialog}
-			<CustomerPickDialog
-				{customersPromise}
-				bind:showModal={showCustomerPickDialog}
-				{setCustomer}
-			/>
-		{/if}
-		<button
-			aria-label="seleccionar cliente"
-			class="btn"
-			onclick={() => (showCustomerPickDialog = true)}
-		>
-			Clientes
-		</button>
-	</header>
+{#if showCustomerPickDialog}
+	<CustomerPickDialog {customersPromise} bind:showModal={showCustomerPickDialog} {setCustomer} />
+{/if}
+<div class="flex flex-col gap-8 pt-4 pb-8">
 	<article class="">
 		<!-- Inputs -->
-		<div class="grid grid-cols-12 gap-3">
+		<div class="grid grid-cols-12 gap-6">
 			<!-- Search form -->
 			<SearchCustomer onSearchCustomer={setCustomer} ruc={quotation.customer?.ruc} />
 			<div class="col-span-4 grid gap-2 lg:col-span-6">
@@ -219,6 +201,13 @@
 		<div class="my-4 flex items-center justify-between">
 			Items
 			<div>
+				<button
+					aria-label="seleccionar cliente"
+					class="btn"
+					onclick={() => (showCustomerPickDialog = true)}
+				>
+					Clientes
+				</button>
 				{#await productsPromise}
 					...loading
 				{:then products}

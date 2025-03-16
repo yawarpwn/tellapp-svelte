@@ -1,11 +1,19 @@
 <script lang="ts">
-	import { ArrowLeftIcon, EditIcon, ExternalLinkIcon, FilesIcon, TrashIcon } from 'lucide-svelte'
+	import {
+		ArrowLeftIcon,
+		EditIcon,
+		ExternalLinkIcon,
+		FileIcon,
+		FilesIcon,
+		TrashIcon
+	} from 'lucide-svelte'
 	import { formatDateToLocal, formatNumberToLocal, getIgv } from '$lib/utils'
 	import DownloadAndShareButton from '$lib/components/DownloadAndShareButton.svelte'
 	import ToggleRegularCustomerButton from '$lib/components/ToggleRegularCustomerButton.svelte'
 	import ConfirmAction from '$lib/components/ConfirmAction.svelte'
 	import CopyText from '$lib/components/CopyText.svelte'
 	import type { QuotationClient } from '$lib/types'
+	import Breadcrumbs from './Breadcrumbs.svelte'
 
 	type Props = {
 		quotation: QuotationClient
@@ -15,10 +23,13 @@
 	const { formatedTotal, formatedSubTotal, formatedIgv } = getIgv(quotation.items)
 </script>
 
-<svelte:head>
-	<title>{quotation.number} Cotizacion</title>
-</svelte:head>
-<div class="flex flex-col gap-6">
+<Breadcrumbs
+	breadcrumbs={[
+		{ label: 'Cotizaciones', href: '/quotations', icon: FilesIcon },
+		{ label: `#${quotation.number}`, icon: FileIcon }
+	]}
+/>
+<div class="mt-2 flex flex-col gap-6">
 	<header class="flex justify-end gap-x-2">
 		<div class="flex gap-1">
 			<a class="btn btn-sm" href={`/quotations/${quotation.number}/update`}>

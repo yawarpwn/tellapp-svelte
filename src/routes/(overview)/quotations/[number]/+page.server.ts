@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ request, params }) => {
 	return {
 		quotationPromise,
 		metadata: {
-			title: 'Actualizar Cotización'
+			title: `Cotización #${params.number}`
 		}
 	}
 }
