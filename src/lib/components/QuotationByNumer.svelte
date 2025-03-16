@@ -117,7 +117,7 @@
 				{#each quotation.items as item}
 					<tr>
 						<td>
-							<div class="w-full min-w-[250px]">
+							<div class="w-full min-w-[300px]">
 								<CopyText text={item.description} unitSize={item.unitSize} />
 							</div>
 						</td>

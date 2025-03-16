@@ -5,7 +5,12 @@ import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ request, params }) => {
 	const quotationPromise = fetchQuotaitonByNumber(+params.number, 'kakapichipoto')
-	return { quotationPromise }
+	return {
+		quotationPromise,
+		metadata: {
+			title: 'Actualizar Cotización'
+		}
+	}
 }
 
 export const actions = {

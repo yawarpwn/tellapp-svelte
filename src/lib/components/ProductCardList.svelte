@@ -120,7 +120,7 @@
 			<CircleOff size={50} />
 		</div>
 	{/each}
-	<div class="bg-base-200 mt-2 flex justify-end">
+	<div class="mt-2 flex justify-end">
 		<dl class=" flex gap-4 p-2">
 			<dt class="font-bold uppercase">ITEMS :</dt>
 			<dd class="">{totalItems}</dd>

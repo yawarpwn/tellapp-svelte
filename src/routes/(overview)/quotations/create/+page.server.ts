@@ -10,7 +10,10 @@ export const load: PageServerLoad = async ({ cookies, platform }) => {
 
 	return {
 		customersPromise,
-		productsPromise
+		productsPromise,
+		metadata: {
+			title: 'Crear Cotización'
+		}
 	}
 }
 

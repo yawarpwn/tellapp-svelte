@@ -6,6 +6,7 @@
 	const { children }: LayoutProps = $props()
 	import { onNavigate } from '$app/navigation'
 	import Logo from '$lib/components/Logo.svelte'
+	import { page } from '$app/state'
 
 	let checked = $state(false)
 	function closeDrawer() {
@@ -29,7 +30,7 @@
 </script>
 
 <svelte:head>
-	<title>titulo</title>
+	<title>{page.data?.metadata?.title} | Tell Señales</title>
 </svelte:head>
 <div class="drawer lg:drawer-open mx-auto max-w-[100rem]">
 	<input id="my-drawer-3" type="checkbox" class="drawer-toggle" bind:checked />
@@ -40,7 +41,7 @@
 			class="navbar bg-base-200 sticky top-0 z-40 h-14 w-full lg:hidden"
 		>
 			<div class="mx-2 flex-1 px-2">
-				<a href="/" class="text-2xl font-bold">
+				<a href="/" class="">
 					<Logo />
 				</a>
 			</div>

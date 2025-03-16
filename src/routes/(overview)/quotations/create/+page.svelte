@@ -12,9 +12,6 @@
 	})
 </script>
 
-<svelte:head>
-	<title>Crear Cotizacion</title>
-</svelte:head>
 <CreateUpdateQuotation
 	quotation={undefined}
 	productsPromise={data.productsPromise}

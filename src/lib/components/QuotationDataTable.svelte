@@ -23,7 +23,7 @@
 		{#each quotations as { id, number, customer, items, createdAt, customerId }}
 			{@const { formatedTotal } = getIgv(items)}
 			<article class="card bg-base-200 shadow">
-				<div class="card-body">
+				<div class="card-body p-4">
 					<div class="flex justify-between gap-8">
 						<div>
 							<p class="font-medium">
@@ -51,10 +51,10 @@
 									fill={customer.isRegular ? 'var(--color-primary)' : 'transparent'}
 								/>
 							{/if}
-							<a class="btn btn-square" href={`/quotations/${number}`}>
+							<a class="btn btn-sm btn-square" href={`/quotations/${number}`}>
 								<EyeIcon class="size-4" />
 							</a>
-							<a class="btn btn-square" href={`/quotations/${number}/update`}>
+							<a class="btn btn-sm btn-square" href={`/quotations/${number}/update`}>
 								<EditIcon class="size-4" />
 							</a>
 						</div>
@@ -63,13 +63,13 @@
 			</article>
 		{/each}
 	</div>
-	<table class="hidden lg:table">
+	<table class="table-zebra hidden lg:table">
 		<!-- head -->
 		<thead>
 			<tr>
 				<th></th>
 				<th>Nro</th>
-				<th>Client</th>
+				<th>Cliente</th>
 				<th>Monto</th>
 				<th>Fecha</th>
 				<th>Acciones</th>
@@ -111,10 +111,10 @@
 					</td>
 					<td>
 						<div class="flex gap-2">
-							<a class="btn btn-xs btn-ghost" href={`/quotations/${number}`}>
+							<a class="btn btn-square btn-sm" href={`/quotations/${number}`}>
 								<EyeIcon class="size-4" />
 							</a>
-							<a class="btn btn-xs btn-ghost" href={`/quotations/${number}/update`}>
+							<a class="btn btn-sm btn-square" href={`/quotations/${number}/update`}>
 								<EditIcon class="size-4" />
 							</a>
 						</div>

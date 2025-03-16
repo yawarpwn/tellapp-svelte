@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { HomeIcon, type Icon as IconType, ShoppingCartIcon, TruckIcon } from 'lucide-svelte'
+	import Logo from '$lib/components/Logo.svelte'
 	import Logout from '$lib/components/Logout.svelte'
 	import { page } from '$app/state'
 
@@ -29,7 +30,9 @@
 	]
 </script>
 
-<div class="h-[80px]"></div>
+<div class="flex p-4">
+	<Logo />
+</div>
 <ul class="menu w-ful gap-2 px-4 py-0">
 	{#each menuItems as item}
 		{@const Icon = item.icon}

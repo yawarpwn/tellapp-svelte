@@ -17,8 +17,8 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 		return {
 			quotations: data.items,
 			totalPages: Math.ceil(data.meta.totalItems / ROW_PER_PAGES),
-			meta: {
-				title: 'Quotations'
+			metadata: {
+				title: 'Cotizaciones'
 			}
 		}
 	} catch (err) {

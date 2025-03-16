@@ -13,10 +13,6 @@
 	$inspect(query)
 </script>
 
-<svelte:head>
-	<title>Cotizaciones</title>
-</svelte:head>
-
 <div class="flex flex-col gap-4">
 	<div class="flex items-center justify-between">
 		<form

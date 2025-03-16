@@ -29,6 +29,15 @@
 	const { formatedTotal, totalItems } = $derived(getIgv(items))
 </script>
 
+<ProductCardList
+	{items}
+	{onSelectItem}
+	{onEditItem}
+	{onDeleteItem}
+	{onDuplicateItem}
+	{onMoveDownItem}
+	{onMoveUpItem}
+/>
 <div
 	class=" rounded-box border-base-content/5 bg-base-10 hidden flex-col gap-2 overflow-x-auto border md:flex"
 >
@@ -161,12 +170,3 @@
 		{/if}
 	</table>
 </div>
-<ProductCardList
-	{items}
-	{onSelectItem}
-	{onEditItem}
-	{onDeleteItem}
-	{onDuplicateItem}
-	{onMoveDownItem}
-	{onMoveUpItem}
-/>

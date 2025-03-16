@@ -51,7 +51,7 @@
 
 <!-- PaginationArrow -->
 {#snippet paginationArrow({ direction, page, isDisabled, query }: PaginationArrowProps)}
-	{@const className = cn('flex h-10 w-10 justify-center items-center border rounded-md', {
+	{@const className = cn('flex h-10 w-10 justify-center items-center  rounded-md', {
 		'cursor-not-allowed opacity-60': isDisabled,
 		'hover:bg-base-300': !isDisabled
 	})}
@@ -72,7 +72,7 @@
 <!-- PaginationNumber -->
 {#snippet paginationNumber({ isActive, page, query }: PaginationNumberProps)}
 	{@const className = cn(
-		'flex h-10 w-10 flex items-center justify-center text-sm border rounded-md ',
+		'flex h-10 w-10 flex items-center justify-center text-sm bg-base-200  rounded-md ',
 		{
 			'bg-primary border-primary text-primary-content': isActive,
 			'hover:bg-base-300 cursor-pointer': !isActive
