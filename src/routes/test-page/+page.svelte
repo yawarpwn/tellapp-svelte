@@ -1,12 +1,36 @@
 <script lang="ts">
-	import { get } from 'svelte/store'
-	import { quotation } from '$lib/stores/shared'
+	import {
+		addItem,
+		getItems,
+		getQuotation,
+		setQuotation
+	} from '$lib/stores/shared-quotation.svelte'
+	import ChildComponent from '../test-page/ChildComponent.svelte'
 
-	// const usb = quotation.subscribe((value) => {
-	// 	quo = value
-	// })
+	let checked = $state(false)
+
+	$effect(() => {
+		setQuotation({
+			credit: 10,
+			number: 200
+		})
+	})
+
+	const quotation = getQuotation()
+	const items = getItems()
 </script>
 
+<nav class="menu">
+	<a href="/test-page-2">Test page 2</a>
+</nav>
 <h1>Test Page</h1>
 
-{JSON.stringify($quotation, null, 2)}
+<button class="btn" onclick={addItem}>Agregar</button>
+
+<input class="checkbox" bind:checked type="checkbox" />
+<br />
+
+{#if checked}
+	<ChildComponent />
+{/if}
+{JSON.stringify(quotation, null, 2)}
