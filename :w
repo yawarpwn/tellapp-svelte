@@ -1,0 +1,215 @@
+<script lang="ts">
+	import {
+		ArrowLeft,
+		CirclePlusIcon,
+		Loader2Icon,
+		PlusIcon,
+		StarIcon,
+		UsersIcon
+	} from 'lucide-svelte'
+	import type { CreateQuotationClient, Customer, Product, QuotationItem } from '$lib/types'
+	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
+	import { enhance } from '$app/forms'
+	import ItemsQuotationTable from '$lib/components/ItemsQuotationTable.svelte'
+	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
+	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
+
+	type Props = {
+		quotation: CreateQuotationClient | undefined
+		customersPromise: Promise<Customer[]>
+		productsPromise: Promise<Product[]>
+	}
+	const { quotation: quottationFromD, customersPromise, productsPromise }: Props = $props()
+	import { quotationStore } from '$lib/stores/quotation.svelte'
+
+	const { setQuotation } = quotationStore
+
+	const selectedItem = $derived(
+		quotationStore.quotation.items.find((item) => item.id === quotationStore.selectedItemId.value)
+	)
+
+	$effect(() => {
+		setQuotation(200)
+	})
+
+	//Mathods
+</script>
+
+{#if quotationStore.showCustomerPickDialog}
+	<CustomerPickDialog
+		{customersPromise}
+		bind:showModal={quotationStore.showCustomerPickDialog}
+		setCustomer={quotationStore.setCustomer}
+	/>
+{/if}
+<!-- <div class="card bg-base-200"> -->
+<!-- 	<div class="card-body max-w-sm"> -->
+<!-- 		<pre> -->
+<!--       {JSON.stringify(quotationStore, null, 2)} -->
+<!--     </pre> -->
+<!-- 	</div> -->
+<!-- </div> -->
+<div class="flex flex-col gap-8 pt-4 pb-8">
+	<article class="">
+		<!-- Inputs -->
+		<div class="grid grid-cols-12 gap-6">
+			<!-- Search form -->
+			<SearchCustomer
+				onSearchCustomer={quotationStore.setCustomer}
+				ruc={quotationStore.quotation.customer?.ruc}
+			/>
+			<div class="col-span-4 grid gap-2 lg:col-span-6">
+				<label class="label grid gap-2" for="deadline"> Entrega </label>
+				<input
+					class="input w-full"
+					required
+					type="number"
+					id="deadline"
+					bind:value={quotationStore.quotation.deadline}
+					disabled={quotationStore.pending}
+				/>
+			</div>
+			<div class="col-span-12 grid gap-2 md:col-span-3 lg:col-span-6">
+				<label class="label grid gap-2" for="customer.name"> Cliente </label>
+				{#if quotationStore.quotation.customer?.name}
+					<p class="text-green-200" id="customer.name">{quotationStore.quotation.customer.name}</p>
+				{:else}
+					<div class="bg-base-content/5 h-12 rounded-lg"></div>
+				{/if}
+			</div>
+			<div class="col-span-12 grid gap-2 md:col-span-6">
+				<label class="label grid gap-2" for="address"> Dirección </label>
+
+				{#if quotationStore.quotation.customer?.address}
+					<p class="text-green-200" id="address">{quotationStore.quotation.customer.address}</p>
+				{:else}
+					<div class="bg-base-content/5 h-12 rounded-lg"></div>
+				{/if}
+			</div>
+			<div class="col-span-6 flex items-center gap-2">
+				<label class="label grid gap-2" for="includeIgv">Incluir IGV </label>
+				<input
+					type="checkbox"
+					bind:checked={quotationStore.quotation.includeIgv}
+					class="checkbox"
+					id="includeIgv"
+				/>
+			</div>
+
+			<div class="col-span-6 flex w-full items-center justify-between">
+				{#if quotationStore.quotation.customerId}
+					<div
+						class="flex
+	           items-center gap-2"
+					>
+						<StarIcon
+							class={quotationStore.quotation.customer?.isRegular
+								? 'text-primary'
+								: 'text-base-content/50'}
+							fill={quotationStore.quotation.customer?.isRegular
+								? 'var(--color-primary)'
+								: 'transparent'}
+						/>
+						<span class="text-sm"
+							>{quotationStore.quotation.customer?.isRegular
+								? 'Cliente Frecuente'
+								: 'Cliente Atendido'}</span
+						>
+					</div>
+				{/if}
+			</div>
+			<div class="col-span-6 flex h-10 items-center gap-2">
+				<label class="label" for="showCredit"> Credito </label>
+				<input
+					bind:checked={quotationStore.showCreditOption}
+					id="showCredit"
+					type="checkbox"
+					class="toggle"
+				/>
+			</div>
+			{#if quotationStore.showCreditOption}
+				<div class="col-span-6 flex items-center gap-2">
+					<label class="label grid gap-2" for="credit"> Días </label>
+					<input
+						id="credit"
+						name="credit"
+						type="number"
+						class="input grow"
+						bind:value={quotationStore.quotation.credit}
+						placeholder="30"
+					/>
+				</div>
+			{/if}
+		</div>
+
+		<!-- Items  -->
+		<div class="my-4 flex items-center justify-end">
+			<div>
+				<button
+					aria-label="seleccionar cliente"
+					class="btn"
+					onclick={() => (quotationStore.showCustomerPickDialog = true)}
+				>
+					<UsersIcon size={20} /> Clientes
+				</button>
+				{#await productsPromise}
+					...loading
+				{:then products}
+					<button onclick={quotationStore.openCreateEditItemDialog} class="btn">
+						<CirclePlusIcon size={20} />
+						<span class="">Agregar</span>
+					</button>
+					{#if quotationStore.showCreateEditModal}
+						<CreateEditItemDialog
+							bind:showCreateEditModal={quotationStore.showCreateEditModal}
+							item={selectedItem}
+							{products}
+							closeModal={quotationStore.closeCreateEditItemDialog}
+							onEditItem={quotationStore.editItem}
+							onAddItem={quotationStore.addItem}
+						/>
+					{/if}
+				{/await}
+			</div>
+		</div>
+		<ItemsQuotationTable
+			items={quotationStore.quotation.items}
+			onEditItem={quotationStore.editItem}
+			onDeleteItem={quotationStore.deleteItem}
+			onDuplicateItem={quotationStore.duplicateItem}
+			onMoveDownItem={quotationStore.moveDownItem}
+			onMoveUpItem={quotationStore.moveUpItem}
+			onSelectItem={quotationStore.onSelectItem}
+		/>
+
+		<footer class="mt-4 flex items-center justify-between">
+			<button disabled={quotationStore.pending} type="button" class="btn">
+				<a href="/quotations">Cancelar</a>
+			</button>
+			<form
+				method="POST"
+				use:enhance={() => {
+					quotationStore.pending = true
+					return ({ update }) => {
+						quotationStore.pending = false
+						update({
+							reset: false
+						})
+					}
+				}}
+			>
+				<input type="hidden" name="quotation" value={JSON.stringify(quotationStore.quotation)} />
+				<button
+					class="btn btn-primary"
+					disabled={quotationStore.quotation.items.length === 0 || quotationStore.pending}
+					type="submit"
+				>
+					{quotationStore.quotation.id ? 'Actualizar' : 'Crear'}
+					{#if quotationStore.pending}
+						<Loader2Icon class="animate-spin" />
+					{/if}
+				</button>
+			</form>
+		</footer>
+	</article>
+</div>
