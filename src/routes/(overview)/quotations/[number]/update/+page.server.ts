@@ -18,7 +18,10 @@ export const load: PageServerLoad = async ({ cookies, platform, params }) => {
 		customersPromise,
 		productsPromise,
 		quotation,
-		quotationNumber: params.number
+		quotationNumber: params.number,
+		metadata: {
+			title: 'Actualiza Cotización'
+		}
 	}
 }
 

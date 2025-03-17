@@ -34,6 +34,8 @@ export type UpdateQuotationClient = Partial<CreateQuotationClient> & {
 	id: string
 }
 
+export type QuotationCustomer = Pick<Customer, 'name' | 'address' | 'ruc' | 'isRegular'>
+
 // ------------------------- Products --------------------------------------->
 export type Product = {
 	id: string

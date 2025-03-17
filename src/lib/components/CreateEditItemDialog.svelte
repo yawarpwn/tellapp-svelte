@@ -3,7 +3,10 @@
 	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import type { Product, QuotationItem } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
-	import { on } from 'svelte/events'
+	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
+
+	const { quotation, selectedItemId } = getQuotationContext()
+	const selectedItem = $derived(quotation.items.find((item) => item.id === selectedItemId.value))
 
 	type Props = {
 		products: Product[]
@@ -27,7 +30,7 @@
 
 	//States
 	let item = $state<Omit<QuotationItem, 'id'>>(
-		itemToEdit || {
+		selectedItem || {
 			description: '',
 			price: 0,
 			cost: 0,
@@ -39,11 +42,11 @@
 	let searchTerm = $state('')
 
 	$effect(() => {
-		if (itemToEdit) {
-			item = {
-				...itemToEdit
-			}
-		}
+		// if (itemToEdit) {
+		// 	item = {
+		// 		...itemToEdit
+		// 	}
+		// }
 		const timer = setTimeout(() => {
 			console.info('focus')
 			inputSearch.focus()
@@ -126,10 +129,10 @@
 			onsubmit={(ev) => {
 				ev.preventDefault()
 
-				if (itemToEdit) {
+				if (selectedItem) {
 					onEditItem({
 						...item,
-						id: itemToEdit.id
+						id: selectedItem.id
 					})
 				} else {
 					onAddItem({
@@ -185,7 +188,7 @@
 			</div>
 			<footer class="flex items-center justify-between">
 				<button type="submit" class="btn btn-primary">
-					{itemToEdit ? 'Actualizar' : 'Agregar'}
+					{selectedItem ? 'Actualizar' : 'Agregar'}
 				</button>
 				<button class="btn" type="button" onclick={closeModal}>Cancelar</button>
 			</footer>

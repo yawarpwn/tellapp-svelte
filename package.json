@@ -39,6 +39,7 @@
 	"dependencies": {
 		"@cloudflare/workers-types": "^4.20250224.0",
 		"clsx": "^2.1.1",
+		"just-compare": "^2.3.0",
 		"lucide-svelte": "^0.476.0",
 		"pdfmake": "^0.2.18",
 		"svelte-sonner": "^0.3.28",

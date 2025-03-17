@@ -13,117 +13,60 @@
 	import ItemsQuotationTable from '$lib/components/ItemsQuotationTable.svelte'
 	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
 	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
+	import { getQuotationContext, INITIAL_QUOTATION_STATE } from '$lib/contexts/quotation.svelte'
+	import { QUOTATIONS_KEY } from '$lib/constants'
+	import compare from 'just-compare'
 
 	type Props = {
-		quotation: CreateQuotationClient | undefined
 		customersPromise: Promise<Customer[]>
 		productsPromise: Promise<Product[]>
 	}
-	const { quotation: quottationFromD, customersPromise, productsPromise }: Props = $props()
+	const { customersPromise, productsPromise }: Props = $props()
 
-	const quotation = $state<CreateQuotationClient>(
-		quottationFromD || {
-			id: undefined,
-			credit: undefined,
-			deadline: 1,
-			isPaymentPending: false,
-			customerId: undefined,
-			includeIgv: true,
-			items: [],
-			customer: {
-				address: '',
-				name: '',
-				ruc: '',
-				isRegular: true
-			}
-		}
-	)
+	const {
+		quotation,
+		showCustomerPickDialog,
+		showCreditOption,
+		showCreateEditModal,
+		setCustomer,
+		pending,
+		onEditItem,
+		onMoveUpItem,
+		onSelectItem,
+		onDeleteItem,
+		onAddItem,
+		onDuplicateItem,
+		onCloseCreateEditItemDialog,
+		onMoveDownItem,
+		onOpenCreateEditItemDialog
+	} = getQuotationContext()
 
-	//$states
-	let showCreateEditModal = $state(false)
-	let showCreditOption = $state(false)
-	let showCustomerPickDialog = $state(false)
-	let selectedItemId = $state<null | string>(null)
-	const selectedItem = $derived(quotation.items.find((i) => i.id === selectedItemId))
-	let pending = $state(false)
+	const empetyQuo = JSON.parse(JSON.stringify(quotation))
 
-	function onSelectItem(id: string) {
-		selectedItemId = id
-		showCreateEditModal = true
-	}
-
-	//Mathods
-	function setCustomer(
-		customer: {
-			name: string
-			ruc: string
-			address?: string
-			isRegular: boolean
-		},
-		id?: string
-	) {
-		quotation.customerId = id
-		quotation.customer = {
-			name: customer.name,
-			ruc: customer.ruc,
-			address: customer.address || '',
-			isRegular: customer.isRegular
-		}
-	}
-
-	export function handleAddItem(item: QuotationItem) {
-		quotation.items = [...quotation.items, item]
-	}
-
-	function handleEditItem(item: QuotationItem) {
-		quotation.items = quotation.items.map((i) => {
-			if (i.id === item.id) return item
-			return i
+	$effect(() => {
+		console.log({
+			empetyQuo,
+			INITIAL_QUOTATION_STATE,
+			areEqual: !compare(empetyQuo, INITIAL_QUOTATION_STATE)
 		})
-	}
-
-	function handleDeleteItem(id: string) {
-		quotation.items = quotation.items.filter((item) => item.id !== id)
-	}
-	function handleDuplicateItem(id: string) {
-		const foundItem = quotation.items.find((item) => item.id === id)
-		if (!foundItem) return
-		quotation.items = [
-			...quotation.items,
-			{
-				...foundItem,
-				id: crypto.randomUUID()
-			}
-		]
-	}
-
-	function move(currentIndex: number, nextIndex: number) {
-		const newItems = [...quotation.items]
-		newItems[currentIndex] = quotation.items[nextIndex]
-		newItems[nextIndex] = quotation.items[currentIndex]
-		quotation.items = newItems
-	}
-
-	function handleMoveUpItem(index: number) {
-		if (index > 0) {
-			move(index, index - 1)
+		if (!compare(empetyQuo, INITIAL_QUOTATION_STATE)) {
+			console.log('saved quotation')
+			localStorage.setItem(QUOTATIONS_KEY, JSON.stringify(quotation))
 		}
-	}
-
-	function handleMoveDownItem(index: number) {
-		if (index < quotation.items.length - 1) {
-			move(index, index + 1)
-		}
-	}
-
-	function onCloseCreateEditItemDialog() {
-		showCreateEditModal = false
-		selectedItemId = null
-	}
+	})
 </script>
 
+<!-- <div> -->
+<!-- 	<pre> -->
+<!--     {JSON.stringify(getQuotationContext(), null, 2)} -->
+<!--   </pre> -->
+<!-- </div> -->
 {#if showCustomerPickDialog}
-	<CustomerPickDialog {customersPromise} bind:showModal={showCustomerPickDialog} {setCustomer} />
+	<CustomerPickDialog
+		{customersPromise}
+		bind:showModal={showCustomerPickDialog.value}
+		{setCustomer}
+	/>
 {/if}
 <div class="flex flex-col gap-8 pt-4 pb-8">
 	<article class="">
@@ -139,7 +82,7 @@
 					type="number"
 					id="deadline"
 					bind:value={quotation.deadline}
-					disabled={pending}
+					disabled={pending.value}
 				/>
 			</div>
 			<div class="col-span-12 grid gap-2 md:col-span-3 lg:col-span-6">
@@ -187,18 +130,23 @@
 			</div>
 			<div class="col-span-6 flex h-10 items-center gap-2">
 				<label class="label" for="showCredit"> Credito </label>
-				<input bind:checked={showCreditOption} id="showCredit" type="checkbox" class="toggle" />
+				<input
+					bind:checked={showCreditOption.value}
+					id="showCredit"
+					type="checkbox"
+					class="toggle"
+				/>
 			</div>
-			{#if showCreditOption}
+			{#if showCreditOption.value}
 				<div class="col-span-6 flex items-center gap-2">
-					<label class="label grid gap-2" for="credit"> Días </label>
+					<label class="label grid gap-2" for="credit"> Credito </label>
 					<input
 						id="credit"
 						name="credit"
 						type="number"
 						class="input grow"
 						bind:value={quotation.credit}
-						placeholder="30"
+						placeholder="0"
 					/>
 				</div>
 			{/if}
@@ -210,25 +158,24 @@
 				<button
 					aria-label="seleccionar cliente"
 					class="btn"
-					onclick={() => (showCustomerPickDialog = true)}
+					onclick={() => (showCustomerPickDialog.value = true)}
 				>
 					<UsersIcon size={20} /> Clientes
 				</button>
 				{#await productsPromise}
 					...loading
 				{:then products}
-					<button onclick={() => (showCreateEditModal = true)} class="btn">
+					<button onclick={onOpenCreateEditItemDialog} class="btn">
 						<CirclePlusIcon size={20} />
 						<span class="">Agregar</span>
 					</button>
-					{#if showCreateEditModal}
+					{#if showCreateEditModal.value}
 						<CreateEditItemDialog
-							bind:showCreateEditModal
-							item={selectedItem}
+							bind:showCreateEditModal={showCreateEditModal.value}
 							{products}
 							closeModal={onCloseCreateEditItemDialog}
-							onEditItem={handleEditItem}
-							onAddItem={handleAddItem}
+							{onEditItem}
+							{onAddItem}
 						/>
 					{/if}
 				{/await}
@@ -236,24 +183,24 @@
 		</div>
 		<ItemsQuotationTable
 			items={quotation.items}
-			onEditItem={handleEditItem}
-			onDeleteItem={handleDeleteItem}
-			onDuplicateItem={handleDuplicateItem}
-			onMoveDownItem={handleMoveDownItem}
-			onMoveUpItem={handleMoveUpItem}
+			{onEditItem}
+			{onDeleteItem}
+			{onDuplicateItem}
+			{onMoveDownItem}
+			{onMoveUpItem}
 			{onSelectItem}
 		/>
 
 		<footer class="mt-4 flex items-center justify-between">
-			<button disabled={pending} type="button" class="btn">
+			<button disabled={pending.value} type="button" class="btn">
 				<a href="/quotations">Cancelar</a>
 			</button>
 			<form
 				method="POST"
 				use:enhance={() => {
-					pending = true
+					pending.value = true
 					return ({ update }) => {
-						pending = false
+						pending.value = false
 						update({
 							reset: false
 						})
@@ -263,11 +210,11 @@
 				<input type="hidden" name="quotation" value={JSON.stringify(quotation)} />
 				<button
 					class="btn btn-primary"
-					disabled={quotation.items.length === 0 || pending}
+					disabled={quotation.items.length === 0 || pending.value}
 					type="submit"
 				>
 					{quotation.id ? 'Actualizar' : 'Crear'}
-					{#if pending}
+					{#if pending.value}
 						<Loader2Icon class="animate-spin" />
 					{/if}
 				</button>

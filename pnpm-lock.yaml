@@ -14,6 +14,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      just-compare:
+        specifier: ^2.3.0
+        version: 2.3.0
       lucide-svelte:
         specifier: ^0.476.0
         version: 0.476.0(svelte@5.20.4)
@@ -1211,6 +1214,9 @@ packages:
 
   jpeg-exif@1.1.4:
     resolution: {integrity: sha512-a+bKEcCjtuW5WTdgeXFzswSrdqi0jk4XlEtZlx5A94wCoBpFjfFTbo/Tra5SpNCl/YFZPvcV1dJc+TAYeg6ROQ==}
+
+  just-compare@2.3.0:
+    resolution: {integrity: sha512-6shoR7HDT+fzfL3gBahx1jZG3hWLrhPAf+l7nCwahDdT9XDtosB9kIF0ZrzUp5QY8dJWfQVr5rnsPqsbvflDzg==}
 
   kleur@4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
@@ -2569,6 +2575,8 @@ snapshots:
   jiti@2.4.2: {}
 
   jpeg-exif@1.1.4: {}
+
+  just-compare@2.3.0: {}
 
   kleur@4.1.5: {}
 

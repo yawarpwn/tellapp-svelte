@@ -11,10 +11,6 @@
 	const { data, form }: Props = $props()
 </script>
 
-<svelte:head>
-	<title>Actualizar Cotizacion</title>
-</svelte:head>
-
 <Breadcrumbs
 	breadcrumbs={[
 		{ label: 'Cotizaciones', href: '/quotations', icon: FilesIcon },
