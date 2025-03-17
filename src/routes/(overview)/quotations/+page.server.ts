@@ -8,15 +8,14 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 	const url = new URL(request.url)
 	const query = url.searchParams.get('q') || ''
 	const page = url.searchParams.get('page') || '1'
-	const data = await fetchQuotations(platform?.env?.TELL_API_KEY!, {
+	const data = fetchQuotations(platform?.env?.TELL_API_KEY!, {
 		query,
 		page,
 		limit: ROW_PER_PAGES
 	})
 	try {
 		return {
-			quotations: data.items,
-			totalPages: Math.ceil(data.meta.totalItems / ROW_PER_PAGES),
+			dataPromise: data,
 			metadata: {
 				title: 'Cotizaciones'
 			}

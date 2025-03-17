@@ -4,13 +4,13 @@
 	import { page } from '$app/state'
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
+	import DataTableSkeleton from '$lib/components/DataTableSkeleton.svelte'
 
 	let { data }: PageProps = $props()
 	let query = $state(page.url.searchParams.get('q') || '')
 	const currentPage = $derived(page.url.searchParams.get('page') || 1)
 	let timeout: ReturnType<typeof setTimeout>
 	let form: HTMLFormElement
-	$inspect(query)
 </script>
 
 <div class="flex flex-col gap-4">
@@ -47,14 +47,23 @@
 			Crear</a
 		>
 	</div>
-	<!-- {#await data.quotations} -->
-	<!-- 	<DataTableSkeleton -->
-	<!-- 		columnCount={6} -->
-	<!-- 		rowCount={20} -->
-	<!-- 		cellWidths={['20px', '50px', '350px', '80px', '80px', '80px']} -->
-	<!-- 	/> -->
-	<!-- {:then quotations} -->
-	<QuotationDataTable quotations={data.quotations} />
-	<Pagination totalPages={data.totalPages} {query} currentPage={Number(currentPage)} />
-	<!-- {/await} -->
+	{#await data.dataPromise}
+		<DataTableSkeleton
+			columnCount={6}
+			rowCount={20}
+			cellWidths={['20px', '50px', '350px', '80px', '80px', '80px']}
+		/>
+	{:then data}
+		<QuotationDataTable quotations={data.items} />
+		<Pagination
+			totalPages={Math.ceil(data.meta.totalItems / 13)}
+			{query}
+			currentPage={Number(currentPage)}
+		/>
+	{:catch error}
+		<div>
+			{error.message}
+			algo salio mal
+		</div>
+	{/await}
 </div>

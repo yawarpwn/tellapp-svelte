@@ -73,7 +73,12 @@
 	}: Props = $props()
 </script>
 
-<div class="w-full space-y-2.5 overflow-auto">
+<div class="flex flex-col gap-2 lg:hidden">
+	{#each { length: 13 } as _}
+		<div class="skeleton h-[140px]"></div>
+	{/each}
+</div>
+<div class="hidden w-full space-y-2.5 overflow-auto lg:flex">
 	<div class="flex w-full items-center justify-between space-x-2 overflow-auto p-1">
 		<div class="flex flex-1 items-center space-x-2"></div>
 		<div class="h-7 w-12 md:w-24" />
