@@ -6,7 +6,7 @@ import type {
 	UpdateQuotationClient
 } from '$lib/types'
 
-export const quotation: CreateQuotationClient = $state({
+const QUOTATION_INITIAL_STATE = {
 	id: undefined,
 	credit: undefined,
 	deadline: 1,
@@ -20,6 +20,18 @@ export const quotation: CreateQuotationClient = $state({
 		ruc: '',
 		isRegular: true
 	}
-})
+}
 
-export function createQuotationStore(quotation: QuotationClient) {}
+function createQuotationStore(initialState: CreateQuotationClient) {
+	const quotationState = $state<CreateQuotationClient>(initialState)
+	let showCreateEditItemDialog = $state(false)
+
+	return {
+		//Accesories
+		get quotation() {
+			return quotationStore
+		}
+	}
+}
+
+export const quotationStore = createQuotationStore(QUOTATION_INITIAL_STATE)

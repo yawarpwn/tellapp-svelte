@@ -9,4 +9,6 @@
 	<QuotationByNumberSkeleton />
 {:then quotation}
 	<QuotationByNumer {quotation} />
+{:catch}
+	<div>algo salio mal pipipi</div>
 {/await}
