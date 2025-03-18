@@ -19,7 +19,7 @@
 	}
 </script>
 
-<Dialog bind:showModal>
+<Dialog bind:open={showModal}>
 	<div class="flex max-h-[90svh] flex-col gap-4">
 		{#await customersPromise}
 			<div class="skeleton h-12"></div>

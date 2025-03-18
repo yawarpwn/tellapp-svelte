@@ -43,19 +43,19 @@
 	)
 	let searchTerm = $state('')
 
-	$effect(() => {
-		// if (itemToEdit) {
-		// 	item = {
-		// 		...itemToEdit
-		// 	}
-		// }
-		const timer = setTimeout(() => {
-			inputSearch.focus()
-		}, 100)
-		return () => {
-			clearTimeout(timer)
-		}
-	})
+	// $effect(() => {
+	// 	// if (itemToEdit) {
+	// 	// 	item = {
+	// 	// 		...itemToEdit
+	// 	// 	}
+	// 	// }
+	// 	const timer = setTimeout(() => {
+	// 		inputSearch.focus()
+	// 	}, 100)
+	// 	return () => {
+	// 		clearTimeout(timer)
+	// 	}
+	// })
 
 	const hits = $derived(
 		products.filter(
@@ -66,7 +66,7 @@
 	)
 </script>
 
-<Dialog bind:showModal={showCreateEditModal} {closeModal}>
+<Dialog bind:open={() => showCreateEditModal, closeModal}>
 	<div class="flex h-[90svh] flex-col gap-2">
 		<!-- Search Product -->
 		<header class="">
@@ -105,13 +105,13 @@
 							{hit.description}
 						</div>
 						<div class="flex items-center justify-between gap-2">
-							<span class="badge lowercase">
+							<span class="badge px-2 lowercase">
 								{hit.unitSize}
 							</span>
-							<span class="badge badge-accent uppercase">
+							<span class="badge badge-accent px-2 uppercase">
 								{hit.code}
 							</span>
-							<span class="badge">
+							<span class="badge px-2">
 								{formatNumberToLocal(hit.price)}
 							</span>
 						</div>

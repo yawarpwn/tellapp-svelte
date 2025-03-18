@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin "tailwindcss-animate";
 @plugin "daisyui" {
 	themes: dracula --default;
 }
@@ -26,7 +27,60 @@ input[type='number'] {
 	-moz-appearance: textfield;
 }
 
+:root {
+}
+
+@theme inline {
+	@keyframes scale-out {
+		from {
+			opacity: 1;
+			transform: rotateX(0deg) scale(1);
+		}
+		to {
+			opacity: 0;
+			transform: rotateX(-10deg) scale(0.95);
+		}
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes fade-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+}
+
 @layer base {
-	body {
+/* 	*, */
+/* 	::after, */
+/* 	::before, */
+/* 	::backdrop, */
+/* 	::file-selector-button { */
+/* 		border-color: var(--color-border-card, currentColor); */
+/* 	} */
+/* } */
+
+
+@layer components {
+	/* *:not(body):not(.focus-override) { */
+	/* 	outline: none !important; */
+	/* 	&:focus-visible { */
+	/* 		@apply focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-1; */
+	/* 	} */
+	/* } */
+
+	.link {
+		@apply text-red-500;
 	}
 }
