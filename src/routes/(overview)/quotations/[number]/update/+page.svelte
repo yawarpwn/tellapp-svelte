@@ -3,12 +3,14 @@
 	import CreateUpdateQuotation from '$lib/components/CreateUpdateQuotation.svelte'
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
 	import { FileIcon, FilesIcon, FileUpIcon } from 'lucide-svelte'
+	import { setQuotationContext } from '$lib/contexts/quotation.svelte'
 
 	type Props = {
 		form: ActionData
 		data: PageData
 	}
 	const { data, form }: Props = $props()
+	setQuotationContext(data.quotation)
 </script>
 
 <Breadcrumbs
@@ -23,7 +25,6 @@
 	]}
 />
 <CreateUpdateQuotation
-	quotation={data.quotation}
 	productsPromise={data.productsPromise}
 	customersPromise={data.customersPromise}
 />

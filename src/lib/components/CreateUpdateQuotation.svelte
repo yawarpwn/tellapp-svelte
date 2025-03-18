@@ -16,6 +16,7 @@
 	import { getQuotationContext, INITIAL_QUOTATION_STATE } from '$lib/contexts/quotation.svelte'
 	import { QUOTATIONS_KEY } from '$lib/constants'
 	import compare from 'just-compare'
+	import Dialog from './ui/Dialog.svelte'
 
 	type Props = {
 		customersPromise: Promise<Customer[]>
@@ -24,12 +25,8 @@
 	const { customersPromise, productsPromise }: Props = $props()
 
 	const {
-		quotation,
-		showCustomerPickDialog,
-		showCreditOption,
-		showCreateEditModal,
+		store,
 		setCustomer,
-		pending,
 		onEditItem,
 		onMoveUpItem,
 		onSelectItem,
@@ -38,22 +35,10 @@
 		onDuplicateItem,
 		onCloseCreateEditItemDialog,
 		onMoveDownItem,
-		onOpenCreateEditItemDialog
+		onOpenCreateEditItemDialog,
+		closeRecuperationDialog,
+		reset
 	} = getQuotationContext()
-
-	const empetyQuo = JSON.parse(JSON.stringify(quotation))
-
-	$effect(() => {
-		console.log({
-			empetyQuo,
-			INITIAL_QUOTATION_STATE,
-			areEqual: !compare(empetyQuo, INITIAL_QUOTATION_STATE)
-		})
-		if (!compare(empetyQuo, INITIAL_QUOTATION_STATE)) {
-			console.log('saved quotation')
-			localStorage.setItem(QUOTATIONS_KEY, JSON.stringify(quotation))
-		}
-	})
 </script>
 
 <!-- <div> -->
@@ -61,10 +46,10 @@
 <!--     {JSON.stringify(getQuotationContext(), null, 2)} -->
 <!--   </pre> -->
 <!-- </div> -->
-{#if showCustomerPickDialog}
+{#if store.showCustomerPickDialog}
 	<CustomerPickDialog
 		{customersPromise}
-		bind:showModal={showCustomerPickDialog.value}
+		bind:showModal={store.showCustomerPickDialog}
 		{setCustomer}
 	/>
 {/if}
@@ -73,7 +58,7 @@
 		<!-- Inputs -->
 		<div class="grid grid-cols-12 gap-6">
 			<!-- Search form -->
-			<SearchCustomer onSearchCustomer={setCustomer} ruc={quotation.customer?.ruc} />
+			<SearchCustomer onSearchCustomer={setCustomer} ruc={store.quotation.customer?.ruc} />
 			<div class="col-span-4 grid gap-2 lg:col-span-6">
 				<label class="label grid gap-2" for="deadline"> Entrega </label>
 				<input
@@ -81,14 +66,14 @@
 					required
 					type="number"
 					id="deadline"
-					bind:value={quotation.deadline}
-					disabled={pending.value}
+					bind:value={store.quotation.deadline}
+					disabled={store.pending}
 				/>
 			</div>
 			<div class="col-span-12 grid gap-2 md:col-span-3 lg:col-span-6">
 				<label class="label grid gap-2" for="customer.name"> Cliente </label>
-				{#if quotation.customer?.name}
-					<p class="text-green-200" id="customer.name">{quotation.customer.name}</p>
+				{#if store.quotation.customer?.name}
+					<p class="text-green-200" id="customer.name">{store.quotation.customer.name}</p>
 				{:else}
 					<div class="bg-base-content/5 h-12 rounded-lg"></div>
 				{/if}
@@ -96,8 +81,8 @@
 			<div class="col-span-12 grid gap-2 md:col-span-6">
 				<label class="label grid gap-2" for="address"> Dirección </label>
 
-				{#if quotation.customer?.address}
-					<p class="text-green-200" id="address">{quotation.customer.address}</p>
+				{#if store.quotation.customer?.address}
+					<p class="text-green-200" id="address">{store.quotation.customer.address}</p>
 				{:else}
 					<div class="bg-base-content/5 h-12 rounded-lg"></div>
 				{/if}
@@ -106,24 +91,26 @@
 				<label class="label grid gap-2" for="includeIgv">Incluir IGV </label>
 				<input
 					type="checkbox"
-					bind:checked={quotation.includeIgv}
+					bind:checked={store.quotation.includeIgv}
 					class="checkbox"
 					id="includeIgv"
 				/>
 			</div>
 
 			<div class="col-span-6 flex w-full items-center justify-between">
-				{#if quotation.customerId}
+				{#if store.quotation.customerId}
 					<div
 						class="flex
 	           items-center gap-2"
 					>
 						<StarIcon
-							class={quotation.customer?.isRegular ? 'text-primary' : 'text-base-content/50'}
-							fill={quotation.customer?.isRegular ? 'var(--color-primary)' : 'transparent'}
+							class={store.quotation.customer?.isRegular ? 'text-primary' : 'text-base-content/50'}
+							fill={store.quotation.customer?.isRegular ? 'var(--color-primary)' : 'transparent'}
 						/>
 						<span class="text-sm"
-							>{quotation.customer?.isRegular ? 'Cliente Frecuente' : 'Cliente Atendido'}</span
+							>{store.quotation.customer?.isRegular
+								? 'Cliente Frecuente'
+								: 'Cliente Atendido'}</span
 						>
 					</div>
 				{/if}
@@ -131,13 +118,13 @@
 			<div class="col-span-6 flex h-10 items-center gap-2">
 				<label class="label" for="showCredit"> Credito </label>
 				<input
-					bind:checked={showCreditOption.value}
+					bind:checked={store.showCreditOption}
 					id="showCredit"
 					type="checkbox"
 					class="toggle"
 				/>
 			</div>
-			{#if showCreditOption.value}
+			{#if store.showCreditOption}
 				<div class="col-span-6 flex items-center gap-2">
 					<label class="label grid gap-2" for="credit"> Credito </label>
 					<input
@@ -145,7 +132,7 @@
 						name="credit"
 						type="number"
 						class="input grow"
-						bind:value={quotation.credit}
+						bind:value={store.quotation.credit}
 						placeholder="0"
 					/>
 				</div>
@@ -158,7 +145,7 @@
 				<button
 					aria-label="seleccionar cliente"
 					class="btn"
-					onclick={() => (showCustomerPickDialog.value = true)}
+					onclick={() => (store.showCustomerPickDialog = true)}
 				>
 					<UsersIcon size={20} /> Clientes
 				</button>
@@ -169,9 +156,9 @@
 						<CirclePlusIcon size={20} />
 						<span class="">Agregar</span>
 					</button>
-					{#if showCreateEditModal.value}
+					{#if store.showCreateEditModal}
 						<CreateEditItemDialog
-							bind:showCreateEditModal={showCreateEditModal.value}
+							bind:showCreateEditModal={store.showCreateEditModal}
 							{products}
 							closeModal={onCloseCreateEditItemDialog}
 							{onEditItem}
@@ -182,7 +169,7 @@
 			</div>
 		</div>
 		<ItemsQuotationTable
-			items={quotation.items}
+			items={store.quotation.items}
 			{onEditItem}
 			{onDeleteItem}
 			{onDuplicateItem}
@@ -192,29 +179,29 @@
 		/>
 
 		<footer class="mt-4 flex items-center justify-between">
-			<button disabled={pending.value} type="button" class="btn">
+			<button disabled={store.pending} type="button" class="btn">
 				<a href="/quotations">Cancelar</a>
 			</button>
 			<form
 				method="POST"
 				use:enhance={() => {
-					pending.value = true
+					store.pending = true
 					return ({ update }) => {
-						pending.value = false
+						store.pending = false
 						update({
 							reset: false
 						})
 					}
 				}}
 			>
-				<input type="hidden" name="quotation" value={JSON.stringify(quotation)} />
+				<input type="hidden" name="quotation" value={JSON.stringify(store.quotation)} />
 				<button
 					class="btn btn-primary"
-					disabled={quotation.items.length === 0 || pending.value}
+					disabled={store.quotation.items.length === 0 || store.pending}
 					type="submit"
 				>
-					{quotation.id ? 'Actualizar' : 'Crear'}
-					{#if pending.value}
+					{store.quotation.id ? 'Actualizar' : 'Crear'}
+					{#if store.pending}
 						<Loader2Icon class="animate-spin" />
 					{/if}
 				</button>

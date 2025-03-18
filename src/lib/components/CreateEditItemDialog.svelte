@@ -5,8 +5,10 @@
 	import { formatNumberToLocal } from '$lib/utils'
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
 
-	const { quotation, selectedItemId } = getQuotationContext()
-	const selectedItem = $derived(quotation.items.find((item) => item.id === selectedItemId.value))
+	const { store } = getQuotationContext()
+	const selectedItem = $derived(
+		store.quotation.items.find((item) => item.id === store.selectedItemId)
+	)
 
 	type Props = {
 		products: Product[]
@@ -48,11 +50,9 @@
 		// 	}
 		// }
 		const timer = setTimeout(() => {
-			console.info('focus')
 			inputSearch.focus()
 		}, 100)
 		return () => {
-			console.info('clear')
 			clearTimeout(timer)
 		}
 	})
