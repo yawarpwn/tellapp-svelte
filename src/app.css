@@ -62,15 +62,14 @@ input[type='number'] {
 }
 
 @layer base {
-/* 	*, */
-/* 	::after, */
-/* 	::before, */
-/* 	::backdrop, */
-/* 	::file-selector-button { */
-/* 		border-color: var(--color-border-card, currentColor); */
-/* 	} */
-/* } */
-
+	/* 	*, */
+	/* 	::after, */
+	/* 	::before, */
+	/* 	::backdrop, */
+	/* 	::file-selector-button { */
+	/* 		border-color: var(--color-border-card, currentColor); */
+	/* 	} */
+}
 
 @layer components {
 	/* *:not(body):not(.focus-override) { */

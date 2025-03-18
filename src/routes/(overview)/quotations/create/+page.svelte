@@ -62,7 +62,7 @@
 </script>
 
 {#if showRecuperationDialog}
-	<Dialog bind:showModal={showRecuperationDialog} closeModal={closeRecuperationDialog}>
+	<Dialog bind:open={showRecuperationDialog}>
 		<div class="flex flex-col gap-4">
 			<h2 class="text-center font-bold">Recuperar Cotización</h2>
 			<p class="text-center">¿Deseas recuperado una cotización NO GUADADA</p>
