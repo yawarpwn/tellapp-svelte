@@ -187,10 +187,10 @@
 				</div>
 			</div>
 			<footer class="flex items-center justify-between">
+				<button class="btn" type="button" onclick={closeModal}>Cancelar</button>
 				<button type="submit" class="btn btn-primary">
 					{selectedItem ? 'Actualizar' : 'Agregar'}
 				</button>
-				<button class="btn" type="button" onclick={closeModal}>Cancelar</button>
 			</footer>
 		</form>
 	</div>

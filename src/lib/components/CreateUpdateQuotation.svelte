@@ -8,6 +8,13 @@
 	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
 
+	const CREDIT_OPTION = {
+		Contado: null,
+		'1 Semana': 7,
+		'2 Semanas': 15,
+		'1 Mes': 30
+	}
+
 	type Props = {
 		customersPromise: Promise<Customer[]>
 		productsPromise: Promise<Product[]>
@@ -29,7 +36,7 @@
 	} = getQuotationContext()
 
 	let showCustomerPickDialog = $state(false)
-	let showCreditOption = $state(store.quotation.credit ? true : false)
+	$inspect(store.quotation.credit)
 </script>
 
 <!-- <div> -->
@@ -44,7 +51,7 @@
 	<article class="">
 		<!-- Inputs -->
 		<div class="grid grid-cols-12 gap-6">
-			<!-- Search form -->
+			<!-- Search customer by ruc form -->
 			<SearchCustomer onSearchCustomer={setCustomer} ruc={store.quotation.customer?.ruc} />
 			<div class="col-span-4 grid gap-2 lg:col-span-6">
 				<label class="label grid gap-2" for="deadline"> Entrega </label>
@@ -57,6 +64,8 @@
 					disabled={store.pending}
 				/>
 			</div>
+
+			<!-- Cliente -->
 			<div class="col-span-12 grid gap-2 md:col-span-3 lg:col-span-6">
 				<label class="label grid gap-2" for="customer.name"> Cliente </label>
 				{#if store.quotation.customer?.name}
@@ -65,6 +74,8 @@
 					<div class="bg-base-content/5 h-12 rounded-lg"></div>
 				{/if}
 			</div>
+
+			<!-- Direccion -->
 			<div class="col-span-12 grid gap-2 md:col-span-6">
 				<label class="label grid gap-2" for="address"> Dirección </label>
 
@@ -74,16 +85,21 @@
 					<div class="bg-base-content/5 h-12 rounded-lg"></div>
 				{/if}
 			</div>
+
+			<!-- Incluir Igv -->
 			<div class="col-span-6 flex items-center gap-2">
-				<label class="label grid gap-2" for="includeIgv">Incluir IGV </label>
-				<input
-					type="checkbox"
-					bind:checked={store.quotation.includeIgv}
-					class="checkbox"
-					id="includeIgv"
-				/>
+				<label class="fieldset-label" for="includeIgv">
+					<input
+						type="checkbox"
+						bind:checked={store.quotation.includeIgv}
+						class="checkbox checkbox-primary"
+						id="includeIgv"
+					/>
+					Incluir IGV
+				</label>
 			</div>
 
+			<!-- Regular Customer -->
 			<div class="col-span-6 flex w-full items-center justify-between">
 				{#if store.quotation.customerId}
 					<div
@@ -102,27 +118,27 @@
 					</div>
 				{/if}
 			</div>
-			<div class="col-span-6 flex h-10 items-center gap-2">
-				<label class="label" for="showCredit"> Credito </label>
-				<input bind:checked={showCreditOption} id="showCredit" type="checkbox" class="toggle" />
-			</div>
-			{#if showCreditOption}
-				<div class="col-span-6 flex items-center gap-2">
-					<label class="label grid gap-2" for="credit"> Credito </label>
-					<input
-						id="credit"
-						name="credit"
-						type="number"
-						class="input grow"
-						bind:value={store.quotation.credit}
-						placeholder="0"
-					/>
+
+			<!-- Credito -->
+			<div class="col-span-12 grid gap-2 overflow-x-auto">
+				<div class="label">Crédito</div>
+				<div class="flex gap-2">
+					{#each Object.entries(CREDIT_OPTION) as [key, value]}
+						<label
+							class="btn data-[active=true]:btn-accent min-w-[100px] md:min-w-[150px]"
+							data-active={store.quotation.credit === value ? 'true' : 'false'}
+						>
+							{key}
+							<input bind:group={store.quotation.credit} {value} type="radio" class="hidden" />
+						</label>
+					{/each}
 				</div>
-			{/if}
+			</div>
 		</div>
 
 		<!-- Items  -->
-		<div class="my-4 flex items-center justify-end">
+		<div class="my-6 flex items-center justify-between">
+			<h2 class="font-bold">Productos</h2>
 			<div>
 				<button
 					aria-label="seleccionar cliente"
