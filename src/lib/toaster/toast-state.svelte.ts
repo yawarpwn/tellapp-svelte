@@ -1,4 +1,4 @@
-import { getContext, onDestroy, setContext } from 'svelte'
+// import { onDestroy } from 'svelte'
 type Toast = {
 	id: string
 	message: string
@@ -7,26 +7,25 @@ type Toast = {
 class ToastState {
 	toasts = $state<Toast[]>([])
 	toastToTimeupMap = new Map<string, number>()
+	showToast = $state(false)
 
 	constructor() {
-		onDestroy(() => {
-			for (const timeout of this.toastToTimeupMap.values()) {
-				clearTimeout(timeout)
-			}
-			this.toastToTimeupMap.clear()
-		})
+		// onDestroy(() => {
+		// 	for (const timeout of this.toastToTimeupMap.values()) {
+		// 		clearTimeout(timeout)
+		// 	}
+		// 	this.toastToTimeupMap.clear()
+		// })
 	}
 
-	add(title: string, message: string, duration = 500) {
+	add(title: string, message: string, duration = 5000) {
 		const id = crypto.randomUUID()
 		this.toasts.push({ id, message, title })
 
-		const timeout = setTimeout(() => {
-			console.log('this', this)
+		const timeoutId = setTimeout(() => {
 			this.remove(id)
 		}, duration)
-
-		this.toastToTimeupMap.set(id, timeout)
+		this.toastToTimeupMap.set(id, timeoutId)
 	}
 
 	remove(id: string) {
@@ -35,16 +34,29 @@ class ToastState {
 			clearTimeout(timeoutId)
 			this.toastToTimeupMap.delete(id)
 		}
-		this.toasts.filter((toast) => toast.id !== id)
+		this.toasts = this.toasts.filter((toast) => toast.id !== id)
 	}
 }
 
-const TOAST_KEY = Symbol('TOAST')
-
-export function setToastState() {
-	return setContext(TOAST_KEY, new ToastState())
+export const toastState = new ToastState()
+export function toast({
+	title,
+	message,
+	duration
+}: {
+	title: string
+	message: string
+	duration?: number
+}) {
+	toastState.add(title, message, duration)
 }
 
-export function getToastState() {
-	return getContext<ReturnType<typeof setToastState>>(TOAST_KEY)
-}
+// const TOAST_KEY = Symbol('TOAST')
+//
+// export function setToastState() {
+// 	return setContext(TOAST_KEY, new ToastState())
+// }
+//
+// export function getToastState() {
+// 	return getContext<ReturnType<typeof setToastState>>(TOAST_KEY)
+// }

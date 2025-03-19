@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { setToastState } from '$lib/toaster/toast-state.svelte'
-
-	setToastState()
+	import Toaster from '$lib/toaster/Toaster.svelte'
 	const { children } = $props()
 </script>
 
+<Toaster />
 {@render children()}
