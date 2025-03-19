@@ -9,7 +9,7 @@
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
 
 	const CREDIT_OPTION = {
-		Contado: null,
+		Contado: undefined,
 		'1 Semana': 7,
 		'2 Semanas': 15,
 		'1 Mes': 30
@@ -36,7 +36,6 @@
 	} = getQuotationContext()
 
 	let showCustomerPickDialog = $state(false)
-	$inspect(store.quotation.credit)
 </script>
 
 <!-- <div> -->

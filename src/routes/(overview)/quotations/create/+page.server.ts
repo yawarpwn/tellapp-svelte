@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types'
 import { createQuotation, fetchCustomers, fetchProducts, searchCustomerByDniOrRuc } from '$lib/data'
 import { fail, redirect } from '@sveltejs/kit'
+import { createQuotationSchema } from '$lib/schemas'
 
 export const load: PageServerLoad = async ({ cookies, platform }) => {
 	const productsPromise = fetchProducts(platform?.env.TELL_API_KEY!)
@@ -20,13 +21,19 @@ export const load: PageServerLoad = async ({ cookies, platform }) => {
 export const actions = {
 	default: async ({ cookies, request, platform }) => {
 		const formData = await request.formData()
-		const quotation = JSON.parse(formData.get('quotation') as string)
+		const quotationToInsert = JSON.parse(formData.get('quotation') as string)
 
-		if (true)
-			return fail(401, {
-				error: 'Mensaje de error'
-			})
-		const insertedCustomer = await createQuotation(quotation, platform?.env.TELL_API_KEY!)
-		return redirect(303, `/quotations/${insertedCustomer}`)
+		const result = createQuotationSchema.safeParse(quotationToInsert)
+
+		if (!result.success) {
+			console.log('error')
+			console.log(result.error)
+		}
+
+		console.log('success')
+		console.log(result.data)
+
+		// const insertedCustomer = await createQuotation(quotationToInsert, platform?.env.TELL_API_KEY!)
+		// return redirect(303, `/quotations/${insertedCustomer}`)
 	}
 } satisfies Actions
