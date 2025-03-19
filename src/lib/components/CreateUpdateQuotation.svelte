@@ -28,8 +28,6 @@
 		onOpenCreateEditItemDialog
 	} = getQuotationContext()
 
-	console.log(store)
-
 	let showCustomerPickDialog = $state(false)
 	let showCreditOption = $state(store.quotation.credit ? true : false)
 </script>
