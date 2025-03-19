@@ -30,7 +30,7 @@
 	]}
 />
 <div class="mt-2 flex flex-col gap-6">
-	<header class="flex justify-end gap-x-2">
+	<header class="flex justify-end">
 		<div class="flex gap-1">
 			<a class="btn btn-sm" href={`/quotations/${quotation.number}/update`}>
 				<EditIcon size={18} />
@@ -112,7 +112,7 @@
 		</div>
 	</div>
 	<div class="rounded-box border-base-content/5 bg-base-10 overflow-x-auto border">
-		<table class="table-zebra table">
+		<table class="table-zebra table [&_td]:p-2">
 			<thead>
 				<tr>
 					<th>DESCRIPCION</th>
@@ -128,7 +128,7 @@
 				{#each quotation.items as item}
 					<tr>
 						<td>
-							<div class="w-full min-w-[300px]">
+							<div class="w-full min-w-[350px]">
 								<CopyText text={item.description} unitSize={item.unitSize} />
 							</div>
 						</td>

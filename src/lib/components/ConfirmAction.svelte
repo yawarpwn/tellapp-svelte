@@ -23,7 +23,7 @@
 </script>
 
 {@render trigger({ openModal })}
-<Dialog bind:showModal>
+<Dialog bind:open={showModal}>
 	<div class="flex flex-col gap-4 p-2">
 		<header class="text-center">{message}</header>
 		<div class="flex items-center justify-between">
@@ -39,7 +39,7 @@
 				method="POST"
 				{action}
 			>
-				<button type="submit" class="btn btn-warning" disabled={loading}>
+				<button type="submit" class="btn btn-primary" disabled={loading}>
 					Aceptar
 					{#if loading}
 						<LoaderCircleIcon class="animate-spin" />

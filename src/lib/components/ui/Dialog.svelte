@@ -22,13 +22,13 @@
 </script>
 
 <Dialog.Root bind:open {...restProps}>
-	<Dialog.Trigger
-		class="rounded-input bg-dark text-background
-	  shadow-mini hover:bg-dark/95 focus-visible:ring-foreground focus-visible:ring-offset-background inline-flex
-	  h-12 items-center justify-center px-[21px] text-[15px] font-semibold whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98]"
-	>
-		{@render trigger?.()}
-	</Dialog.Trigger>
+	<!-- <Dialog.Trigger -->
+	<!-- 	class="rounded-input bg-dark text-background -->
+	<!--   shadow-mini hover:bg-dark/95 focus-visible:ring-foreground focus-visible:ring-offset-background inline-flex -->
+	<!--   h-12 items-center justify-center px-[21px] text-[15px] font-semibold whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98]" -->
+	<!-- > -->
+	<!-- 	{@render trigger?.()} -->
+	<!-- </Dialog.Trigger> -->
 	<Dialog.Portal>
 		<Dialog.Overlay
 			class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80"

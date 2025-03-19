@@ -1,22 +1,12 @@
 <script lang="ts">
-	import {
-		ArrowLeft,
-		CirclePlusIcon,
-		Loader2Icon,
-		PlusIcon,
-		StarIcon,
-		UsersIcon
-	} from 'lucide-svelte'
-	import type { CreateQuotationClient, Customer, Product, QuotationItem } from '$lib/types'
+	import { CirclePlusIcon, Loader2Icon, StarIcon, UsersIcon } from 'lucide-svelte'
+	import type { Customer, Product } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
 	import ItemsQuotationTable from '$lib/components/ItemsQuotationTable.svelte'
 	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
 	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
-	import { getQuotationContext, INITIAL_QUOTATION_STATE } from '$lib/contexts/quotation.svelte'
-	import { QUOTATIONS_KEY } from '$lib/constants'
-	import compare from 'just-compare'
-	import Dialog from './ui/Dialog.svelte'
+	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
 
 	type Props = {
 		customersPromise: Promise<Customer[]>
@@ -35,10 +25,13 @@
 		onDuplicateItem,
 		onCloseCreateEditItemDialog,
 		onMoveDownItem,
-		onOpenCreateEditItemDialog,
-		closeRecuperationDialog,
-		reset
+		onOpenCreateEditItemDialog
 	} = getQuotationContext()
+
+	console.log(store)
+
+	let showCustomerPickDialog = $state(false)
+	let showCreditOption = $state(store.quotation.credit ? true : false)
 </script>
 
 <!-- <div> -->
@@ -46,12 +39,8 @@
 <!--     {JSON.stringify(getQuotationContext(), null, 2)} -->
 <!--   </pre> -->
 <!-- </div> -->
-{#if store.showCustomerPickDialog}
-	<CustomerPickDialog
-		{customersPromise}
-		bind:showModal={store.showCustomerPickDialog}
-		{setCustomer}
-	/>
+{#if showCustomerPickDialog}
+	<CustomerPickDialog {customersPromise} bind:showModal={showCustomerPickDialog} {setCustomer} />
 {/if}
 <div class="flex flex-col gap-8 pt-4 pb-8">
 	<article class="">
@@ -117,14 +106,9 @@
 			</div>
 			<div class="col-span-6 flex h-10 items-center gap-2">
 				<label class="label" for="showCredit"> Credito </label>
-				<input
-					bind:checked={store.showCreditOption}
-					id="showCredit"
-					type="checkbox"
-					class="toggle"
-				/>
+				<input bind:checked={showCreditOption} id="showCredit" type="checkbox" class="toggle" />
 			</div>
-			{#if store.showCreditOption}
+			{#if showCreditOption}
 				<div class="col-span-6 flex items-center gap-2">
 					<label class="label grid gap-2" for="credit"> Credito </label>
 					<input
@@ -145,7 +129,7 @@
 				<button
 					aria-label="seleccionar cliente"
 					class="btn"
-					onclick={() => (store.showCustomerPickDialog = true)}
+					onclick={() => (showCustomerPickDialog = true)}
 				>
 					<UsersIcon size={20} /> Clientes
 				</button>

@@ -30,7 +30,7 @@
 	}
 </script>
 
-<div class="relative flex-1">
+<div class="relative w-full">
 	<button
 		class={[
 			'text-base-content/60 flex w-full items-center justify-center border border-transparent px-2 text-center',
@@ -53,7 +53,7 @@
 			bind:this={inputRef}
 			{name}
 			class={[
-				'absolute inset-0 resize-none px-2 text-center outline-none',
+				'absolute inset-0 min-w-[300px] resize-none px-2 text-center outline-none',
 				isEditing ? 'opacity-100 ' : 'pointer-events-none opacity-0'
 			]}
 			{value}

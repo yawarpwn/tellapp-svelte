@@ -41,7 +41,7 @@
 <div
 	class=" rounded-box border-base-content/5 bg-base-10 hidden flex-col gap-2 overflow-x-auto border md:flex"
 >
-	<table class="table-zebra table">
+	<table class="table-zebra table [&_td]:p-1">
 		<thead>
 			<tr>
 				<th>Item</th>
@@ -57,25 +57,27 @@
 			{#each items as item, index (item.id)}
 				{@const formatedTotal = formatNumberToLocal(item.price * item.qty)}
 				<tr animate:flip={{ duration: 300 }}>
-					<td class="flex items-center gap-1">
-						<button
-							disabled={index === 0}
-							class="bg-base-200 hover:bg-base-300 cursor-pointer rounded-md p-1 disabled:cursor-none disabled:opacity-30"
-							type="button"
-							onclick={() => onMoveUpItem(index)}
-						>
-							<ChevronUp size={12} />
-						</button>
-						<button
-							disabled={index === items.length - 1}
-							class="bg-base-200 hover:bg-base-300 cursor-pointer rounded-md p-1 disabled:cursor-none disabled:opacity-30"
-							type="button"
-							onclick={() => onMoveDownItem(index)}
-						>
-							<ChevronDown size={12} />
-						</button>
-					</td>
 					<td>
+						<div>
+							<button
+								disabled={index === 0}
+								class="bg-base-200 hover:bg-base-300 cursor-pointer rounded-md p-1 disabled:cursor-none disabled:opacity-30"
+								type="button"
+								onclick={() => onMoveUpItem(index)}
+							>
+								<ChevronUp size={12} />
+							</button>
+							<button
+								disabled={index === items.length - 1}
+								class="bg-base-200 hover:bg-base-300 cursor-pointer rounded-md p-1 disabled:cursor-none disabled:opacity-30"
+								type="button"
+								onclick={() => onMoveDownItem(index)}
+							>
+								<ChevronDown size={12} />
+							</button>
+						</div>
+					</td>
+					<td class="min-w-[500px]">
 						<TextEditInput
 							as="textarea"
 							value={item.description}

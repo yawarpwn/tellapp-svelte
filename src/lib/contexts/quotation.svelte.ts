@@ -1,8 +1,5 @@
-import { QUOTATIONS_KEY } from '$lib/constants'
 import type { CreateQuotationClient, Customer, QuotationItem, QuotationCustomer } from '$lib/types'
 import { getContext, setContext } from 'svelte'
-
-const QUOTATION_KEY = Symbol('quotation')
 
 export const INITIAL_QUOTATION_STATE: CreateQuotationClient = {
 	id: undefined,
@@ -23,42 +20,16 @@ export const INITIAL_QUOTATION_STATE: CreateQuotationClient = {
 type StoreState = {
 	quotation: CreateQuotationClient
 	showCreateEditModal: boolean
-	showCreditOption: boolean
-	showCustomerPickDialog: boolean
-	showRecuperationDialog: boolean
 	selectedItemId: null | string
 	pending: boolean
 }
 
-type StoreMethods = {
-	onAddItem: (item: QuotationItem) => void
-	onDeleteItem: (id: string) => void
-	onEditItem: (item: QuotationItem) => void
-	onDuplicateItem: (id: string) => void
-	onMoveUpItem: (index: number) => void
-	onMoveDownItem: (index: number) => void
-	onSelectItem: (id: string) => void
-	onCloseCreateEditItemDialog: () => void
-	onOpenCreateEditItemDialog: () => void
-	closeRecuperationDialog: () => void
-	setCustomer: (customer: QuotationCustomer, customerId?: string) => void
-	setQuotation: (quo: CreateQuotationClient) => void
-	reset: () => void
-}
-
-type StoreContext = {
-	store: StoreState
-} & StoreMethods
-
-export function setQuotationContext(initialQuotation?: CreateQuotationClient) {
+export function createQuotationState(initialQuotation: CreateQuotationClient) {
 	const store = $state<StoreState>({
 		quotation: initialQuotation || INITIAL_QUOTATION_STATE,
 		showCreateEditModal: false,
-		showCreditOption: false,
-		showCustomerPickDialog: false,
 		selectedItemId: null,
-		pending: false,
-		showRecuperationDialog: false
+		pending: false
 	})
 
 	function onSelectItem(id: string) {
@@ -145,15 +116,11 @@ export function setQuotationContext(initialQuotation?: CreateQuotationClient) {
 		store.selectedItemId = null
 	}
 
-	function closeRecuperationDialog() {
-		store.showRecuperationDialog = false
-	}
-
 	function reset() {
 		store.quotation = INITIAL_QUOTATION_STATE
 	}
 
-	const context: StoreContext = {
+	return {
 		store,
 		onAddItem: handleAddItem,
 		onDeleteItem: handleDeleteItem,
@@ -164,15 +131,17 @@ export function setQuotationContext(initialQuotation?: CreateQuotationClient) {
 		onSelectItem,
 		onCloseCreateEditItemDialog,
 		onOpenCreateEditItemDialog,
-		closeRecuperationDialog,
 		setCustomer,
 		setQuotation,
 		reset
 	}
-
-	setContext(QUOTATION_KEY, context)
 }
 
+const QUOTATION_KEY = Symbol('quotation')
+
+export function setQuotationContext(initialQuotation: CreateQuotationClient) {
+	return setContext(QUOTATION_KEY, createQuotationState(initialQuotation))
+}
 export function getQuotationContext() {
-	return getContext(QUOTATION_KEY) as StoreContext
+	return getContext<ReturnType<typeof setQuotationContext>>(QUOTATION_KEY)
 }
