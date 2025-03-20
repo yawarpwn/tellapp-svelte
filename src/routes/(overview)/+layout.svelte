@@ -79,15 +79,18 @@
 <Toaster
 	theme="dark"
 	position="bottom-right"
+	closeButton
 	toastOptions={{
 		unstyled: true,
 		classes: {
-			toast: 'bg-base-300 p-4 rounded-md min-w-[300px]',
+			toast: 'bg-base-300 p-4 rounded-md ',
 			title: 'text-red-400',
 			description: 'text-red-400',
 			actionButton: 'bg-zinc-400',
 			cancelButton: 'bg-orange-400',
-			closeButton: 'bg-lime-400'
+			closeButton: 'bg-lime-400',
+			error: 'bg-warning text-warning-content',
+			success: 'bg-success text-success-content'
 		}
 	}}
 />

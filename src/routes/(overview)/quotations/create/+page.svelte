@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types'
 	import CreateUpdateQuotation from '$lib/components/CreateUpdateQuotation.svelte'
-	import { toast } from '$lib/toaster'
+	import { toast } from 'svelte-sonner'
 	import { FilePlusIcon, FilesIcon } from 'lucide-svelte'
 	import {
 		setQuotationContext,
@@ -16,11 +16,11 @@
 
 	const { data, form }: PageProps = $props()
 
-	console.log('___', form?.errors)
-
 	$effect(() => {
 		if (form?.errors) {
-			toast(JSON.stringify(form.errors))
+			toast.error(JSON.stringify(form.errors, null, 2), {
+				duration: 5000
+			})
 		}
 	})
 

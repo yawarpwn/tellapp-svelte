@@ -9,8 +9,9 @@
 	} from 'lucide-svelte'
 	import { toast } from 'svelte-sonner'
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
+	import type { Customer } from '$lib/types'
 
-	const { store, resetCustomer } = getQuotationContext()
+	const { store, resetCustomer, setCustomer } = getQuotationContext()
 
 	type Props = {
 		onSearchCustomer: (
@@ -43,33 +44,30 @@
 			return
 		}
 
-		async function promise() {
-			store.pending = true
+		store.pending = true
+		try {
 			const res = await fetch(`/api/search-customer/${ruc}`)
-			return await res.json()
+			const data = (await res.json()) as { customer: Customer }
+			onSearchCustomer(data.customer, data.customer?.id)
+			toast.success(`${ruc}`, {
+				description: data.customer.name
+			})
+		} catch (error) {
+			toast.error(`${ruc}`, {
+				description: 'Ruc NO encontrado en base de datos'
+			})
+			setCustomer(
+				{
+					name: '',
+					ruc: ruc,
+					address: '',
+					isRegular: false
+				},
+				undefined
+			)
+		} finally {
+			store.pending = false
 		}
-
-		toast.promise(promise, {
-			loading: 'Buscando cliente...',
-			success: (data) => {
-				onSearchCustomer(data.customer, data.customer?.id)
-				store.pending = false
-				return 'Cliente encontrado'
-			},
-			error: () => {
-				store.pending = false
-				onSearchCustomer(
-					{
-						name: '',
-						ruc: '',
-						address: '',
-						isRegular: false
-					},
-					undefined
-				)
-				return `Ruc: ${ruc} no encontrado`
-			}
-		})
 	}
 </script>
 
