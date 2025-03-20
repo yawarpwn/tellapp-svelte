@@ -14,7 +14,6 @@
 		products: Product[]
 		showCreateEditModal: boolean
 		closeModal: () => void
-		item?: QuotationItem | null
 		onAddItem: (_item: QuotationItem) => void
 		onEditItem: (_item: QuotationItem) => void
 	}
@@ -23,7 +22,6 @@
 		onAddItem,
 		onEditItem,
 		closeModal,
-		item: itemToEdit,
 		showCreateEditModal = $bindable()
 	}: Props = $props()
 
@@ -42,20 +40,6 @@
 		}
 	)
 	let searchTerm = $state('')
-
-	// $effect(() => {
-	// 	// if (itemToEdit) {
-	// 	// 	item = {
-	// 	// 		...itemToEdit
-	// 	// 	}
-	// 	// }
-	// 	const timer = setTimeout(() => {
-	// 		inputSearch.focus()
-	// 	}, 100)
-	// 	return () => {
-	// 		clearTimeout(timer)
-	// 	}
-	// })
 
 	const hits = $derived(
 		products.filter(
@@ -105,13 +89,13 @@
 							{hit.description}
 						</div>
 						<div class="flex items-center justify-between gap-2">
-							<span class="badge px-2 lowercase">
+							<span class="badge badge-neutral px-2 py-0.5 lowercase">
 								{hit.unitSize}
 							</span>
-							<span class="badge badge-accent px-2 uppercase">
+							<span class="badge badge-accent basis-[120px] px-2 py-0.5 uppercase">
 								{hit.code}
 							</span>
-							<span class="badge px-2">
+							<span class="badge badge-neutral px-2 py-0.5">
 								{formatNumberToLocal(hit.price)}
 							</span>
 						</div>
@@ -151,10 +135,18 @@
 					class="textarea h-[90px] w-full resize-none p-2"
 					bind:value={item.description}
 				></textarea>
+				{#if item.link}
+					<div class="text-center">
+						<button
+							onclick={() => (item.link = undefined)}
+							class="text-primary cursor-pointer text-sm italic">Borrar Link</button
+						>
+					</div>
+				{/if}
 			</div>
 
 			<div class="flex gap-4">
-				<div class="grid w-full gap-2">
+				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="qty"> Cantidad </label>
 					<input
 						bind:this={qtyInput}
@@ -165,7 +157,7 @@
 						bind:value={item.qty}
 					/>
 				</div>
-				<div class="grid w-full gap-2">
+				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="unitSize"> Unidad/Medida </label>
 					<input
 						class="input"
@@ -177,11 +169,11 @@
 				</div>
 			</div>
 			<div class="flex gap-4">
-				<div class="grid w-full gap-2">
+				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="price"> Precio </label>
 					<input class="input" id="price" type="number" name="price" bind:value={item.price} />
 				</div>
-				<div class="grid w-full gap-2">
+				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="cost"> Costo </label>
 					<input class="input" id="cost" disabled name="cost" value={item.cost} />
 				</div>

@@ -1,15 +1,16 @@
-import { onDestroy } from 'svelte'
+import { writable, get } from 'svelte/store'
 type Toast = {
 	id: string
 	message: string
 }
 function createToastState() {
-	let toasts = $state<Toast[]>([])
+	let toasts = writable<Toast[]>([])
+	console.log('toasts', toasts)
 	let toastToTimeupMap = new Map<string, number>()
 
 	function addToast(message: string, duration = 5000) {
 		const id = crypto.randomUUID()
-		toasts.push({ id, message })
+		toasts.update((toast) => [{ id, message }, ...toast])
 
 		const timeoutId = setTimeout(() => {
 			removeToast(id)
@@ -23,22 +24,22 @@ function createToastState() {
 			clearTimeout(timeoutId)
 			toastToTimeupMap.delete(id)
 		}
-		toasts = toasts.filter((toast) => toast.id !== id)
+		toasts.update((prev) => prev.filter((toast) => toast.id !== id))
 	}
 
-  function reset() {
-    toasts = []
-    for (const timeoutId of toastToTimeupMap.values()) {
-      clearTimeout(timeoutId)
-    }
-    toastToTimeupMap.clear()
-  }
+	function reset() {
+		toasts.set = []
+		for (const timeoutId of toastToTimeupMap.values()) {
+			clearTimeout(timeoutId)
+		}
+		toastToTimeupMap.clear()
+	}
 
 	return {
 		toasts,
 		addToast,
 		removeToast,
-    reset()
+		reset
 	}
 }
 

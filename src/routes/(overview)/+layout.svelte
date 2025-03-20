@@ -69,7 +69,7 @@
 	</div>
 	<div class="drawer-side z-40" style="view-transition-name: sidebar;">
 		<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-		<aside class="bg-base-100/80 h-screen w-60 border-r border-zinc-800 backdrop-blur-md">
+		<aside class="bg-base-100/90 h-screen w-60 border-r border-zinc-800 backdrop-blur-md">
 			<Sidebar {closeDrawer} />
 		</aside>
 	</div>

@@ -27,7 +27,8 @@ export const actions = {
 
 		if (!result.success) {
 			console.log('error')
-			console.log(result.error)
+			console.log(result.error.flatten().fieldErrors)
+			return fail(403, { errors: result.error.flatten().fieldErrors })
 		}
 
 		console.log('success')

@@ -24,7 +24,7 @@ type StoreState = {
 	pending: boolean
 }
 
-export function createQuotationState(initialQuotation: CreateQuotationClient) {
+export function createQuotationState(initialQuotation?: CreateQuotationClient) {
 	const store = $state<StoreState>({
 		quotation: initialQuotation || INITIAL_QUOTATION_STATE,
 		showCreateEditModal: false,
@@ -87,6 +87,16 @@ export function createQuotationState(initialQuotation: CreateQuotationClient) {
 		]
 	}
 
+	function resetCustomer() {
+		setCustomer({
+			name: '',
+			ruc: '',
+			address: '',
+			isRegular: false
+		})
+		store.quotation.customerId = undefined
+	}
+
 	function move(currentIndex: number, nextIndex: number) {
 		const newItems = [...store.quotation.items]
 		newItems[currentIndex] = store.quotation.items[nextIndex]
@@ -133,13 +143,14 @@ export function createQuotationState(initialQuotation: CreateQuotationClient) {
 		onOpenCreateEditItemDialog,
 		setCustomer,
 		setQuotation,
-		reset
+		reset,
+		resetCustomer
 	}
 }
 
 const QUOTATION_KEY = Symbol('quotation')
 
-export function setQuotationContext(initialQuotation: CreateQuotationClient) {
+export function setQuotationContext(initialQuotation?: CreateQuotationClient) {
 	return setContext(QUOTATION_KEY, createQuotationState(initialQuotation))
 }
 export function getQuotationContext() {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types'
 	import CreateUpdateQuotation from '$lib/components/CreateUpdateQuotation.svelte'
-	import { toast } from 'svelte-sonner'
+	import { toast } from '$lib/toaster'
 	import { FilePlusIcon, FilesIcon } from 'lucide-svelte'
 	import {
 		setQuotationContext,
@@ -16,9 +16,11 @@
 
 	const { data, form }: PageProps = $props()
 
+	console.log('___', form?.errors)
+
 	$effect(() => {
-		if (form?.error) {
-			toast(form.error)
+		if (form?.errors) {
+			toast(JSON.stringify(form.errors))
 		}
 	})
 
@@ -69,8 +71,9 @@
 			<div class="flex justify-between">
 				<button
 					onclick={() => {
-						closeRecuperationDialog()
+						localStorage.removeItem(QUOTATIONS_KEY)
 						reset()
+						closeRecuperationDialog()
 					}}
 					class="btn">Cancelar</button
 				>

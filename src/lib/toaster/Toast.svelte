@@ -1,6 +1,6 @@
 <script lang="ts">
 	const { toast } = $props()
-	import { toastState } from './toast-state.svelte'
+	import { toastState } from './toast-state'
 	import XIcon from 'lucide-svelte/icons/x'
 </script>
 
@@ -12,7 +12,7 @@
 	<button
 		class="absolute top-2 right-2 size-5"
 		onclick={() => {
-			toastState.remove(toast.id)
+			toastState.removeToast(toast.id)
 		}}
 	>
 		<span class="sr-only">close toast</span>

@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { CirclePlusIcon, Loader2Icon, StarIcon, UsersIcon } from 'lucide-svelte'
+	import {
+		CalendarDaysIcon,
+		CirclePlusIcon,
+		Loader2Icon,
+		MapPinIcon,
+		StarIcon,
+		UserIcon,
+		UsersIcon
+	} from 'lucide-svelte'
 	import type { Customer, Product } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
@@ -49,39 +57,53 @@
 <div class="flex flex-col gap-8 pt-4 pb-8">
 	<article class="">
 		<!-- Inputs -->
-		<div class="grid grid-cols-12 gap-6">
+		<div class="grid grid-cols-12 gap-5">
 			<!-- Search customer by ruc form -->
 			<SearchCustomer onSearchCustomer={setCustomer} ruc={store.quotation.customer?.ruc} />
-			<div class="col-span-4 grid gap-2 lg:col-span-6">
-				<label class="label grid gap-2" for="deadline"> Entrega </label>
-				<input
-					class="input w-full"
-					required
-					type="number"
-					id="deadline"
-					bind:value={store.quotation.deadline}
-					disabled={store.pending}
-				/>
+
+			<!-- Tiempo Entrega -->
+			<div class="order-6 col-span-12 grid gap-1 lg:order-none lg:col-span-6">
+				<label class="label grid gap-2 text-sm" for="deadline"> Tiempo Entrega (Dias) </label>
+				<div class="input w-full">
+					<CalendarDaysIcon class="h-[1.2em] opacity-50" />
+					<input
+						class="w-full"
+						required
+						type="number"
+						id="deadline"
+						bind:value={store.quotation.deadline}
+						disabled={store.pending}
+					/>
+					<span class="badge badge-warning badge-xs">Requerido</span>
+				</div>
 			</div>
 
 			<!-- Cliente -->
-			<div class="col-span-12 grid gap-2 md:col-span-3 lg:col-span-6">
-				<label class="label grid gap-2" for="customer.name"> Cliente </label>
+			<div class="col-span-12 grid gap-1 md:col-span-3 lg:col-span-6">
+				<label class="label text-sm" for="customer.name"> Razón Social / Nombre Cliente </label>
 				{#if store.quotation.customer?.name}
 					<p class="text-green-200" id="customer.name">{store.quotation.customer.name}</p>
 				{:else}
-					<div class="bg-base-content/5 h-12 rounded-lg"></div>
+					<div class="input w-full">
+						<UserIcon class="h-[1.2em] opacity-50" />
+						<input class="" type="text" disabled={store.pending} />
+						<span class="badge badge-neutral badge-xs">Opcional</span>
+					</div>
 				{/if}
 			</div>
 
 			<!-- Direccion -->
-			<div class="col-span-12 grid gap-2 md:col-span-6">
-				<label class="label grid gap-2" for="address"> Dirección </label>
+			<div class="col-span-12 grid gap-1 md:col-span-6">
+				<label class="label grid gap-2 text-sm" for="address"> Dirección Cliente</label>
 
 				{#if store.quotation.customer?.address}
 					<p class="text-green-200" id="address">{store.quotation.customer.address}</p>
 				{:else}
-					<div class="bg-base-content/5 h-12 rounded-lg"></div>
+					<div class="input w-full" aria-disabled="true">
+						<MapPinIcon class="h-[1.2em] opacity-50" />
+						<input type="text" disabled={store.pending} />
+						<span class="badge badge-neutral badge-xs">Opcional</span>
+					</div>
 				{/if}
 			</div>
 
@@ -90,8 +112,9 @@
 				<label class="fieldset-label" for="includeIgv">
 					<input
 						type="checkbox"
+						disabled={store.pending}
 						bind:checked={store.quotation.includeIgv}
-						class="checkbox checkbox-primary"
+						class="checkbox checkbox-primary checkbox-sm"
 						id="includeIgv"
 					/>
 					Incluir IGV
@@ -119,12 +142,12 @@
 			</div>
 
 			<!-- Credito -->
-			<div class="col-span-12 grid gap-2 overflow-x-auto">
-				<div class="label">Crédito</div>
-				<div class="flex gap-2">
+			<div class="col-span-12 grid gap-1">
+				<div class="label textsm">Crédito</div>
+				<div class="flex gap-2 overflow-x-auto">
 					{#each Object.entries(CREDIT_OPTION) as [key, value]}
 						<label
-							class="btn data-[active=true]:btn-accent min-w-[100px] md:min-w-[150px]"
+							class="btn data-[active=true]:btn-primary min-w-[100px] md:min-w-[150px]"
 							data-active={store.quotation.credit === value ? 'true' : 'false'}
 						>
 							{key}
@@ -137,7 +160,7 @@
 
 		<!-- Items  -->
 		<div class="my-6 flex items-center justify-between">
-			<h2 class="font-bold">Productos</h2>
+			<h2 class="font-bold">Items</h2>
 			<div>
 				<button
 					aria-label="seleccionar cliente"
@@ -176,10 +199,11 @@
 		/>
 
 		<footer class="mt-4 flex items-center justify-between">
-			<button disabled={store.pending} type="button" class="btn">
+			<button disabled={store.pending} type="button" class="btn min-w-[150px]">
 				<a href="/quotations">Cancelar</a>
 			</button>
 			<form
+				class="min-w-[150px]"
 				method="POST"
 				use:enhance={() => {
 					store.pending = true
@@ -193,8 +217,8 @@
 			>
 				<input type="hidden" name="quotation" value={JSON.stringify(store.quotation)} />
 				<button
-					class="btn btn-primary"
-					disabled={store.quotation.items.length === 0 || store.pending}
+					disabled={store.pending || store.quotation.items.length === 0}
+					class="btn btn-wide btn-primary"
 					type="submit"
 				>
 					{store.quotation.id ? 'Actualizar' : 'Crear'}

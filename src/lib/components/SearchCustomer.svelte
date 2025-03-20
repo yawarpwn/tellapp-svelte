@@ -1,6 +1,16 @@
 <script lang="ts">
-	import { Loader2Icon, SearchIcon } from 'lucide-svelte'
+	import {
+		AppWindowMacIcon,
+		Loader2Icon,
+		SearchIcon,
+		UsersIcon,
+		UsersRoundIcon,
+		XIcon
+	} from 'lucide-svelte'
 	import { toast } from 'svelte-sonner'
+	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
+
+	const { store, resetCustomer } = getQuotationContext()
 
 	type Props = {
 		onSearchCustomer: (
@@ -17,12 +27,15 @@
 	}
 	const { onSearchCustomer, ruc }: Props = $props()
 
-	let pending = $state(false)
-
 	async function handleSubmit(ev: SubmitEvent) {
 		ev.preventDefault()
 		const formData = new FormData(ev.currentTarget as HTMLFormElement)
 		const ruc = formData.get('ruc') as string
+
+		if (ruc === '') {
+			resetCustomer()
+			return
+		}
 
 		// Válida si el ruc es de 11 digitos
 		if (ruc.length !== 11) {
@@ -31,7 +44,7 @@
 		}
 
 		async function promise() {
-			pending = true
+			store.pending = true
 			const res = await fetch(`/api/search-customer/${ruc}`)
 			return await res.json()
 		}
@@ -40,11 +53,11 @@
 			loading: 'Buscando cliente...',
 			success: (data) => {
 				onSearchCustomer(data.customer, data.customer?.id)
-				pending = false
+				store.pending = false
 				return 'Cliente encontrado'
 			},
 			error: () => {
-				pending = false
+				store.pending = false
 				onSearchCustomer(
 					{
 						name: '',
@@ -60,26 +73,30 @@
 	}
 </script>
 
-<form onsubmit={handleSubmit} class="col-span-8 grid gap-2 lg:col-span-6">
-	<label class="label" for="ruc"> Ruc </label>
-	<div class="relative">
+<form onsubmit={handleSubmit} class="col-span-12 grid gap-1 lg:col-span-6">
+	<label class="label text-sm" for="ruc"> Ruc </label>
+	<div class="input w-full">
+		<SearchIcon class="h-[1.2em] opacity-50" />
 		<input
 			id="ruc"
 			name="ruc"
-			disabled={pending}
-			required
-			minlength="11"
-			maxlength="11"
-			class="input w-full"
-			defaultValue={ruc ?? ''}
+			disabled={store.pending}
+			type="search"
+			class="grow"
+			bind:value={store.quotation.customer.ruc}
 			placeholder="20610555536"
 		/>
 		<button
-			disabled={pending}
-			type="submit"
-			class="hover:bg-base-300 absolute top-1/2 right-1 -translate-y-1/2 cursor-pointer rounded-md p-1 disabled:opacity-50"
+			disabled={store.pending}
+			type="button"
+			onclick={resetCustomer}
+			class="bg-base-200 absolute right-1 z-10 cursor-pointer rounded-full p-1.5 disabled:opacity-50"
 		>
-			<SearchIcon />
+			{#if store.pending}
+				<Loader2Icon class="size-3 animate-spin opacity-50" />
+			{:else}
+				<XIcon class="size-3 opacity-50 hover:opacity-100" />
+			{/if}
 		</button>
 	</div>
 </form>
