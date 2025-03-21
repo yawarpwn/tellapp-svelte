@@ -77,8 +77,12 @@ export async function createQuotation(newQuotation: CreateQuotationClient, apiKe
 	return data.insertedNumber
 }
 
-export async function updateQuotation(quotationToUpdate: UpdateQuotationClient, apiKey: string) {
-	const url = `${BASE_URL}/api/quotations/${quotationToUpdate.id}`
+export async function updateQuotation(
+	quotationToUpdate: UpdateQuotationClient,
+	quotationId: string,
+	apiKey: string
+) {
+	const url = `${BASE_URL}/api/quotations/${quotationId}`
 	const updateQuotation = await fetchData<QuotationClient>(url, {
 		method: 'PUT',
 		body: JSON.stringify(quotationToUpdate),

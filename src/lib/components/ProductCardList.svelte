@@ -108,7 +108,7 @@
 						name="price"
 						type="number"
 					/>
-					<div class="lex justify-center rounded px-2 md:px-8">
+					<div class="text-base-content/80 flex justify-center rounded px-2 md:px-8">
 						S/ {item.price * item.qty}
 					</div>
 				</div>

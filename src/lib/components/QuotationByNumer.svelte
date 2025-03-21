@@ -23,12 +23,6 @@
 	const { formatedTotal, formatedSubTotal, formatedIgv } = getIgv(quotation.items)
 </script>
 
-<Breadcrumbs
-	breadcrumbs={[
-		{ label: 'Cotizaciones', href: '/quotations', icon: FilesIcon },
-		{ label: `#${quotation.number}`, icon: FileIcon }
-	]}
-/>
 <div class="mt-2 flex flex-col gap-6">
 	<header class="flex justify-end">
 		<div class="flex gap-1">

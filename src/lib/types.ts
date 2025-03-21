@@ -1,3 +1,4 @@
+export type { QuotationClient, CreateQuotationClient, UpdateQuotationClient } from '$lib/schemas'
 // type Prettyfy<T> = {
 // 	[K in keyof T]: T[K];
 // };
@@ -9,30 +10,31 @@ export type CustomerFromService = {
 	address?: string
 	isRegular: boolean
 }
-export type QuotationClient = {
-	id: string
-	number: number
-	deadline: number
-	credit?: number | null
-	includeIgv: boolean
-	isPaymentPending: boolean
-	items: QuotationItem[]
-	createdAt: string
-	updatedAt: string
-	customer?: Omit<Customer, 'createdAt' | 'updatedAt' | 'id'> | null
-	customerId?: string | null
-}
 
-export type CreateQuotationClient = Omit<
-	QuotationClient,
-	'id' | 'number' | 'createdAt' | 'updatedAt'
-> & {
-	id: string | undefined
-}
+// export type QuotationClient = {
+// 	id: string
+// 	number: number
+// 	deadline: number
+// 	credit?: number | null
+// 	includeIgv: boolean
+// 	isPaymentPending: boolean
+// 	items: QuotationItem[]
+// 	createdAt: string
+// 	updatedAt: string
+// 	customer?: Omit<Customer, 'createdAt' | 'updatedAt' | 'id'> | null
+// 	customerId?: string | null
+// }
 
-export type UpdateQuotationClient = Partial<CreateQuotationClient> & {
-	id: string
-}
+// export type CreateQuotationClient = Omit<
+// 	QuotationClient,
+// 	'id' | 'number' | 'createdAt' | 'updatedAt'
+// > & {
+// 	id: string | undefined
+// }
+
+// export type UpdateQuotationClient = Partial<CreateQuotationClient> & {
+// 	id: string
+// }
 
 export type QuotationCustomer = Pick<Customer, 'name' | 'address' | 'ruc' | 'isRegular'>
 

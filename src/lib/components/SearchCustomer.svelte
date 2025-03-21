@@ -81,7 +81,7 @@
 			disabled={store.pending}
 			type="search"
 			class="grow"
-			bind:value={store.quotation.customer.ruc}
+			value={store.quotation?.customer?.ruc || ''}
 			placeholder="20610555536"
 		/>
 		<button

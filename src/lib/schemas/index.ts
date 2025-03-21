@@ -16,13 +16,16 @@ export const quotationItemSchema = z.array(
 			})
 			.optional(),
 		description: z.string(),
-		code: z.string().optional()
+		unitSize: z.string(),
+		code: z.string().optional(),
+		link: z.string().optional()
 	})
 )
 
-export const createQuotationSchema = z.object({
+export const quotationSchema = z.object({
+	id: z.string(),
 	credit: z.number().positive().optional(),
-	includeIgv: z.boolean().default(false),
+	includeIgv: z.boolean(),
 	deadline: z
 		.number({
 			message: 'Fecha de entrega debe ser mayor a 0'
@@ -30,7 +33,7 @@ export const createQuotationSchema = z.object({
 		.positive({
 			message: 'Fecha de entrega ser mayor a 0'
 		}),
-	isPaymentPending: z.boolean().default(false),
+	isPaymentPending: z.boolean(),
 	customerId: z.string().optional(),
 	items: quotationItemSchema.nonempty({
 		message: 'Debes agregar al menos un producto'
@@ -43,5 +46,13 @@ export const createQuotationSchema = z.object({
 			address: z.string().optional(),
 			isRegular: z.boolean().default(false)
 		})
-		.optional()
+		.optional(),
+	createdAt: z.string(),
+	updatedAt: z.string()
 })
+
+export const updateQuotationSchema = quotationSchema.partial()
+
+export type QuotationClient = z.infer<typeof quotationSchema>
+export type CreateQuotationClient = z.infer<typeof quotationSchema>
+export type UpdateQuotationClient = z.infer<typeof updateQuotationSchema>

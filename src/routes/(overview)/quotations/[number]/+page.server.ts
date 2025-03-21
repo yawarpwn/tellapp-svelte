@@ -7,6 +7,7 @@ export const load: PageServerLoad = async ({ request, params }) => {
 	const quotationPromise = fetchQuotaitonByNumber(+params.number, 'kakapichipoto')
 	return {
 		quotationPromise,
+		quotationNumber: params.number,
 		metadata: {
 			title: `Cotización #${params.number}`
 		}

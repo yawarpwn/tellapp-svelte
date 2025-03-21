@@ -7,11 +7,11 @@
 	let { data, form }: PageProps = $props()
 </script>
 
-<div class="main-cover flex h-screen">
+<div class="main-cover flex h-svh">
 	<main class="flex h-full flex-1 flex-col items-center">
 		<div class=" flex flex-1 flex-col justify-center">
 			<article
-				class=" bg-base-300/80 w-[300px] rounded-lg p-6 pt-8 pb-16 shadow-2xl backdrop-blur-md sm:w-[384px]"
+				class=" bg-base-300/80 w-[300px] rounded-lg p-6 pt-8 pb-16 shadow-2xl backdrop-blur-md xl:w-[350px]"
 			>
 				<header class="mb-10">
 					<div class="flex items-center justify-center">
@@ -94,7 +94,7 @@
 			</div>
 			<img
 				alt="Foto en familia"
-				class="h-[800px] rounded-lg object-cover"
+				class="h-1/3 rounded-lg object-cover"
 				src="/johneyder-photo.avif"
 			/>
 		</div>
@@ -111,7 +111,7 @@
 		background-position: center;
 
 		/* Agregar una capa de color semitransparente */
-		background-color: rgba(0, 0, 0, 0.6); /* Blanco con 50% de transparencia */
+		background-color: rgba(0, 0, 0, 0.7); /* Blanco con 50% de transparencia */
 
 		/* Asegurarse de que el contenido no se superponga con el fondo */
 		background-blend-mode: overlay; /*Opcional: mezcla el color con la imagen */

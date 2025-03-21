@@ -44,6 +44,8 @@
 	} = getQuotationContext()
 
 	let showCustomerPickDialog = $state(false)
+
+	$inspect(store.quotation)
 </script>
 
 <!-- <div> -->
@@ -62,7 +64,7 @@
 			<SearchCustomer onSearchCustomer={setCustomer} ruc={store.quotation.customer?.ruc} />
 
 			<!-- Tiempo Entrega -->
-			<div class="order-6 col-span-12 grid gap-1 lg:order-none lg:col-span-6">
+			<div class="col-span-12 grid gap-1 lg:order-none lg:col-span-6">
 				<label class="label grid gap-2 text-sm" for="deadline"> Tiempo Entrega (Dias) </label>
 				<div class="input w-full">
 					<CalendarDaysIcon class="h-[1.2em] opacity-50" />
@@ -216,6 +218,7 @@
 				}}
 			>
 				<input type="hidden" name="quotation" value={JSON.stringify(store.quotation)} />
+				<input type="hidden" name="id" defaultValue={store.quotation.id} />
 				<button
 					disabled={store.pending || store.quotation.items.length === 0}
 					class="btn btn-wide btn-primary"

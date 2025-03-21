@@ -41,7 +41,7 @@
 <div
 	class=" rounded-box border-base-content/5 bg-base-10 hidden flex-col gap-2 overflow-x-auto border md:flex"
 >
-	<table class="table-zebra table [&_td]:p-1">
+	<table class="table-zebra table [&_td]:p-2">
 		<thead>
 			<tr>
 				<th>Item</th>
@@ -115,7 +115,7 @@
 							type="number"
 						/>
 					</td>
-					<td class="text-center">{formatedTotal}</td>
+					<td class="text-base-content/80 text-center">{formatedTotal}</td>
 					<td>
 						<div class="flex items-center gap-1">
 							<button

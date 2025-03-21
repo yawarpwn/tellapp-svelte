@@ -14,6 +14,7 @@
 	const { value, type, onEdit, name, as = 'input' }: Props = $props()
 
 	let isEditing = $state(false)
+	const isTextarea = as === 'textarea'
 
 	function handleBlur(ev: FocusEvent) {
 		const targetElement = ev.target as HTMLInputElement
@@ -30,11 +31,12 @@
 	}
 </script>
 
-<div class="relative w-full">
-	<button
+<div class="relative flex-1">
+	<p
 		class={[
-			'text-base-content/60 flex w-full items-center justify-center border border-transparent px-2 text-center',
-			isEditing ? 'opacity-0' : 'opacity-100'
+			'text-base-content/80 w-full  border border-transparent text-center',
+			isEditing ? 'opacity-0' : 'opacity-100',
+			isTextarea ? 'text-left' : ''
 		]}
 		onclick={async () => {
 			isEditing = true
@@ -47,13 +49,13 @@
 		}}
 	>
 		{value}
-	</button>
+	</p>
 	{#if as === 'textarea'}
 		<textarea
 			bind:this={inputRef}
 			{name}
 			class={[
-				'absolute inset-0 min-w-[300px] resize-none px-2 text-center outline-none',
+				'absolute inset-0 resize-none text-left outline-none',
 				isEditing ? 'opacity-100 ' : 'pointer-events-none opacity-0'
 			]}
 			{value}
