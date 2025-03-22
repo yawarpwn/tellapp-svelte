@@ -24,6 +24,7 @@ export const quotationItemSchema = z.array(
 
 export const quotationSchema = z.object({
 	id: z.string(),
+	number: z.number().positive(),
 	credit: z.number().positive().optional(),
 	includeIgv: z.boolean(),
 	deadline: z
@@ -51,8 +52,15 @@ export const quotationSchema = z.object({
 	updatedAt: z.string()
 })
 
-export const updateQuotationSchema = quotationSchema.partial()
+const createQuotationSchema = quotationSchema.omit({
+	id: true,
+	number: true,
+	createdAt: true,
+	updatedAt: true
+})
+
+export const updateQuotationSchema = createQuotationSchema.partial()
 
 export type QuotationClient = z.infer<typeof quotationSchema>
-export type CreateQuotationClient = z.infer<typeof quotationSchema>
+export type CreateQuotationClient = z.infer<typeof createQuotationSchema>
 export type UpdateQuotationClient = z.infer<typeof updateQuotationSchema>

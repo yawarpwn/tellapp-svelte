@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { CirclePlusIcon, PlusIcon, SearchIcon } from 'lucide-svelte'
+	import { CirclePlusIcon, PlusIcon, SearchIcon, XIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
 	import { page } from '$app/state'
+	import { navigating } from '$app/state'
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
 	import DataTableSkeleton from '$lib/components/DataTableSkeleton.svelte'
@@ -9,38 +10,51 @@
 	let { data }: PageProps = $props()
 	let query = $state(page.url.searchParams.get('q') || '')
 	const currentPage = $derived(page.url.searchParams.get('page') || 1)
-	let timeout: ReturnType<typeof setTimeout>
-	let form: HTMLFormElement
+	let formEl: HTMLFormElement
+	let timeoutId: ReturnType<typeof setTimeout>
 </script>
 
 <div class="flex flex-col gap-4">
 	<div class="flex items-center justify-between">
 		<form
-			bind:this={form}
+			bind:this={formEl}
 			method="GET"
 			action={page.url.pathname}
 			class="relative"
 			data-sveltekit-keepfocus
-			data-sveltekit-noscroll
 		>
-			<label>
+			<label class="input">
+				<SearchIcon class="h-[1em] opacity-50" />
 				<input
 					name="q"
-					type="text"
-					class="input"
-					data-sveltekit-replacestate
+					type="search"
+					class=""
 					placeholder="Buscar..."
-					oninput={(ev) => {
-						clearTimeout(timeout)
-						timeout = setTimeout(() => {
-							form.submit()
-						}, 300)
-					}}
 					value={query}
+					oninput={(ev) => {
+						query = (ev.target as HTMLInputElement).value
+						if (timeoutId) {
+							clearTimeout(timeoutId)
+						}
+
+						timeoutId = setTimeout(() => {
+							formEl.submit()
+						}, 500)
+					}}
 				/>
 				<input name="page" value={1} type="hidden" />
+				{#if query}
+					<button
+						type="button"
+						onclick={(ev) => {
+							query = ''
+						}}
+						class="bg-base-100 text-base-content/50 hover:text-base-content cusrsor-pointer hover:bg-base-300 absolute right-1 z-10 flex size-6 items-center justify-center rounded-full"
+					>
+						<XIcon class="h-[1em]" />
+					</button>
+				{/if}
 			</label>
-			<SearchIcon class="absolute top-1/2 right-3.5 size-4.5 -translate-y-1/2" />
 		</form>
 		<a class="btn btn-primary" href="/quotations/create">
 			<CirclePlusIcon />

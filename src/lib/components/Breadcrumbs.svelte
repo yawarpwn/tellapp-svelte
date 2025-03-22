@@ -16,7 +16,7 @@
 			{@const Icon = icon}
 			<li>
 				{#if href}
-					<a {href}>
+					<a {href} data-sveltekit-preload-data>
 						<!-- render incon -->
 						<Icon size={16} />
 						{label}

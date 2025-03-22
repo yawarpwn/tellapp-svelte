@@ -50,10 +50,18 @@
 									fill={customer.isRegular ? 'var(--color-primary)' : 'transparent'}
 								/>
 							{/if}
-							<a class="btn btn-sm btn-square" href={`/quotations/${number}`}>
+							<a
+								class="btn btn-sm btn-square"
+								href={`/quotations/${number}`}
+								data-sveltekit-preload-data
+							>
 								<EyeIcon class="size-4" />
 							</a>
-							<a class="btn btn-sm btn-square" href={`/quotations/${number}/update`}>
+							<a
+								class="btn btn-sm btn-square"
+								data-sveltekit-preload-data
+								href={`/quotations/${number}/update`}
+							>
 								<EditIcon class="size-4" />
 							</a>
 						</div>
@@ -110,10 +118,18 @@
 					</td>
 					<td>
 						<div class="flex gap-2">
-							<a class="btn btn-square btn-sm" href={`/quotations/${number}`}>
+							<a
+								class="btn btn-square btn-sm"
+								href={`/quotations/${number}`}
+								data-sveltekit-preload-data
+							>
 								<EyeIcon class="size-4" />
 							</a>
-							<a class="btn btn-sm btn-square" href={`/quotations/${number}/update`}>
+							<a
+								class="btn btn-sm btn-square"
+								data-sveltekit-preload-data
+								href={`/quotations/${number}/update`}
+							>
 								<EditIcon class="size-4" />
 							</a>
 						</div>
