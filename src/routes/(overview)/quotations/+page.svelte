@@ -6,6 +6,7 @@
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
 	import DataTableSkeleton from '$lib/components/DataTableSkeleton.svelte'
+	import { onNavigate } from '$app/navigation'
 
 	let { data }: PageProps = $props()
 	let query = $state(page.url.searchParams.get('q') || '')
@@ -14,6 +15,10 @@
 	let timeoutId: ReturnType<typeof setTimeout>
 </script>
 
+{#if navigating.to}
+	<div>Navegando</div>
+	<div>{navigating.to?.url.pathname}</div>
+{/if}
 <div class="flex flex-col gap-4">
 	<div class="flex items-center justify-between">
 		<form
