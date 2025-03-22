@@ -25,10 +25,10 @@
 			bind:this={formEl}
 			method="GET"
 			action={page.url.pathname}
-			class="relative"
+			class="relative max-w-[200px] md:max-w-[350px]"
 			data-sveltekit-keepfocus
 		>
-			<label class="input">
+			<label class="input px-2">
 				<SearchIcon class="h-[1em] opacity-50" />
 				<input
 					name="q"

@@ -2,6 +2,7 @@ import type { Actions, PageServerLoad } from './$types'
 import { createQuotation, fetchCustomers, fetchProducts, searchCustomerByDniOrRuc } from '$lib/data'
 import { fail, redirect } from '@sveltejs/kit'
 import { createQuotationSchema } from '$lib/schemas'
+import { trycatch } from '$lib/utils'
 
 export const load: PageServerLoad = async ({ cookies, platform }) => {
 	const productsPromise = fetchProducts(platform?.env.TELL_API_KEY!)
@@ -29,7 +30,15 @@ export const actions = {
 			return fail(403, { errors: result.error.flatten().fieldErrors })
 		}
 
-		const insertedCustomer = await createQuotation(quotationToInsert, platform?.env.TELL_API_KEY!)
+		const { data: insertedCustomer, error } = await trycatch(
+			createQuotation(quotationToInsert, platform?.env.TELL_API_KEY!)
+		)
+
+		if (error) {
+			return fail(403, {
+				errors: 'Interna server error'
+			})
+		}
 		return redirect(303, `/quotations/${insertedCustomer}`)
 	}
 } satisfies Actions

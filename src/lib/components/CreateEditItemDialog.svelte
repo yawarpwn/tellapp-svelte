@@ -88,14 +88,14 @@
 						<div class="text-muted-foreground line-clamp-2 text-left">
 							{hit.description}
 						</div>
-						<div class="flex items-center justify-between gap-2">
-							<span class="badge badge-neutral px-2 py-0.5 lowercase">
+						<div class="flex items-center justify-between gap-1">
+							<span class="badge badge-neutral px-1 py-0.5 lowercase">
 								{hit.unitSize}
 							</span>
-							<span class="badge badge-accent basis-[120px] px-2 py-0.5 uppercase">
+							<span class="badge badge-accent basis-[120px] px-0.5 py-0.5 uppercase">
 								{hit.code}
 							</span>
-							<span class="badge badge-neutral px-2 py-0.5">
+							<span class="badge badge-neutral px-1 py-0.5">
 								{formatNumberToLocal(hit.price)}
 							</span>
 						</div>

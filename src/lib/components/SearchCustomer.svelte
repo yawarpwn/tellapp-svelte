@@ -74,7 +74,11 @@
 <form onsubmit={handleSubmit} class="col-span-12 grid gap-1 lg:col-span-6">
 	<label class="label text-sm" for="ruc"> Ruc </label>
 	<div class="input w-full">
-		<SearchIcon class="h-[1.2em] opacity-50" />
+		{#if store.pending}
+			<Loader2Icon class="h-[1.2em] animate-spin opacity-50" />
+		{:else}
+			<SearchIcon class="h-[1.2em] opacity-50" />
+		{/if}
 		<input
 			id="ruc"
 			name="ruc"
@@ -82,19 +86,25 @@
 			type="search"
 			class="grow"
 			value={store.quotation?.customer?.ruc || ''}
+			oninput={(ev) => {
+				setCustomer({
+					name: '',
+					ruc: (ev.target as HTMLInputElement).value,
+					address: '',
+					isRegular: false
+				})
+			}}
 			placeholder="20610555536"
 		/>
-		<button
-			disabled={store.pending}
-			type="button"
-			onclick={resetCustomer}
-			class="bg-base-200 absolute right-1 z-10 cursor-pointer rounded-full p-1.5 disabled:opacity-50"
-		>
-			{#if store.pending}
-				<Loader2Icon class="size-3 animate-spin opacity-50" />
-			{:else}
+		{#if store.quotation.customer?.ruc}
+			<button
+				disabled={store.pending}
+				type="button"
+				onclick={resetCustomer}
+				class="bg-base-200 absolute right-1 z-10 cursor-pointer rounded-full p-1.5 disabled:opacity-50"
+			>
 				<XIcon class="size-3 opacity-50 hover:opacity-100" />
-			{/if}
-		</button>
+			</button>
+		{/if}
 	</div>
 </form>

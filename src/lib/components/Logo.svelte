@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="90" viewBox="0 0 125 50"
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70" viewBox="0 0 125 50"
 	><defs
 		><linearGradient id="a"
 			><stop offset="0" style="stop-color:#ff5e00;stop-opacity:1" /><stop

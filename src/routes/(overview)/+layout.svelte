@@ -38,16 +38,16 @@
 		<!-- Navbar -->
 		<header
 			style="view-transition-name: header;"
-			class="navbar bg-base-200 sticky top-0 z-40 h-14 w-full lg:hidden"
+			class="navbar bg-base-200 sticky top-0 z-40 min-h-14 w-full lg:hidden"
 		>
-			<div class="mx-2 flex-1 px-2">
+			<div class="flex-1">
 				<a href="/" class="">
 					<Logo />
 				</a>
 			</div>
 
-			<div class="flex-none">
-				<label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+			<div class="">
+				<label for="my-drawer-3" aria-label="open sidebar" class="cursor-pointer">
 					<svg
 						class=""
 						xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@
 				</label>
 			</div>
 		</header>
-		<main class="main relative px-4 py-2 lg:ml-20 lg:py-8">
+		<main class="main relative overflow-x-hidden px-3 py-2 lg:ml-20 lg:py-8">
 			{@render children()}
 		</main>
 	</div>
