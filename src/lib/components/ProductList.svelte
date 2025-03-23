@@ -1,13 +1,19 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
 	import type { Product } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
 	import { CircleOff, EditIcon, FilesIcon, LinkIcon, Loader2Icon, TrashIcon } from 'lucide-svelte'
-	import Dialog from './ui/Dialog.svelte'
+	import ConfirmDialog from './ConfirmDialog.svelte'
 
 	type Props = {
 		products: Product[]
 		onEdit: (id: string) => void
+	}
+
+	type ConfirmOptions = {
+		id: string
+		action: string
+		description: string
+		title: string
 	}
 	const { products, onEdit }: Props = $props()
 
@@ -18,22 +24,12 @@
 	let dialogDescription = $state('')
 	let dialogTitle = $state('')
 
-	function openConfirmModal({
-		id,
-		action,
-		description,
-		title
-	}: {
-		id: string
-		action: string
-		description: string
-		title: string
-	}) {
+	function openConfirmModal(opt: ConfirmOptions) {
 		showConfirmDialog = true
-		selectedId = id
-		currentAction = action
-		dialogDescription = description
-		dialogTitle = title
+		selectedId = opt.id
+		currentAction = opt.action
+		dialogDescription = opt.description
+		dialogTitle = opt.title
 	}
 
 	function closeConfirmModal() {
@@ -44,35 +40,15 @@
 </script>
 
 {#if showConfirmDialog}
-	<Dialog bind:open={showConfirmDialog}>
-		<div>
-			<h3 class="text-center text-lg font-bold">{dialogTitle}</h3>
-			<p class="py-4 text-center">{dialogDescription}</p>
-		</div>
-		<footer class="flex justify-between">
-			<button disabled={loading} class="btn" onclick={closeConfirmModal}> Cancelar</button>
-			<form
-				method="POST"
-				use:enhance={() => {
-					loading = true
-					return async ({ update }) => {
-						await update()
-						loading = false
-						closeConfirmModal()
-					}
-				}}
-				action={currentAction}
-			>
-				<input name="id" value={selectedId} type="hidden" />
-				<button disabled={loading} class="btn btn-primary">
-					Aceptar
-					{#if loading}
-						<Loader2Icon class="size-4 animate-spin" />
-					{/if}
-				</button>
-			</form>
-		</footer>
-	</Dialog>
+	<ConfirmDialog
+		bind:open={showConfirmDialog}
+		{dialogTitle}
+		{dialogDescription}
+		{currentAction}
+		{loading}
+		{selectedId}
+		closeModal={closeConfirmModal}
+	/>
 {/if}
 
 <div

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import { enhance } from '$app/forms'
-	import { page, navigating } from '$app/state'
 	import { Loader2Icon } from 'lucide-svelte'
 	import type { Product, ProductCategory } from '$lib/types'
 
