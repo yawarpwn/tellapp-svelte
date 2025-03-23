@@ -1,47 +1,66 @@
 <script lang="ts">
-	import { CirclePlusIcon, SearchIcon, TrashIcon, XIcon } from 'lucide-svelte'
+	import { CirclePlusIcon, EditIcon, LinkIcon, SearchIcon, TrashIcon, XIcon } from 'lucide-svelte'
 	import { enhance } from '$app/forms'
-	import type { PageProps } from './$types'
+	import type { ActionData, PageData, PageProps } from './$types'
 	import CreateUpdateProductDialog from '$lib/components/CreateUpdateProductDialog.svelte'
 	import { toast } from 'svelte-sonner'
+	import { formatNumberToLocal } from '$lib/utils'
+	import ProductList from '$lib/components/ProductList.svelte'
 
 	let { data, form = $bindable() }: PageProps = $props()
 
-	let query = ''
+	let searchTerm = $state('')
 	let open = $state(false)
+	let selectedId = $state<null | string>(null)
+	const productToEdit = $derived(data.products.find((p) => p.id === selectedId))
 
-	console.log('form:', form?.errors)
+	function onEdit(id: string) {
+		open = true
+		selectedId = id
+	}
+
+	const filteredProducts = $derived(
+		data.products.filter((p) => {
+			const results =
+				p.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				p.description.toLowerCase().includes(searchTerm.toLowerCase())
+			return results
+		})
+	)
+
+	let timeoutid: ReturnType<typeof setTimeout>
 </script>
 
 {#if open}
-	<CreateUpdateProductDialog bind:open />
+	<CreateUpdateProductDialog
+		bind:open
+		productsCategories={data.productsCategories}
+		{productToEdit}
+	/>
 {/if}
-<form
-	method="POST"
-	action="?/create"
-	use:enhance={() => {
-		return ({ update }) => {
-			update({
-				reset: false
-			})
-		}
-	}}
->
-	<input class="input" name="price" />
-	<button class="btn">Send</button>
-</form>
 <div class="flex flex-col gap-4">
 	<div class="flex items-center justify-between">
-		<form method="GET" class="relative max-w-[200px] md:max-w-[350px]">
+		<form method="GET" class="relative max-w-[180px] md:max-w-[350px]">
 			<label class="input px-2">
 				<SearchIcon class="h-[1em] opacity-50" />
-				<input name="q" type="search" class="" placeholder="Buscar..." />
-				<input name="page" value={1} type="hidden" />
-				{#if query}
+				<input
+					oninput={(ev) => {
+						clearTimeout(timeoutid)
+						timeoutid = setTimeout(() => {
+							searchTerm = (ev.target as HTMLInputElement).value
+						}, 300)
+					}}
+					value={searchTerm}
+					name="q"
+					type="search"
+					class=""
+					placeholder="Buscar..."
+				/>
+				{#if searchTerm}
 					<button
 						type="button"
 						onclick={() => {
-							query = ''
+							searchTerm = ''
 						}}
 						class="bg-base-100 text-base-content/50 hover:text-base-content cusrsor-pointer hover:bg-base-300 absolute right-1 z-10 flex size-6 items-center justify-center rounded-full"
 					>
@@ -55,20 +74,5 @@
 			Crear</button
 		>
 	</div>
-	<div class="flex flex-col gap-4">
-		{#each data.products as product}
-			<article class="card bg-base-200">
-				<div class="card-body">
-					{product.description}
-					<div>
-						<form method="POST" action="?/delete" use:enhance>
-							<button name="id" value={product.id} class="btn btn-square">
-								<TrashIcon class="size-4" />
-							</button>
-						</form>
-					</div>
-				</div>
-			</article>
-		{/each}
-	</div>
+	<ProductList {onEdit} products={filteredProducts.slice(0, 20)} />
 </div>

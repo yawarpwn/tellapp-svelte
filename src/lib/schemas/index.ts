@@ -72,11 +72,14 @@ export const productSchema = z.object({
 	unitSize: z.string(),
 	link: z.string().optional(),
 	createdAt: z.string(),
-	updatedAt: z.string()
+	updatedAt: z.string(),
+	category: z.string(),
+	categoryId: z.coerce.number()
 })
 
 export const createProductSchema = productSchema.omit({
 	id: true,
+	category: true,
 	createdAt: true,
 	updatedAt: true
 })
