@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { CirclePlusIcon, EditIcon, LinkIcon, SearchIcon, TrashIcon, XIcon } from 'lucide-svelte'
-	import { enhance } from '$app/forms'
-	import type { ActionData, PageData, PageProps } from './$types'
+	import type { PageProps } from './$types'
 	import CreateUpdateProductDialog from '$lib/components/CreateUpdateProductDialog.svelte'
 	import { toast } from 'svelte-sonner'
-	import { formatNumberToLocal } from '$lib/utils'
 	import ProductList from '$lib/components/ProductList.svelte'
 
 	let { data, form = $bindable() }: PageProps = $props()

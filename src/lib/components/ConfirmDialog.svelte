@@ -7,7 +7,6 @@
 		dialogTitle: string
 		dialogDescription: string
 		currentAction: string
-		loading: boolean
 		selectedId: string
 		closeModal: () => void
 	}
@@ -17,10 +16,11 @@
 		dialogTitle,
 		dialogDescription,
 		currentAction,
-		loading,
 		selectedId,
 		closeModal
-	} = $props()
+	}: Props = $props()
+
+	let loading = $state(false)
 </script>
 
 <Dialog bind:open>

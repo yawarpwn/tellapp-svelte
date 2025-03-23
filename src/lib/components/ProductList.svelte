@@ -20,7 +20,6 @@
 	let showConfirmDialog = $state(false)
 	let selectedId = $state<undefined | string>(undefined)
 	let currentAction = $state<null | string>(null)
-	let loading = $state(false)
 	let dialogDescription = $state('')
 	let dialogTitle = $state('')
 
@@ -39,13 +38,12 @@
 	}
 </script>
 
-{#if showConfirmDialog}
+{#if showConfirmDialog && selectedId && currentAction}
 	<ConfirmDialog
 		bind:open={showConfirmDialog}
 		{dialogTitle}
 		{dialogDescription}
 		{currentAction}
-		{loading}
 		{selectedId}
 		closeModal={closeConfirmModal}
 	/>
