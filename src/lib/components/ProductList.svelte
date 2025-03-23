@@ -3,14 +3,13 @@
 	import type { Product } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
 	import { CircleOff, EditIcon, FilesIcon, LinkIcon, TrashIcon } from 'lucide-svelte'
+	import ConfirmAction from '$lib/components/ConfirmAction.svelte'
 
 	type Props = {
 		products: Product[]
 		onEdit: (id: string) => void
-		onDelete: (id: string) => void
-		onDuplicate: (id: string) => void
 	}
-	const { products, onEdit, onDelete, onDuplicate }: Props = $props()
+	const { products, onEdit }: Props = $props()
 </script>
 
 <div
@@ -40,35 +39,44 @@
 					<td class="text-center">
 						{item.unitSize}
 					</td>
-					<td class="text-center">
+					<td class="min-w-[120px] text-center">
 						{item.code}
 					</td>
 					<td class="text-center">
-						{item.cost}
+						{formatNumberToLocal(item.cost)}
 					</td>
 					<td class="text-base-content/80 text-center">
-						{item.price}
+						{formatNumberToLocal(item.price)}
 					</td>
 					<td>
 						<div class="flex items-center gap-1">
-							<button
-								class="btn btn-xs btn-square"
-								type="button"
-								onclick={() => onDuplicate(item.id)}
-							>
-								<FilesIcon size={14} />
-							</button>
+							<ConfirmAction message={`Duplicar ${item.code}`} action="?/duplicate" id={item.id}>
+								{#snippet trigger({ openModal })}
+									<button
+										aria-label={`Duplicar item ${item.code}`}
+										class="btn btn-square btn-xs"
+										type="button"
+										onclick={openModal}
+									>
+										<FilesIcon class="size-4" />
+									</button>
+								{/snippet}
+							</ConfirmAction>
 							<button class="btn btn-xs btn-square" type="button" onclick={() => onEdit(item.id)}>
-								<EditIcon size={14} />
+								<EditIcon class="size-4" />
 							</button>
-							<button
-								aria-label="borrar item"
-								class="btn btn-square btn-xs"
-								type="button"
-								onclick={() => onDelete(item.id)}
-							>
-								<TrashIcon size={14} />
-							</button>
+							<ConfirmAction message={`borrar item ${item.code}`} action="?/delete" id={item.id}>
+								{#snippet trigger({ openModal })}
+									<button
+										aria-label={`borrar item ${item.code}`}
+										class="btn btn-square btn-xs"
+										type="button"
+										onclick={openModal}
+									>
+										<TrashIcon class="size-4" />
+									</button>
+								{/snippet}
+							</ConfirmAction>
 						</div>
 					</td>
 				</tr>
@@ -123,11 +131,7 @@
 							</a>
 						{/if}
 
-						<button
-							class="btn btn-xs btn-square"
-							type="button"
-							onclick={() => onDuplicate(product.id)}
-						>
+						<button class="btn btn-xs btn-square" type="button">
 							<FilesIcon class="size-4" />
 						</button>
 						<button onclick={() => onEdit(product.id)} class="btn btn-square btn-sm">

@@ -28,6 +28,18 @@
 		})
 	)
 
+	$effect(() => {
+		console.log('form', form)
+		if (form?.error) {
+			toast.error(JSON.stringify(form.error))
+			return
+		}
+
+		if (form?.success) {
+			toast.success(form.message)
+		}
+	})
+
 	let timeoutid: ReturnType<typeof setTimeout>
 </script>
 

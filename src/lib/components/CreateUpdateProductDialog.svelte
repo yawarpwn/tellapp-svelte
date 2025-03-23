@@ -100,11 +100,11 @@
 		</div>
 		<select
 			disabled={loading}
-			value={productToEdit?.categoryId ?? ''}
+			value={productToEdit?.categoryId ?? 'default'}
 			name="categoryId"
 			class="select w-full"
 		>
-			<option disabled selected>Selecionar Categoria</option>
+			<option value="default" disabled selected>Selecionar Categoria</option>
 			{#each productsCategories as category}
 				<option value={category.id}>{category.name}</option>
 			{/each}
