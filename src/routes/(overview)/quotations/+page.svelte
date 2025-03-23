@@ -6,7 +6,6 @@
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
 	import DataTableSkeleton from '$lib/components/DataTableSkeleton.svelte'
-	import { onNavigate } from '$app/navigation'
 
 	let { data }: PageProps = $props()
 	let query = $state(page.url.searchParams.get('q') || '')
@@ -51,7 +50,7 @@
 				{#if query}
 					<button
 						type="button"
-						onclick={(ev) => {
+						onclick={() => {
 							query = ''
 						}}
 						class="bg-base-100 text-base-content/50 hover:text-base-content cusrsor-pointer hover:bg-base-300 absolute right-1 z-10 flex size-6 items-center justify-center rounded-full"

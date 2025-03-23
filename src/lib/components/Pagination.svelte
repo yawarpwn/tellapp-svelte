@@ -56,17 +56,13 @@
 		'hover:bg-base-300': !isDisabled
 	})}
 
-	<form method="GET" data-sveltekit-reload>
-		<input type="hidden" name="q" value={query} />
-		<input type="hidden" name="page" value={page} />
-		<button type="submit" class={className}>
-			{#if direction === 'left'}
-				<ArrowLeftIcon class="size-4" />
-			{:else}
-				<ArrowRightIcon class="size-4" />
-			{/if}
-		</button>
-	</form>
+	<a href={`quotations?q=${query}&page=${page}`} class={className}>
+		{#if direction === 'left'}
+			<ArrowLeftIcon class="size-4" />
+		{:else}
+			<ArrowRightIcon class="size-4" />
+		{/if}
+	</a>
 {/snippet}
 
 <!-- PaginationNumber -->
@@ -81,16 +77,14 @@
 	{#if isActive || page === '...'}
 		<div class={className}>{page}</div>
 	{:else}
-		<form method="GET" data-sveltekit-reload>
-			<input name="q" type="hidden" value={query} />
-			<input name="page" type="hidden" value={page} />
-			<button type="submit" class={className}>{page}</button>
-		</form>
+		<a href={`quotations?q=${query}&page=${page}`} class={className}>
+			{page}
+		</a>
 	{/if}
 {/snippet}
 
 <div class="flex justify-center">
-	<div class="inline-flex items-center gap-2">
+	<nav class="inline-flex items-center gap-2" data-sveltekit-reload>
 		{@render paginationArrow({
 			direction: 'left',
 			page: currentPage - 1,
@@ -112,5 +106,5 @@
 			isDisabled: currentPage >= totalPages,
 			query
 		})}
-	</div>
+	</nav>
 </div>

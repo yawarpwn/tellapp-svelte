@@ -8,6 +8,11 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 	const url = new URL(request.url)
 	const query = url.searchParams.get('q') || ''
 	const page = url.searchParams.get('page') || '1'
+
+	console.log('GET: ', request.url, {
+		query,
+		page
+	})
 	const data = fetchQuotations(platform?.env?.TELL_API_KEY!, {
 		query,
 		page,
