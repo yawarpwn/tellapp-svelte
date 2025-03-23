@@ -9,14 +9,15 @@
 		open: boolean
 		productsCategories: ProductCategory[]
 		productToEdit?: Product
+		closeModal: () => void
 	}
 
-	let { open = $bindable(false), productsCategories, productToEdit }: Props = $props()
+	let { open = $bindable(false), productsCategories, productToEdit, closeModal }: Props = $props()
 
 	let loading = $state(false)
 </script>
 
-<Dialog bind:open>
+<Dialog bind:open onOpenChange={closeModal}>
 	<form
 		method="POST"
 		action={productToEdit ? '?/update' : '?/create'}

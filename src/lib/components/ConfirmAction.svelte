@@ -44,7 +44,7 @@
 					method="POST"
 					{action}
 				>
-					<!-- <input name="id" type="hidden" value={id} /> -->
+					<input name="id" type="hidden" value={id} />
 					<button type="submit" class="btn btn-primary" disabled={loading}>
 						Aceptar
 						{#if loading}

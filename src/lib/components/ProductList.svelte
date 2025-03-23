@@ -2,15 +2,78 @@
 	import { enhance } from '$app/forms'
 	import type { Product } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
-	import { CircleOff, EditIcon, FilesIcon, LinkIcon, TrashIcon } from 'lucide-svelte'
-	import ConfirmAction from '$lib/components/ConfirmAction.svelte'
+	import { CircleOff, EditIcon, FilesIcon, LinkIcon, Loader2Icon, TrashIcon } from 'lucide-svelte'
+	import Dialog from './ui/Dialog.svelte'
 
 	type Props = {
 		products: Product[]
 		onEdit: (id: string) => void
 	}
 	const { products, onEdit }: Props = $props()
+
+	let showConfirmDialog = $state(false)
+	let selectedId = $state<undefined | string>(undefined)
+	let currentAction = $state<null | string>(null)
+	let loading = $state(false)
+	let dialogDescription = $state('')
+	let dialogTitle = $state('')
+
+	function openConfirmModal({
+		id,
+		action,
+		description,
+		title
+	}: {
+		id: string
+		action: string
+		description: string
+		title: string
+	}) {
+		showConfirmDialog = true
+		selectedId = id
+		currentAction = action
+		dialogDescription = description
+		dialogTitle = title
+	}
+
+	function closeConfirmModal() {
+		showConfirmDialog = false
+		selectedId = undefined
+		currentAction = null
+	}
 </script>
+
+{#if showConfirmDialog}
+	<Dialog bind:open={showConfirmDialog}>
+		<div>
+			<h3 class="text-center text-lg font-bold">{dialogTitle}</h3>
+			<p class="py-4 text-center">{dialogDescription}</p>
+		</div>
+		<footer class="flex justify-between">
+			<button disabled={loading} class="btn" onclick={closeConfirmModal}> Cancelar</button>
+			<form
+				method="POST"
+				use:enhance={() => {
+					loading = true
+					return async ({ update }) => {
+						await update()
+						loading = false
+						closeConfirmModal()
+					}
+				}}
+				action={currentAction}
+			>
+				<input name="id" value={selectedId} type="hidden" />
+				<button disabled={loading} class="btn btn-primary">
+					Aceptar
+					{#if loading}
+						<Loader2Icon class="size-4 animate-spin" />
+					{/if}
+				</button>
+			</form>
+		</footer>
+	</Dialog>
+{/if}
 
 <div
 	class=" rounded-box border-base-content/5 bg-base-10 hidden flex-col gap-2 overflow-x-auto border md:flex"
@@ -28,55 +91,60 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each products as item, product (item.id)}
+			{#each products as product (product.id)}
 				<tr>
 					<td class="min-w-[500px]">
-						{item.description}
+						{product.description}
 					</td>
 					<td>
-						{item.category}
+						{product.category}
 					</td>
 					<td class="text-center">
-						{item.unitSize}
+						{product.unitSize}
 					</td>
 					<td class="min-w-[120px] text-center">
-						{item.code}
+						{product.code}
 					</td>
 					<td class="text-center">
-						{formatNumberToLocal(item.cost)}
+						{formatNumberToLocal(product.cost)}
 					</td>
 					<td class="text-base-content/80 text-center">
-						{formatNumberToLocal(item.price)}
+						{formatNumberToLocal(product.price)}
 					</td>
 					<td>
 						<div class="flex items-center gap-1">
-							<ConfirmAction message={`Duplicar ${item.code}`} action="?/duplicate" id={item.id}>
-								{#snippet trigger({ openModal })}
-									<button
-										aria-label={`Duplicar item ${item.code}`}
-										class="btn btn-square btn-xs"
-										type="button"
-										onclick={openModal}
-									>
-										<FilesIcon class="size-4" />
-									</button>
-								{/snippet}
-							</ConfirmAction>
-							<button class="btn btn-xs btn-square" type="button" onclick={() => onEdit(item.id)}>
+							<button
+								class="btn btn-xs btn-square"
+								type="button"
+								onclick={() =>
+									openConfirmModal({
+										id: product.id,
+										action: '?/duplicate',
+										description: product.description,
+										title: 'Duplicar Producto'
+									})}
+							>
+								<FilesIcon class="size-4" />
+							</button>
+							<button
+								class="btn btn-xs btn-square"
+								type="button"
+								onclick={() => onEdit(product.id)}
+							>
 								<EditIcon class="size-4" />
 							</button>
-							<ConfirmAction message={`borrar item ${item.code}`} action="?/delete" id={item.id}>
-								{#snippet trigger({ openModal })}
-									<button
-										aria-label={`borrar item ${item.code}`}
-										class="btn btn-square btn-xs"
-										type="button"
-										onclick={openModal}
-									>
-										<TrashIcon class="size-4" />
-									</button>
-								{/snippet}
-							</ConfirmAction>
+							<button
+								onclick={() =>
+									openConfirmModal({
+										id: product.id,
+										action: '?/delete',
+										description: product.description,
+										title: 'Borrar Producto'
+									})}
+								class="btn btn-square btn-sm"
+							>
+								<TrashIcon class="size-4" />
+							</button>
 						</div>
 					</td>
 				</tr>
@@ -131,17 +199,34 @@
 							</a>
 						{/if}
 
-						<button class="btn btn-xs btn-square" type="button">
+						<button
+							class="btn btn-xs btn-square"
+							type="button"
+							onclick={() =>
+								openConfirmModal({
+									id: product.id,
+									action: '?/duplicate',
+									description: product.description,
+									title: 'Duplicar Producto'
+								})}
+						>
 							<FilesIcon class="size-4" />
 						</button>
 						<button onclick={() => onEdit(product.id)} class="btn btn-square btn-sm">
 							<EditIcon class="size-4" />
 						</button>
-						<form method="POST" action="?/delete" use:enhance>
-							<button name="id" value={product.id} class="btn btn-square btn-sm">
-								<TrashIcon class="size-4" />
-							</button>
-						</form>
+						<button
+							onclick={() =>
+								openConfirmModal({
+									id: product.id,
+									action: '?/delete',
+									description: product.description,
+									title: 'Borrar Producto'
+								})}
+							class="btn btn-square btn-sm"
+						>
+							<TrashIcon class="size-4" />
+						</button>
 					</div>
 				</div>
 			</div>

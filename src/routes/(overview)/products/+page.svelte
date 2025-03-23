@@ -45,6 +45,10 @@
 
 {#if open}
 	<CreateUpdateProductDialog
+		closeModal={() => {
+			open = false
+			selectedId = null
+		}}
 		bind:open
 		productsCategories={data.productsCategories}
 		{productToEdit}

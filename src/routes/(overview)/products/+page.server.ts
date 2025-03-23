@@ -65,6 +65,10 @@ export const actions = {
 		const id = String(formData.get('id'))
 		const result = updateProductSchema.safeParse(entries)
 
+		if (!id) {
+			return fail(400, { error: 'Id del producto requerido para editar' })
+		}
+
 		if (!result.success) {
 			return fail(403, { error: result.error.flatten().fieldErrors })
 		}
@@ -89,6 +93,7 @@ export const actions = {
 		const id = String(formData.get('id'))
 
 		if (!id) {
+			console.log('sin id')
 			return fail(400, { error: 'Id del producto requerido para duplicar' })
 		}
 
@@ -97,8 +102,10 @@ export const actions = {
 		)
 
 		if (errorProductFond) {
-			return fail(400, { error: 'Interna server error' })
+			return fail(400, { error: 'Error al obtener el producto' })
 		}
+
+		console.log({ productFond })
 
 		const { data, error } = await trycatch(
 			createProduct(
@@ -108,32 +115,33 @@ export const actions = {
 		)
 
 		if (error) {
-			return fail(400, { error: 'Interna server error' })
+			return fail(400, { error: 'Error al duplicar el producto' })
 		}
-
+		console.log({ insertedProduct: data })
 		return {
 			success: true,
-			message: 'Product duplicate successfully'
+			message: 'Producto Duplicado correctamente'
 		}
-
-		// console.log(formData)
 	},
 
 	delete: async ({ cookies, request, platform }) => {
 		console.log('delete product action --->')
 		const formData = await request.formData()
 
-		const { data, error } = await trycatch(
-			deleteProduct(String(formData.get('id')), platform?.env.TELL_API_KEY!)
-		)
+		const id = String(formData.get('id'))
+
+		if (!id) {
+			return fail(400, { error: 'Id del producto requerido para eliminar' })
+		}
+		const { data, error } = await trycatch(deleteProduct(id, platform?.env.TELL_API_KEY!))
 
 		if (error) {
-			fail(500, { error: 'Interna server error' })
+			return fail(500, { error: 'Interna server error' })
 		}
 
 		return {
 			success: true,
-			message: 'Product deleted successfully'
+			message: 'Producto eliminado correctamente'
 		}
 
 		// console.log(formData)

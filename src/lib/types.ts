@@ -117,5 +117,5 @@ export type ProductCategory = {
 }
 
 export type Product = z.infer<typeof productSchema>
-export type CreateProduct = z.infer<typeof createProductSchema>
+export type InsertProduct = z.infer<typeof createProductSchema>
 export type UpdateProduct = z.infer<typeof updateProductSchema>
