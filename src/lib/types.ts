@@ -1,4 +1,6 @@
 export type { QuotationClient, CreateQuotationClient, UpdateQuotationClient } from '$lib/schemas'
+import { createProductSchema, updateProductSchema, productSchema } from '$lib/schemas'
+import type { z } from 'zod'
 // type Prettyfy<T> = {
 // 	[K in keyof T]: T[K];
 // };
@@ -11,55 +13,7 @@ export type CustomerFromService = {
 	isRegular: boolean
 }
 
-// export type QuotationClient = {
-// 	id: string
-// 	number: number
-// 	deadline: number
-// 	credit?: number | null
-// 	includeIgv: boolean
-// 	isPaymentPending: boolean
-// 	items: QuotationItem[]
-// 	createdAt: string
-// 	updatedAt: string
-// 	customer?: Omit<Customer, 'createdAt' | 'updatedAt' | 'id'> | null
-// 	customerId?: string | null
-// }
-
-// export type CreateQuotationClient = Omit<
-// 	QuotationClient,
-// 	'id' | 'number' | 'createdAt' | 'updatedAt'
-// > & {
-// 	id: string | undefined
-// }
-
-// export type UpdateQuotationClient = Partial<CreateQuotationClient> & {
-// 	id: string
-// }
-
 export type QuotationCustomer = Pick<Customer, 'name' | 'address' | 'ruc' | 'isRegular'>
-
-// ------------------------- Products --------------------------------------->
-export type Product = {
-	id: string
-	description: string
-	code: string
-	unitSize: string
-	category: string
-	link: string
-	rank: number
-	price: number
-	cost: number
-	createdAt: string
-	updatedAt: string
-}
-export type InsertProduct = Omit<Product, 'id' | 'createdAt' | 'updatedAt'>
-export type UpdateProduct = Partial<InsertProduct> & { id: string }
-export type ProductCategory = {
-	id: string
-	name: string
-	createdAt: string
-	updatedAt: string
-}
 
 //------------------------- Customer ---------------------------------------->
 export type Customer = {
@@ -156,3 +110,7 @@ export type CloudinarySignature = {
 	apikey: string
 	cloudname: string
 }
+
+export type Product = z.infer<typeof productSchema>
+export type CreateProduct = z.infer<typeof createProductSchema>
+export type UpdateProduct = z.infer<typeof updateProductSchema>

@@ -2,7 +2,10 @@ import type Actions from './$types'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ params, platform, request }) => {
-	console.log(request.url)
+	const url = new URL(request.url)
+	return {
+		q: url.searchParams.get('q')
+	}
 }
 
 export const actions = {

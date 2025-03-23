@@ -2,7 +2,7 @@
 	import { page } from '$app/state'
 	import { pushState } from '$app/navigation'
 	import { navigating } from '$app/state'
-	console.log(navigating)
+	const { data, form } = $props()
 </script>
 
 <h1>A Page</h1>
@@ -17,6 +17,9 @@
 	}}>acccion</button
 >
 <form data-sveltekit-reload>
-	<input class="input" type="search" name="q" value={page.url.searchParams.get('q')} />
+	<input class="input" type="search" name="q" value={data.q} />
 	<button>aceptar</button>
 </form>
+<div>
+	{data.q}
+</div>

@@ -62,3 +62,23 @@ export const updateQuotationSchema = createQuotationSchema.partial()
 export type QuotationClient = z.infer<typeof quotationSchema>
 export type CreateQuotationClient = z.infer<typeof createQuotationSchema>
 export type UpdateQuotationClient = z.infer<typeof updateQuotationSchema>
+
+export const productSchema = z.object({
+	id: z.string(),
+	description: z.string(),
+	code: z.string(),
+	price: z.coerce.number().positive(),
+	cost: z.coerce.number().positive(),
+	unitSize: z.string(),
+	link: z.string().optional(),
+	createdAt: z.string(),
+	updatedAt: z.string()
+})
+
+export const createProductSchema = productSchema.omit({
+	id: true,
+	createdAt: true,
+	updatedAt: true
+})
+
+export const updateProductSchema = createProductSchema.partial()
