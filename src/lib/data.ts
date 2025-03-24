@@ -13,6 +13,7 @@ import type {
 	ProductCategory,
 	QuotationClient,
 	UpdateCustomer,
+	UpdateLabel,
 	UpdateProduct,
 	UpdateQuotationClient,
 	UpdateWatermark,
@@ -324,7 +325,7 @@ export async function createLabel(labelToCreate: CreateLabel, apiKey: string) {
 	return data
 }
 
-export async function updateLabel(id: string, labelToUpdate: LabelType, apiKey: string) {
+export async function updateLabel(id: string, labelToUpdate: UpdateLabel, apiKey: string) {
 	const url = `${BASE_URL}/api/labels/${id}`
 	const data = await fetchData<LabelType>(url, {
 		method: 'PUT',

@@ -109,9 +109,9 @@ export const updateProductSchema = createProductSchema.partial()
 //    }
 export const labelSchema = z.object({
 	id: z.string(),
-	dniRuc: z.coerce.string(),
-	recipient: z.string(),
-	destination: z.string(),
+	dniRuc: z.coerce.string().nonempty(),
+	recipient: z.string().nonempty(),
+	destination: z.string().nonempty(),
 	observations: z.string().optional(),
 	phone: z.coerce.string(),
 	agencyId: z.string().optional(),

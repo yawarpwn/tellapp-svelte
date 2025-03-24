@@ -11,12 +11,12 @@
 </script>
 
 <Combobox
-	name="Agencias"
+	name="agencyId"
 	bind:value={agencyId}
 	inputProps={{
 		defaultValue: agencyName
 	}}
-	onValueChange={(value) => console.log(value)}
+	onValueChange={(value) => (agencyId = value)}
 	{items}
 	type="single"
 ></Combobox>

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { LabelType, Product } from '$lib/types'
-	import { formatNumberToLocal } from '$lib/utils'
 	import {
 		CircleOff,
 		EditIcon,
@@ -95,7 +94,7 @@
 									openConfirmModal({
 										id: product.id,
 										action: '?/duplicate',
-										description: product.description,
+										description: product.recipient,
 										title: 'Duplicar Producto'
 									})}
 							>
@@ -113,8 +112,8 @@
 									openConfirmModal({
 										id: product.id,
 										action: '?/delete',
-										description: product.description,
-										title: 'Borrar Producto'
+										description: product.recipient,
+										title: 'Borrar Cliente'
 									})}
 								class="btn btn-square btn-sm"
 							>
@@ -146,8 +145,13 @@
 					</p>
 					<span>{product.dniRuc}</span>
 				</div>
-				<div>
-					{product.destination}
+				<div class="flex justify-between">
+					<span>
+						{product.destination.toUpperCase()}
+					</span>
+					<span>
+						{product.phone ?? ''}
+					</span>
 				</div>
 				<div class="flex flex-col gap-1">
 					<div class="bg-base-content/20 h-px w-full"></div>
@@ -165,7 +169,7 @@
 								openConfirmModal({
 									id: product.id,
 									action: '?/duplicate',
-									description: product.description,
+									description: product.recipient,
 									title: 'Duplicar Producto'
 								})}
 						>
@@ -179,8 +183,8 @@
 								openConfirmModal({
 									id: product.id,
 									action: '?/delete',
-									description: product.description,
-									title: 'Borrar Producto'
+									description: product.recipient,
+									title: 'Borrar Cliente'
 								})}
 							class="btn btn-square btn-sm"
 						>

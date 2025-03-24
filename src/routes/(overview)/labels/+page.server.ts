@@ -1,15 +1,8 @@
-import {
-	createProduct,
-	deleteProduct,
-	updateProduct,
-	fetchProductById,
-	fetchLabels,
-	fetchAgencies
-} from '$lib/data'
+import { fetchLabels, fetchAgencies, createLabel, updateLabel, deleteLabel } from '$lib/data'
 import { trycatch } from '$lib/utils'
 import { error, fail } from '@sveltejs/kit'
 import type { PageServerLoad, Actions } from './$types'
-import { createProductSchema, updateProductSchema } from '$lib/schemas'
+import { createLabelSchema, updateLabelSchema } from '$lib/schemas'
 
 export const load: PageServerLoad = async ({ params, platform, request }) => {
 	const [labels, agencies] = await Promise.all([
@@ -30,24 +23,24 @@ export const actions = {
 		console.log('create  product action --->')
 		const formData = await request.formData()
 		const entries = Object.fromEntries(formData.entries())
-		const result = createProductSchema.safeParse(entries)
+		const result = createLabelSchema.safeParse(entries)
 
 		if (!result.success) {
 			return fail(403, { error: result.error.flatten().fieldErrors })
 		}
 
-		const { data, error } = await trycatch(createProduct(result.data, platform?.env.TELL_API_KEY!))
+		console.log(result.data, result.error)
+
+		const { data, error } = await trycatch(createLabel(result.data, platform?.env.TELL_API_KEY!))
 
 		if (error) {
-			fail(400, { error: 'Internal Server Error' })
+			return fail(400, { error: 'Internal Server Error' })
 		}
 
 		return {
 			success: true,
-			message: 'Producto Creado correctamente'
+			message: 'Etiqueta Creado correctamente'
 		}
-
-		// console.log(formData)
 	},
 
 	update: async ({ cookies, request, platform }) => {
@@ -56,7 +49,7 @@ export const actions = {
 		const formData = await request.formData()
 		const entries = Object.fromEntries(formData.entries())
 		const id = String(formData.get('id'))
-		const result = updateProductSchema.safeParse(entries)
+		const result = updateLabelSchema.safeParse(entries)
 
 		if (!id) {
 			return fail(400, { error: 'Id del producto requerido para editar' })
@@ -66,7 +59,9 @@ export const actions = {
 			return fail(403, { error: result.error.flatten().fieldErrors })
 		}
 
-		const { error } = await trycatch(updateProduct(id, result.data, platform?.env.TELL_API_KEY!))
+		console.log(result.data)
+
+		const { error } = await trycatch(updateLabel(id, result.data, platform?.env.TELL_API_KEY!))
 
 		if (error) {
 			return fail(400, { error: 'Internal Server Error' })
@@ -76,44 +71,7 @@ export const actions = {
 			success: true,
 			message: 'Producto editado correctamente'
 		}
-
-		// console.log(formData)
 	},
-
-	duplicate: async ({ cookies, request, platform }) => {
-		console.log('duplicate product action --->')
-		const formData = await request.formData()
-		const id = String(formData.get('id'))
-
-		if (!id) {
-			console.log('sin id')
-			return fail(400, { error: 'Id del producto requerido para duplicar' })
-		}
-
-		const { data: productFond, error: errorProductFond } = await trycatch(
-			fetchProductById(id, platform?.env.TELL_API_KEY!)
-		)
-
-		if (errorProductFond) {
-			return fail(400, { error: 'Error al obtener el producto' })
-		}
-
-		const { data, error } = await trycatch(
-			createProduct(
-				{ ...productFond, code: `${productFond.code}-COPY` },
-				platform?.env.TELL_API_KEY!
-			)
-		)
-
-		if (error) {
-			return fail(400, { error: 'Error al duplicar el producto' })
-		}
-		return {
-			success: true,
-			message: 'Producto Duplicado correctamente'
-		}
-	},
-
 	delete: async ({ cookies, request, platform }) => {
 		console.log('delete product action --->')
 		const formData = await request.formData()
@@ -123,7 +81,7 @@ export const actions = {
 		if (!id) {
 			return fail(400, { error: 'Id del producto requerido para eliminar' })
 		}
-		const { data, error } = await trycatch(deleteProduct(id, platform?.env.TELL_API_KEY!))
+		const { data, error } = await trycatch(deleteLabel(id, platform?.env.TELL_API_KEY!))
 
 		if (error) {
 			return fail(500, { error: 'Interna server error' })

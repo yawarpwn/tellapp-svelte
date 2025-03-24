@@ -8,6 +8,7 @@ export const actions: Actions = {
 	},
 
 	search: async ({ request, platform }) => {
+		console.log('search action --->')
 		const formData = await request.formData()
 		const ruc = formData.get('ruc') as string
 
