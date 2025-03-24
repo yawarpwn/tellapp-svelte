@@ -5,7 +5,7 @@ import {
 	fetchProductCategories,
 	updateProduct,
 	fetchProductById
-} from '$lib/data'
+} from '$lib/server/data'
 import { trycatch } from '$lib/utils'
 import { error, fail } from '@sveltejs/kit'
 import type { PageServerLoad, Actions } from './$types'

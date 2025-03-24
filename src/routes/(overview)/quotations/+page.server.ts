@@ -1,7 +1,7 @@
 import { error, redirect, type Action } from '@sveltejs/kit'
 import type { Actions } from './$types'
 import type { PageServerLoad } from './$types'
-import { deleteQuotation, fetchQuotations, searchCustomerByDniOrRuc } from '$lib/data'
+import { deleteQuotation, fetchQuotations, searchCustomerByDniOrRuc } from '$lib/server/data'
 
 const ROW_PER_PAGES = 13
 export const load: PageServerLoad = async ({ params, platform, request }) => {

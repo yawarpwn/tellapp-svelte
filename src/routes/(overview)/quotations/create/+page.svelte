@@ -18,8 +18,8 @@
 
 	$effect(() => {
 		if (form?.errors) {
-			toast.error(JSON.stringify(form.errors, null, 2), {
-				duration: 5000
+			toast.error('Error al crear la cotizacion', {
+				description: JSON.stringify(form.errors, null, 2)
 			})
 		}
 	})

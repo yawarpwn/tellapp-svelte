@@ -1,7 +1,13 @@
 import type { Actions, PageServerLoad } from './$types'
-import { fetchCustomers, fetchProducts, fetchQuotaitonByNumber, updateQuotation } from '$lib/data'
+import {
+	fetchCustomers,
+	fetchProducts,
+	fetchQuotaitonByNumber,
+	updateQuotation
+} from '$lib/server/data'
 import { fail, redirect } from '@sveltejs/kit'
 import { updateQuotationSchema } from '$lib/schemas'
+import { trycatch } from '$lib/utils'
 
 export const load: PageServerLoad = async ({ cookies, platform, params }) => {
 	const productsPromise = fetchProducts(platform?.env.TELL_API_KEY!)
@@ -23,18 +29,23 @@ export const actions = {
 	default: async ({ cookies, request, platform }) => {
 		const formData = await request.formData()
 		const quotationToUpdate = JSON.parse(formData.get('quotation') as string)
+		console.log(quotationToUpdate)
 		const result = updateQuotationSchema.safeParse(quotationToUpdate)
+		console.log(result.data)
 		if (!result.success) {
-			console.log('error', result.error.flatten().formErrors)
-			fail(403, { errors: result.error.flatten().formErrors })
+			console.log('error', result.error.issues)
+			return fail(403, { error: result.error.issues })
 		}
 		const quotationId = formData.get('id') as string
-		console.log('success', result.data)
-		const { number: quotationNumber } = await updateQuotation(
-			result.data,
-			quotationId,
-			platform?.env.TELL_API_KEY!
+
+		const { data, error } = await trycatch(
+			updateQuotation(result.data, quotationId, platform?.env.TELL_API_KEY!)
 		)
-		return redirect(303, `/quotations/${quotationNumber}`)
+
+		if (error) {
+			return fail(403, { error: error.message })
+		}
+
+		return redirect(303, `/quotations/${data.number}`)
 	}
 } satisfies Actions

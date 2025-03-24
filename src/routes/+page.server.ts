@@ -2,7 +2,7 @@
 
 import { fail, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
-import { login } from '$lib/data'
+import { login } from '$lib/server/data'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.authToken) redirect(303, '/quotations')

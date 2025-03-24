@@ -1,17 +1,25 @@
-export type { QuotationClient, CreateQuotationClient, UpdateQuotationClient } from '$lib/schemas'
 import {
 	createProductSchema,
 	updateProductSchema,
 	productSchema,
 	createLabelSchema,
 	labelSchema,
-	updateLabelSchema
+	updateLabelSchema,
+	quotationSchema,
+	createQuotationSchema,
+	updateQuotationSchema
 } from '$lib/schemas'
 import type { z } from 'zod'
 // type Prettyfy<T> = {
 // 	[K in keyof T]: T[K];
 // };
 
+//------------------------- Quotations ---------------------------------------->
+export type QuotationClient = z.infer<typeof quotationSchema>
+export type CreateQuotationClient = z.infer<typeof createQuotationSchema>
+export type UpdateQuotationClient = z.infer<typeof updateQuotationSchema>
+
+//------------------------- Customer ---------------------------------------->
 export type CustomerFromService = {
 	id?: string
 	ruc: string
@@ -22,7 +30,6 @@ export type CustomerFromService = {
 
 export type QuotationCustomer = Pick<Customer, 'name' | 'address' | 'ruc' | 'isRegular'>
 
-//------------------------- Customer ---------------------------------------->
 export type Customer = {
 	id: string
 	name: string

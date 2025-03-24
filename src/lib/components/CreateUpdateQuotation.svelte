@@ -17,7 +17,7 @@
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
 
 	const CREDIT_OPTION = {
-		Contado: undefined,
+		Contado: null,
 		'1 Semana': 7,
 		'2 Semanas': 15,
 		'1 Mes': 30

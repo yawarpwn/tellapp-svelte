@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit'
 import type { Actions } from './$types'
-import { searchCustomerByDniOrRuc } from '$lib/data'
+import { searchCustomerByDniOrRuc } from '$lib/server/data'
 
 export const actions: Actions = {
 	logout: ({ cookies, request }) => {

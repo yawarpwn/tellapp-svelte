@@ -6,7 +6,7 @@ export const INITIAL_QUOTATION_STATE: CreateQuotationClient = {
 	credit: undefined,
 	deadline: 1,
 	isPaymentPending: false,
-	customerId: '',
+	customerId: undefined,
 	includeIgv: true,
 	items: [],
 	customer: {

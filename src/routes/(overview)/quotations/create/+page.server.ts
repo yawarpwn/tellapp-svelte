@@ -1,5 +1,10 @@
 import type { Actions, PageServerLoad } from './$types'
-import { createQuotation, fetchCustomers, fetchProducts, searchCustomerByDniOrRuc } from '$lib/data'
+import {
+	createQuotation,
+	fetchCustomers,
+	fetchProducts,
+	searchCustomerByDniOrRuc
+} from '$lib/server/data'
 import { fail, redirect } from '@sveltejs/kit'
 import { createQuotationSchema } from '$lib/schemas'
 import { trycatch } from '$lib/utils'
@@ -27,7 +32,8 @@ export const actions = {
 		const result = createQuotationSchema.safeParse(quotationToInsert)
 
 		if (!result.success) {
-			return fail(403, { errors: result.error.flatten().fieldErrors })
+			console.log(result.error.issues)
+			return fail(403, { errors: result.error.issues })
 		}
 
 		const { data: insertedCustomer, error } = await trycatch(
@@ -35,6 +41,7 @@ export const actions = {
 		)
 
 		if (error) {
+			console.log('Api Error: ', error)
 			return fail(403, {
 				errors: 'Interna server error'
 			})

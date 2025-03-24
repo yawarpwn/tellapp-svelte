@@ -1,4 +1,4 @@
-import { createQuotation, deleteQuotation, fetchQuotaitonByNumber, updateCustomer } from '$lib/data'
+import { createQuotation, deleteQuotation, fetchQuotaitonByNumber, updateCustomer } from '$lib/server/data'
 import { redirect } from '@sveltejs/kit'
 import type { Actions } from './$types'
 import type { PageServerLoad } from './$types'

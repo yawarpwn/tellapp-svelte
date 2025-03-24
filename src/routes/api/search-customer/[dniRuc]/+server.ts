@@ -1,5 +1,5 @@
 import { type RequestHandler, json } from '@sveltejs/kit'
-import { searchCustomerByDniOrRuc } from '$lib/data'
+import { searchCustomerByDniOrRuc } from '$lib/server/data'
 
 export const GET: RequestHandler = async ({ params, platform, request }) => {
 	const dniRuc = params.dniRuc

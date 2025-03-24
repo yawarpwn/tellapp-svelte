@@ -1,4 +1,4 @@
-import { fetchLabels, fetchAgencies, createLabel, updateLabel, deleteLabel } from '$lib/data'
+import { fetchLabels, fetchAgencies, createLabel, updateLabel, deleteLabel } from '$lib/server/data'
 import { trycatch } from '$lib/utils'
 import { error, fail } from '@sveltejs/kit'
 import type { PageServerLoad, Actions } from './$types'
