@@ -70,7 +70,7 @@
 			</article>
 		{/each}
 	</div>
-	<table class="table-zebra hidden lg:table">
+	<table class="table-zebra hidden lg:table [&_td]:p-1.5">
 		<!-- head -->
 		<thead>
 			<tr>
@@ -92,13 +92,15 @@
 					onclick={() => (selectedRowId = id)}
 				>
 					<td>
-						{#if customerId && customer}
-							<StarIcon
-								size={16}
-								class={customer.isRegular ? 'text-primary ' : 'text-base-content/20'}
-								fill={customer.isRegular ? 'var(--color-primary)' : 'transparent'}
-							/>
-						{/if}
+						<div class="flex items-center justify-center">
+							{#if customerId && customer}
+								<StarIcon
+									size={16}
+									class={customer.isRegular ? 'text-primary ' : 'text-base-content/20'}
+									fill={customer.isRegular ? 'var(--color-primary)' : 'transparent'}
+								/>
+							{/if}
+						</div>
 					</td>
 					<td>{number}</td>
 					<td class="min-w-[250px]">

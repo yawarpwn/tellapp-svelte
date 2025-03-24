@@ -2,6 +2,7 @@
 	import type { LabelType, Product } from '$lib/types'
 	import {
 		CircleOff,
+		DownloadIcon,
 		EditIcon,
 		FilesIcon,
 		LinkIcon,
@@ -10,6 +11,7 @@
 		TrashIcon
 	} from 'lucide-svelte'
 	import ConfirmDialog from './ConfirmDialog.svelte'
+	import { generateLabelPdf } from '$lib/pdf-doc/generate-label-pdf'
 
 	type Props = {
 		labels: LabelType[]
@@ -43,6 +45,16 @@
 		selectedId = undefined
 		currentAction = null
 	}
+
+	function printLabel(label: LabelType) {
+		const dd = generateLabelPdf(label)
+		dd.print()
+	}
+
+	function downloadLabel(label: LabelType) {
+		const dd = generateLabelPdf(label)
+		dd.download()
+	}
 </script>
 
 {#if showConfirmDialog && selectedId && currentAction}
@@ -69,50 +81,36 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each labels as product (product.id)}
+			{#each labels as label (label.id)}
 				<tr>
 					<td class="max-w-[350px]">
-						{product.recipient}
-						<p>{product.dniRuc}</p>
+						{label.recipient}
+						<p>{label.dniRuc}</p>
 					</td>
 					<td>
-						{product.destination}
-						<p>{product.phone}</p>
+						{label.destination}
+						<p>{label.phone}</p>
 					</td>
 					<td class="max-w-[350px]">
-						{product.agency?.name}
+						{label.agency?.name}
 						<p>
-							{product.agency?.address}
+							{label.agency?.address}
 						</p>
 					</td>
 					<td>
 						<div class="flex items-center gap-1">
-							<button
-								class="btn btn-xs btn-square"
-								type="button"
-								onclick={() =>
-									openConfirmModal({
-										id: product.id,
-										action: '?/duplicate',
-										description: product.recipient,
-										title: 'Duplicar Producto'
-									})}
-							>
+							<button class="btn btn-xs btn-square" type="button" onclick={() => printLabel(label)}>
 								<PrinterIcon class="size-4" />
 							</button>
-							<button
-								class="btn btn-xs btn-square"
-								type="button"
-								onclick={() => onEdit(product.id)}
-							>
+							<button class="btn btn-xs btn-square" type="button" onclick={() => onEdit(label.id)}>
 								<EditIcon class="size-4" />
 							</button>
 							<button
 								onclick={() =>
 									openConfirmModal({
-										id: product.id,
+										id: label.id,
 										action: '?/delete',
-										description: product.recipient,
+										description: label.recipient,
 										title: 'Borrar Cliente'
 									})}
 								class="btn btn-square btn-sm"
@@ -136,27 +134,27 @@
 	</table>
 </div>
 <div class="flex flex-col gap-2 md:hidden">
-	{#each labels as product}
+	{#each labels as label}
 		<article class="card bg-base-200">
 			<div class="card-body gap-4 p-2">
 				<div class="flex gap-4">
 					<p class="text-pretty">
-						{product.recipient}
+						{label.recipient}
 					</p>
-					<span>{product.dniRuc}</span>
+					<span>{label.dniRuc}</span>
 				</div>
 				<div class="flex justify-between">
 					<span>
-						{product.destination.toUpperCase()}
+						{label.destination.toUpperCase()}
 					</span>
 					<span>
-						{product.phone ?? ''}
+						{label.phone ?? ''}
 					</span>
 				</div>
 				<div class="flex flex-col gap-1">
 					<div class="bg-base-content/20 h-px w-full"></div>
 					<div class="text-base-content/50 place-items-center gap-2 text-center text-xs">
-						<span>{product.agency?.name}</span>
+						<span>{label.agency?.name}</span>
 					</div>
 					<div class="bg-base-content/20 h-px w-full"></div>
 				</div>
@@ -165,25 +163,22 @@
 						<button
 							class="btn btn-xs btn-square"
 							type="button"
-							onclick={() =>
-								openConfirmModal({
-									id: product.id,
-									action: '?/duplicate',
-									description: product.recipient,
-									title: 'Duplicar Producto'
-								})}
+							onclick={() => downloadLabel(label)}
 						>
+							<DownloadIcon class="size-4" />
+						</button>
+						<button class="btn btn-xs btn-square" type="button" onclick={() => printLabel(label)}>
 							<PrinterIcon class="size-4" />
 						</button>
-						<button onclick={() => onEdit(product.id)} class="btn btn-square btn-sm">
+						<button onclick={() => onEdit(label.id)} class="btn btn-square btn-sm">
 							<EditIcon class="size-4" />
 						</button>
 						<button
 							onclick={() =>
 								openConfirmModal({
-									id: product.id,
+									id: label.id,
 									action: '?/delete',
-									description: product.recipient,
+									description: label.recipient,
 									title: 'Borrar Cliente'
 								})}
 							class="btn btn-square btn-sm"
