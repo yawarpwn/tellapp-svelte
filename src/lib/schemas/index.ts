@@ -58,11 +58,13 @@ export const createQuotationSchema = quotationSchema.omit({
 	createdAt: true,
 	updatedAt: true
 })
+
 export const updateQuotationSchema = createQuotationSchema.partial()
 export type QuotationClient = z.infer<typeof quotationSchema>
 export type CreateQuotationClient = z.infer<typeof createQuotationSchema>
 export type UpdateQuotationClient = z.infer<typeof updateQuotationSchema>
 
+//-------------------------Product Schema -------------------------------------\\
 export const productSchema = z.object({
 	id: z.string(),
 	description: z.string(),
@@ -85,3 +87,53 @@ export const createProductSchema = productSchema.omit({
 })
 
 export const updateProductSchema = createProductSchema.partial()
+
+//-------------------------Product Schema -------------------------------------\\
+
+// id: '',
+// dniRuc: '',
+// recipient: '',
+// destination: '',
+// observations: '',
+// phone: '',
+// agencyId: '1307f184-318e-4292-b603-23dc66e7f03e',
+//    address: '',
+//    agency: {
+//      address: '',
+//      createdAt: '',
+//      id: '',
+//      name: '',
+//      phone: '',
+//      ruc: '',
+//      updatedAt: ''
+//    }
+export const labelSchema = z.object({
+	id: z.string(),
+	dniRuc: z.coerce.string(),
+	recipient: z.string(),
+	destination: z.string(),
+	observations: z.string().optional(),
+	phone: z.coerce.string(),
+	agencyId: z.string().optional(),
+	address: z.string().optional(),
+	agency: z.object({
+		address: z.string(),
+		id: z.string(),
+		name: z.string(),
+		phone: z.string(),
+		ruc: z.string(),
+		updatedAt: z.string(),
+		createdAt: z.string()
+	}),
+	createdAt: z.string(),
+	updatedAt: z.string()
+})
+
+export const createLabelSchema = labelSchema.omit({
+	agency: true,
+	id: true,
+	createdAt: true,
+	updatedAt: true
+})
+
+export const updateLabelSchema = createLabelSchema.partial()

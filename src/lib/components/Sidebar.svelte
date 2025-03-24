@@ -3,6 +3,7 @@
 		FilesIcon,
 		HomeIcon,
 		type Icon as IconType,
+		PrinterIcon,
 		ShoppingCartIcon,
 		TruckIcon
 	} from 'lucide-svelte'
@@ -29,9 +30,9 @@
 			icon: ShoppingCartIcon
 		},
 		{
-			name: 'Agencias',
-			href: '/agencies',
-			icon: TruckIcon
+			name: 'Etiquetas',
+			href: '/labels',
+			icon: PrinterIcon
 		}
 	]
 </script>

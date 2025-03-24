@@ -1,5 +1,12 @@
 export type { QuotationClient, CreateQuotationClient, UpdateQuotationClient } from '$lib/schemas'
-import { createProductSchema, updateProductSchema, productSchema } from '$lib/schemas'
+import {
+	createProductSchema,
+	updateProductSchema,
+	productSchema,
+	createLabelSchema,
+	labelSchema,
+	updateLabelSchema
+} from '$lib/schemas'
 import type { z } from 'zod'
 // type Prettyfy<T> = {
 // 	[K in keyof T]: T[K];
@@ -72,22 +79,9 @@ export type CreateAgency = Omit<Agency, 'id' | 'createdAt' | 'updatedAt'>
 export type UpdateAgency = Partial<CreateAgency>
 
 // -------------------------- Labels  --------------------------------------//
-export type LabelType = {
-	id: string
-	recipient: string
-	destination: string
-	dniRuc: string
-	phone: string
-	address: string
-	observations: string
-	agencyId?: string | null
-	createdAt: string
-	updatedAt: string
-	agency: Agency
-}
-
-export type CreateLabel = Omit<LabelType, 'id' | 'createdAt' | 'updatedAt' | 'agency'>
-export type UpdateLabel = Partial<CreateLabel>
+export type LabelType = z.infer<typeof labelSchema>
+export type CreateLabel = z.infer<typeof createLabelSchema>
+export type UpdateLabel = z.infer<typeof updateLabelSchema>
 
 // -------------------------- Watermark  --------------------------------------//
 export type Watermark = {

@@ -1,27 +1,27 @@
 <script lang="ts">
 	import { CirclePlusIcon, SearchIcon, XIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
-	import CreateUpdateProductDialog from '$lib/components/CreateUpdateProductDialog.svelte'
+	import CreateUpdateLabelDialog from '$lib/components/CreateUpdateLabelDialog.svelte'
 	import { toast } from 'svelte-sonner'
-	import ProductList from '$lib/components/ProductList.svelte'
+	import LabelList from '$lib/components/LabelList.svelte'
 
 	let { data, form = $bindable() }: PageProps = $props()
 
 	let searchTerm = $state('')
 	let open = $state(false)
 	let selectedId = $state<null | string>(null)
-	const productToEdit = $derived(data.products.find((p) => p.id === selectedId))
+	const labelToEdit = $derived(data.labels.find((p) => p.id === selectedId))
 
 	function onEdit(id: string) {
 		open = true
 		selectedId = id
 	}
 
-	const filteredProducts = $derived(
-		data.products.filter((p) => {
+	const filteredLabels = $derived(
+		data.labels.filter((p) => {
 			const results =
-				p.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				p.description.toLowerCase().includes(searchTerm.toLowerCase())
+				p.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				p.recipient.toLowerCase().includes(searchTerm.toLowerCase())
 			return results
 		})
 	)
@@ -42,16 +42,17 @@
 </script>
 
 {#if open}
-	<CreateUpdateProductDialog
+	<CreateUpdateLabelDialog
+		agencies={data.agencies}
 		closeModal={() => {
 			open = false
 			selectedId = null
 		}}
 		bind:open
-		productsCategories={data.productsCategories}
-		{productToEdit}
+		{labelToEdit}
 	/>
 {/if}
+
 <div class="flex flex-col gap-4">
 	<div class="flex items-center justify-between">
 		<form method="GET" class="relative max-w-[180px] md:max-w-[350px]">
@@ -88,5 +89,5 @@
 			Crear</button
 		>
 	</div>
-	<ProductList {onEdit} products={filteredProducts.slice(0, 20)} />
+	<LabelList {onEdit} labels={filteredLabels.slice(0, 20)} />
 </div>
