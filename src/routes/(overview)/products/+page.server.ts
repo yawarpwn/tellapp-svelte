@@ -12,7 +12,7 @@ import type { PageServerLoad, Actions } from './$types'
 import { createProductSchema, updateProductSchema } from '$lib/schemas'
 
 export const load: PageServerLoad = async ({ params, platform, request }) => {
-	const [products, productsCategories] = await Promise.all([
+	const promises = Promise.all([
 		fetchProducts(platform?.env.TELL_API_KEY!),
 		fetchProductCategories(platform?.env.TELL_API_KEY!)
 	])
@@ -20,8 +20,7 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 		metadata: {
 			title: 'Productos'
 		},
-		products,
-		productsCategories
+		promises
 	}
 }
 
