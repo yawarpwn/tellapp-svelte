@@ -5,12 +5,11 @@ import type { PageServerLoad, Actions } from './$types'
 import { createAgencySchema, updateAgencySchema } from '$lib/schemas'
 
 export const load: PageServerLoad = async ({ params, platform, request }) => {
-	const agencies = await fetchAgencies(platform?.env.TELL_API_KEY!)
 	return {
 		metadata: {
 			title: 'Etiquetas'
 		},
-		agencies
+		agenciesPromise: fetchAgencies(platform?.env.TELL_API_KEY!)
 	}
 }
 
