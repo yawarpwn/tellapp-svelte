@@ -14,10 +14,11 @@ export const quotationItemSchema = z.object({
 		.positive({
 			message: 'El costo debe ser mayor a 0'
 		})
-		.optional(),
+		.optional()
+		.nullable(),
 	unitSize: z.string(),
-	code: z.string().optional(),
-	link: z.string().optional()
+	code: z.string().optional().nullable(),
+	link: z.string().optional().nullable()
 })
 
 export const quotationSchema = z.object({
