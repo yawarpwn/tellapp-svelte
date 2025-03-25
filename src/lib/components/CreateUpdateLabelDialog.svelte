@@ -34,8 +34,6 @@
 		return 'id' in label
 	}
 
-	function setLabel() {}
-
 	let loading = $state(false)
 
 	async function searchCustomer() {
@@ -84,8 +82,10 @@
 					bind:value={label.dniRuc}
 					disabled={loading}
 					name="dniRuc"
+					required
 					type="number"
-					class=""
+					minlength="8"
+					maxlength="11"
 					placeholder="46226410"
 					onkeydown={(ev) => {
 						const keyPressed = ev.key
@@ -108,6 +108,7 @@
 		<fieldset class="fieldset">
 			<legend class="fieldset-legend text-base-content/50">Destinatario</legend>
 			<input
+				required
 				bind:value={label.recipient}
 				disabled={loading}
 				name="recipient"
@@ -119,8 +120,11 @@
 		<fieldset class="fieldset">
 			<legend class="fieldset-legend text-base-content/50">Destino</legend>
 			<input
+				required
 				bind:this={destinationRef}
-				bind:value={() => label.destination, (v) => (label.destination = v.toUpperCase())}
+				bind:value={
+					() => label.destination.toUpperCase(), (v) => (label.destination = v.toUpperCase())
+				}
 				disabled={loading}
 				name="destination"
 				type="text"
@@ -135,6 +139,8 @@
 				disabled={loading}
 				name="phone"
 				type="number"
+				minlength="9"
+				maxlength="9"
 				class="input w-full"
 				placeholder="999999999"
 			/>
@@ -159,7 +165,7 @@
 		</fieldset>
 		<input type="hidden" name="id" value={isEditLabel(label) ? label?.id : undefined} />
 		<footer class="mt-4 flex justify-between">
-			<button disabled={loading} onclick={() => (open = false)} class="btn">Cancelar</button>
+			<button disabled={loading} onclick={closeModal} class="btn">Cancelar</button>
 			<button disabled={loading} class="btn btn-primary" type="submit">
 				{labelToEdit ? 'Actualizar' : 'Crear'}
 				{#if loading}

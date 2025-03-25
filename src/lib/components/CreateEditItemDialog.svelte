@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { OctagonAlertIcon, SearchIcon } from 'lucide-svelte'
+	import { OctagonAlertIcon, SearchIcon, XIcon } from 'lucide-svelte'
 	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import type { Product, QuotationItem } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
@@ -39,7 +39,9 @@
 			link: undefined
 		}
 	)
+
 	let searchTerm = $state('')
+	let selectedId = $state<null | string>(null)
 
 	const hits = $derived(
 		products.filter(
@@ -54,17 +56,28 @@
 	<div class="flex h-[90svh] flex-col gap-2">
 		<!-- Search Product -->
 		<header class="">
-			<div class="flex h-9 w-full items-center rounded-md border pl-2">
-				<SearchIcon class="" size={20} />
+			<div class="input w-full">
+				<SearchIcon class="size-4 opacity-50" />
 				<input
 					bind:this={inputSearch}
 					tabindex="0"
 					bind:this={inputSearch}
 					bind:value={searchTerm}
-					class="ml-2 w-full border-none outline-none"
+					class=""
 					type="search"
 					placeholder="Buscar producto"
 				/>
+				{#if searchTerm}
+					<button
+						onclick={() => {
+							searchTerm = ''
+							inputSearch.focus()
+						}}
+						class="bg-base-content/10 hover:bg-base-content/20 rounded-full p-1"
+					>
+						<XIcon class="size-3" />
+					</button>
+				{/if}
 			</div>
 		</header>
 		<!-- List items -->
@@ -72,7 +85,8 @@
 			{#if hits.length > 0}
 				{#each hits as hit}
 					<button
-						class="hover:bg-base-300 bg-base-200 flex cursor-pointer flex-col gap-1 rounded-sm p-2"
+						class="hover:bg-base-300 bg-base-200 data-[active=true]:border-primary data-[active=true]:bg-base-300 flex cursor-pointer flex-col gap-1 rounded-sm border-1 border-dashed border-transparent p-2"
+						data-active={selectedId === hit.id ? 'true' : 'false'}
 						onclick={() => {
 							item = {
 								price: hit.price,
@@ -82,6 +96,7 @@
 								description: hit.description,
 								link: hit.link
 							}
+							selectedId = hit.id
 							qtyInput.focus()
 						}}
 					>
@@ -132,7 +147,7 @@
 				<textarea
 					name="description"
 					id="description"
-					class="textarea h-[130px] w-full resize-none p-2"
+					class="textarea h-[120px] w-full resize-none p-2"
 					bind:value={item.description}
 				></textarea>
 				{#if item.link}

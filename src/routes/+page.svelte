@@ -27,8 +27,8 @@
 						loading = true
 
 						return async ({ result, update }) => {
+							await update()
 							loading = false
-							update()
 						}
 					}}
 				>
@@ -37,7 +37,7 @@
 							<label class="fieldset-label grid gap-2">
 								Email
 								<input
-									class="input"
+									class="input w-full"
 									placeholder="nombre@email.com.pe"
 									name="email"
 									type="email"
@@ -48,7 +48,7 @@
 						<fieldset class="fieldset">
 							<label class="fieldset-label grid gap-2">
 								Password
-								<input class="input" name="password" type="password" />
+								<input class="input w-full" name="password" type="password" />
 							</label>
 						</fieldset>
 						{#if form?.missing}<p class="text-error text-sm">Los campos son requeridos</p>{/if}

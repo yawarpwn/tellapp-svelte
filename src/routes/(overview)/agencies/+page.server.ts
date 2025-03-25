@@ -7,7 +7,7 @@ import { createAgencySchema, updateAgencySchema } from '$lib/schemas'
 export const load: PageServerLoad = async ({ params, platform, request }) => {
 	return {
 		metadata: {
-			title: 'Etiquetas'
+			title: 'Agencias'
 		},
 		agenciesPromise: fetchAgencies(platform?.env.TELL_API_KEY!)
 	}

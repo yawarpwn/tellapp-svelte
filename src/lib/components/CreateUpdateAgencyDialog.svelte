@@ -22,13 +22,9 @@
 		}
 	)
 
-	$inspect('label', agency)
-
-	function isEditLabel(label: Agency | CreateAgency): label is Agency {
+	function isEditMode(label: Agency | CreateAgency): label is Agency {
 		return 'id' in label
 	}
-
-	function setLabel() {}
 
 	let loading = $state(false)
 
@@ -75,10 +71,13 @@
 			<legend class="fieldset-legend text-base-content/50">Ruc</legend>
 			<label class="input w-full">
 				<input
+					required
 					bind:value={agency.ruc}
 					disabled={loading}
 					name="ruc"
 					type="number"
+					minlength="11"
+					maxlength="11"
 					class=""
 					placeholder="46226410"
 					onkeydown={(ev) => {
@@ -102,6 +101,7 @@
 		<fieldset class="fieldset">
 			<legend class="fieldset-legend text-base-content/50">Razon Social</legend>
 			<input
+				required
 				bind:value={agency.name}
 				disabled={loading}
 				name="name"
@@ -114,6 +114,7 @@
 		<fieldset class="fieldset">
 			<legend class="fieldset-legend text-base-content/50">Dirección</legend>
 			<textarea
+				required
 				bind:value={agency.address}
 				disabled={loading}
 				name="address"
@@ -132,9 +133,9 @@
 				placeholder="999999999"
 			/>
 		</fieldset>
-		<input type="hidden" name="id" value={isEditLabel(agency) ? agency?.id : undefined} />
+		<input type="hidden" name="id" value={isEditMode(agency) ? agency?.id : undefined} />
 		<footer class="mt-4 flex justify-between">
-			<button disabled={loading} onclick={() => (open = false)} class="btn">Cancelar</button>
+			<button disabled={loading} onclick={closeModal} class="btn">Cancelar</button>
 			<button disabled={loading} class="btn btn-primary" type="submit">
 				{agencyToEdit ? 'Actualizar' : 'Crear'}
 				{#if loading}

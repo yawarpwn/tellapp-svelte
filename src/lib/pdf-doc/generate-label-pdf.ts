@@ -20,7 +20,7 @@ export function generateLabelPdf(label: LabelType) {
 		],
 		pageSize: 'A4',
 		pageOrientation: 'landscape',
-		pageMargins: 10,
+		pageMargins: 5,
 		styles: {
 			sectionTitle: {
 				italics: true,

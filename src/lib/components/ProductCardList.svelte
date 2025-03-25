@@ -27,7 +27,7 @@
 	const { formatedTotal, totalItems } = $derived(getIgv(items))
 </script>
 
-<div class="relative flex flex-col gap-2 md:hidden">
+<div class="relative flex flex-col gap-2 lg:hidden">
 	{#each items as item, index (item.id)}
 		<article class="card bg-base-200 shadow-xs" animate:flip={{ duration: 300 }}>
 			<div class="grid gap-4 p-4">

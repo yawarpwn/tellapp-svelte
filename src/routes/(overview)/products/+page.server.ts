@@ -38,7 +38,7 @@ export const actions = {
 		const { data, error } = await trycatch(createProduct(result.data, platform?.env.TELL_API_KEY!))
 
 		if (error) {
-			fail(400, { error: 'Internal Server Error' })
+			return fail(400, { error: 'Internal Server Error' })
 		}
 
 		return {
