@@ -137,8 +137,8 @@
 </div>
 <div class="flex flex-col gap-2 md:hidden">
 	{#each products as product}
-		<article class="card bg-base-200">
-			<div class="card-body gap-4 p-2">
+		<article class="card bg-base-300">
+			<div class="card-body gap-2 p-3">
 				<p class="text-pretty">
 					{product.description}
 				</p>
@@ -146,24 +146,25 @@
 					<span class="badge badge-neutral badge-sm uppercase">
 						{product.category}
 					</span>
-					<span class="badge badge-neutral badge-sm uppercase">
+					<span class="badge badge-neutral badge-sm tracking-widest uppercase">
 						{product.code}
 					</span>
 				</div>
-
-				<div class="flex flex-col gap-0.5">
-					<div class="bg-base-content/20 h-px w-full"></div>
-					<div class="text-base-content/50 grid grid-cols-3 place-items-center gap-2 text-xs">
-						<span>U/M</span>
-						<span>Costo</span>
-						<span>Precio</span>
+				<div class="flex flex-col gap-1">
+					<div class="flex flex-col gap-0.5">
+						<div class="bg-base-content/20 h-px w-full"></div>
+						<div class="text-base-content/50 grid grid-cols-3 place-items-center gap-2 text-xs">
+							<span>U/M</span>
+							<span>Costo</span>
+							<span>Precio</span>
+						</div>
+						<div class="bg-base-content/20 h-px w-full"></div>
 					</div>
-					<div class="bg-base-content/20 h-px w-full"></div>
-				</div>
-				<div class="grid grid-cols-3 place-items-center gap-2">
-					<span>{product.unitSize}</span>
-					<span>{formatNumberToLocal(product.cost)}</span>
-					<span>{formatNumberToLocal(product.price)}</span>
+					<div class="grid grid-cols-3 place-items-center gap-2">
+						<span>{product.unitSize}</span>
+						<span>{formatNumberToLocal(product.cost)}</span>
+						<span>{formatNumberToLocal(product.price)}</span>
+					</div>
 				</div>
 				<div class="card-actions items-center justify-end">
 					<div class="flex items-center gap-2">

@@ -21,8 +21,8 @@
 	<div class="flex flex-col gap-2 lg:hidden">
 		{#each quotations as { id, number, customer, items, createdAt, customerId }}
 			{@const { formatedTotal } = getIgv(items)}
-			<article class="card bg-base-200 shadow">
-				<div class="card-body p-4">
+			<article class="card bg-base-300 shadow">
+				<div class="card-body p-3">
 					<div class="flex justify-between gap-8">
 						<div>
 							<p class="font-medium">
@@ -32,7 +32,7 @@
 						</div>
 						<span class="text-primary text-lg">#{number}</span>
 					</div>
-					<div class="bg-base-content/20 h-px"></div>
+					<div class="bg-base-content/10 h-px"></div>
 					<div class="flex items-center justify-between">
 						<div>
 							<div class="text-lg font-bold">

@@ -4,14 +4,15 @@
 		CircleOff,
 		DownloadIcon,
 		EditIcon,
-		FilesIcon,
-		LinkIcon,
-		Loader2Icon,
+		IdCardIcon,
+		PhoneIcon,
 		PrinterIcon,
+		Share2Icon,
 		TrashIcon
 	} from 'lucide-svelte'
 	import ConfirmDialog from './ConfirmDialog.svelte'
 	import { generateLabelPdf } from '$lib/pdf-doc/generate-label-pdf'
+	import * as pdfMake from 'pdfmake/build/pdfmake'
 
 	type Props = {
 		labels: LabelType[]
@@ -54,6 +55,36 @@
 	function downloadLabel(label: LabelType) {
 		const dd = generateLabelPdf(label)
 		dd.download()
+	}
+
+	const shareLabel = async (label: LabelType) => {
+		// Comprobar si el navegador admite la API navigator.share
+		if (!navigator.share) {
+			console.log('Share api no supported')
+			return
+		}
+
+		const { docPdf } = generateLabelPdf(label)
+		const pdf = pdfMake.createPdf(docPdf)
+
+		const blob = await new Promise<Blob>((resolve) => {
+			pdf.getBlob((blob) => resolve(blob))
+		})
+
+		// Usar la API navigator.share para compartir el Blob del PDF
+		try {
+			await navigator.share({
+				files: [
+					new File([blob], `${label.recipient.split(' ').join('')}.pdf`, {
+						type: 'application/pdf'
+					})
+				],
+				title: `Etiqueta ${label.recipient}`,
+				text: '¡Echa un vistazo a esta Etiqueta de envio!'
+			})
+		} catch (error) {
+			console.log('Error al interntar compartir', error)
+		}
 	}
 </script>
 
@@ -135,31 +166,38 @@
 </div>
 <div class="flex flex-col gap-2 md:hidden">
 	{#each labels as label}
-		<article class="card bg-base-200">
-			<div class="card-body gap-4 p-2">
-				<div class="flex gap-4">
-					<p class="text-pretty">
+		<article class="card bg-base-300">
+			<div class="card-body gap-2 p-3">
+				<div class="flex flex-col gap-2">
+					<p class="col-span-2 mb-0 text-center font-semibold">
 						{label.recipient}
 					</p>
-					<span>{label.dniRuc}</span>
-				</div>
-				<div class="flex justify-between">
-					<span>
+					<p class="text-base-content/70 col-span-2 text-center text-sm">
 						{label.destination.toUpperCase()}
-					</span>
-					<span>
-						{label.phone ?? ''}
-					</span>
+					</p>
+					<div class="flex items-center justify-between gap-2">
+						<span class="flex items-center gap-1">
+							<IdCardIcon class="text-primary size-4" />
+							{label.dniRuc}
+						</span>
+						<span class="flex items-center gap-1">
+							<PhoneIcon class="text-primary size-4" />
+							{label.phone ?? ''}
+						</span>
+					</div>
 				</div>
 				<div class="flex flex-col gap-1">
-					<div class="bg-base-content/20 h-px w-full"></div>
-					<div class="text-base-content/50 place-items-center gap-2 text-center text-xs">
-						<span>{label.agency?.name}</span>
+					<div class="bg-primary/40 h-px w-full"></div>
+					<div class="text-primary place-items-center gap-2 text-center text-xs">
+						<span>{label.agency?.name ?? 'SIN AGENCIA'}</span>
 					</div>
-					<div class="bg-base-content/20 h-px w-full"></div>
+					<div class="bg-primary/40 h-px w-full"></div>
 				</div>
 				<div class="card-actions items-center justify-end">
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-3">
+						<button class="btn btn-xs btn-square" type="button" onclick={() => shareLabel(label)}>
+							<Share2Icon class="size-4" />
+						</button>
 						<button
 							class="btn btn-xs btn-square"
 							type="button"

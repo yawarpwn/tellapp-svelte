@@ -1,12 +1,17 @@
-import type { CreateQuotationClient, Customer, QuotationItem, QuotationCustomer } from '$lib/types'
+import type {
+	CreateQuotationClient,
+	Customer,
+	QuotationItem,
+	QuotationCustomer,
+	QuotationClient
+} from '$lib/types'
 import { getContext, setContext } from 'svelte'
 
 export const INITIAL_QUOTATION_STATE: CreateQuotationClient = {
-	id: undefined,
-	credit: undefined,
+	credit: null,
 	deadline: 1,
 	isPaymentPending: false,
-	customerId: undefined,
+	customerId: null,
 	includeIgv: true,
 	items: [],
 	customer: {
@@ -18,13 +23,13 @@ export const INITIAL_QUOTATION_STATE: CreateQuotationClient = {
 }
 
 type StoreState = {
-	quotation: CreateQuotationClient
+	quotation: CreateQuotationClient | QuotationClient
 	showCreateEditModal: boolean
 	selectedItemId: null | string
 	pending: boolean
 }
 
-export function createQuotationState(initialQuotation?: CreateQuotationClient) {
+export function createQuotationState(initialQuotation?: QuotationClient) {
 	const store = $state<StoreState>({
 		quotation: initialQuotation || INITIAL_QUOTATION_STATE,
 		showCreateEditModal: false,
@@ -45,7 +50,7 @@ export function createQuotationState(initialQuotation?: CreateQuotationClient) {
 			address?: string
 			isRegular: boolean
 		},
-		id?: string
+		id?: string | null
 	) {
 		store.quotation.customerId = id
 		store.quotation.customer = {
@@ -94,7 +99,7 @@ export function createQuotationState(initialQuotation?: CreateQuotationClient) {
 			address: '',
 			isRegular: false
 		})
-		store.quotation.customerId = undefined
+		store.quotation.customerId = null
 	}
 
 	function move(currentIndex: number, nextIndex: number) {
@@ -150,7 +155,7 @@ export function createQuotationState(initialQuotation?: CreateQuotationClient) {
 
 const QUOTATION_KEY = Symbol('quotation')
 
-export function setQuotationContext(initialQuotation?: CreateQuotationClient) {
+export function setQuotationContext(initialQuotation?: QuotationClient) {
 	return setContext(QUOTATION_KEY, createQuotationState(initialQuotation))
 }
 export function getQuotationContext() {

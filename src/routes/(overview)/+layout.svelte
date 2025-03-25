@@ -38,7 +38,7 @@
 		<!-- Navbar -->
 		<header
 			style="view-transition-name: header;"
-			class="navbar bg-base-200 sticky top-0 z-40 min-h-14 w-full lg:hidden"
+			class="navbar bg-base-200 sticky top-0 z-40 min-h-14 w-full px-3 lg:hidden"
 		>
 			<div class="flex-1">
 				<a href="/" class="">

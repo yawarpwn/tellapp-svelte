@@ -109,7 +109,7 @@
 			{/if}
 		</div>
 		<form
-			class="flex flex-col gap-4"
+			class="flex flex-col gap-2"
 			onsubmit={(ev) => {
 				ev.preventDefault()
 
@@ -132,7 +132,7 @@
 				<textarea
 					name="description"
 					id="description"
-					class="textarea h-[90px] w-full resize-none p-2"
+					class="textarea h-[130px] w-full resize-none p-2"
 					bind:value={item.description}
 				></textarea>
 				{#if item.link}

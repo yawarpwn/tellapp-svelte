@@ -1,26 +1,24 @@
 import { z } from 'zod'
 
-export const quotationItemSchema = z.array(
-	z.object({
-		id: z.string(),
-		qty: z.number().positive({
-			message: 'La cantidad debe ser mayor a 0'
-		}),
-		price: z.number().positive({
-			message: 'El precio debe ser mayor a 0'
-		}),
-		cost: z
-			.number()
-			.positive({
-				message: 'El costo debe ser mayor a 0'
-			})
-			.optional(),
-		description: z.string(),
-		unitSize: z.string(),
-		code: z.string().optional(),
-		link: z.string().optional()
-	})
-)
+export const quotationItemSchema = z.object({
+	id: z.string(),
+	description: z.string(),
+	qty: z.number().positive({
+		message: 'La cantidad debe ser mayor a 0'
+	}),
+	price: z.number().positive({
+		message: 'El precio debe ser mayor a 0'
+	}),
+	cost: z
+		.number()
+		.positive({
+			message: 'El costo debe ser mayor a 0'
+		})
+		.optional(),
+	unitSize: z.string(),
+	code: z.string().optional(),
+	link: z.string().optional()
+})
 
 export const quotationSchema = z.object({
 	id: z.string(),
@@ -36,9 +34,7 @@ export const quotationSchema = z.object({
 		}),
 	isPaymentPending: z.boolean(),
 	customerId: z.string().optional().nullable(),
-	items: quotationItemSchema.nonempty({
-		message: 'Debes agregar al menos un producto'
-	}),
+	items: z.array(quotationItemSchema),
 	customer: z
 		.object({
 			name: z.string().optional(),
@@ -86,24 +82,6 @@ export const createProductSchema = productSchema.omit({
 export const updateProductSchema = createProductSchema.partial()
 
 //-------------------------Product Schema -------------------------------------\\
-
-// id: '',
-// dniRuc: '',
-// recipient: '',
-// destination: '',
-// observations: '',
-// phone: '',
-// agencyId: '1307f184-318e-4292-b603-23dc66e7f03e',
-//    address: '',
-//    agency: {
-//      address: '',
-//      createdAt: '',
-//      id: '',
-//      name: '',
-//      phone: '',
-//      ruc: '',
-//      updatedAt: ''
-//    }
 export const labelSchema = z.object({
 	id: z.string(),
 	dniRuc: z.coerce.string().nonempty(),
@@ -134,3 +112,22 @@ export const createLabelSchema = labelSchema.omit({
 })
 
 export const updateLabelSchema = createLabelSchema.partial()
+
+//-------------------------Agency Schema -------------------------------------\\
+export const agencySchema = z.object({
+	id: z.string(),
+	ruc: z.coerce.string().nonempty(),
+	name: z.string(),
+	phone: z.coerce.string(),
+	address: z.string().optional(),
+	createdAt: z.string(),
+	updatedAt: z.string()
+})
+
+export const createAgencySchema = agencySchema.omit({
+	id: true,
+	createdAt: true,
+	updatedAt: true
+})
+
+export const updateAgencySchema = createAgencySchema.partial()

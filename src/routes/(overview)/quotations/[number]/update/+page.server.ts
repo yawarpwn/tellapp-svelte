@@ -6,7 +6,7 @@ import {
 	updateQuotation
 } from '$lib/server/data'
 import { fail, redirect } from '@sveltejs/kit'
-import { updateQuotationSchema } from '$lib/schemas'
+import { quotationSchema, updateQuotationSchema } from '$lib/schemas'
 import { trycatch } from '$lib/utils'
 
 export const load: PageServerLoad = async ({ cookies, platform, params }) => {
@@ -29,9 +29,10 @@ export const actions = {
 	default: async ({ cookies, request, platform }) => {
 		const formData = await request.formData()
 		const quotationToUpdate = JSON.parse(formData.get('quotation') as string)
-		console.log(quotationToUpdate)
-		const result = updateQuotationSchema.safeParse(quotationToUpdate)
-		console.log(result.data)
+		console.log({ quotationToUpdate })
+
+		const result = quotationSchema.safeParse(quotationToUpdate)
+		console.log('update data', result.data)
 		if (!result.success) {
 			console.log('error', result.error.issues)
 			return fail(403, { error: result.error.issues })

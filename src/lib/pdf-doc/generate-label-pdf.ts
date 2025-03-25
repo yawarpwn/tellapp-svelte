@@ -60,6 +60,7 @@ export function generateLabelPdf(label: LabelType) {
 	return {
 		download: () => dd.download(`rotulo-${label.dniRuc}.pdf`),
 		print: () => dd.print(),
-		open: () => dd.open()
+		open: () => dd.open(),
+		docPdf
 	}
 }

@@ -7,7 +7,11 @@ import {
 	updateLabelSchema,
 	quotationSchema,
 	createQuotationSchema,
-	updateQuotationSchema
+	updateQuotationSchema,
+	quotationItemSchema,
+	agencySchema,
+	updateAgencySchema,
+	createAgencySchema
 } from '$lib/schemas'
 import type { z } from 'zod'
 // type Prettyfy<T> = {
@@ -44,16 +48,8 @@ export type Customer = {
 export type InsertCustomer = Omit<Customer, 'id' | 'createdAt' | 'updatedAt'>
 export type UpdateCustomer = Partial<InsertCustomer>
 
-export type QuotationItem = {
-	id: string
-	description: string
-	price: number
-	cost?: number
-	link?: string | null
-	qty: number
-	// code: string
-	unitSize: string
-}
+export type QuotationItem = z.infer<typeof quotationItemSchema>
+
 export type DataResponse<T> = {
 	items: T[]
 	meta: Meta
@@ -72,18 +68,9 @@ export type FieldErrorsProps = {
 
 //---------------------------- Agencies  -------------------------------------->
 
-export type Agency = {
-	id: string
-	name: string
-	ruc: string
-	phone: string
-	address: string
-	createdAt: string
-	updatedAt: string
-}
-
-export type CreateAgency = Omit<Agency, 'id' | 'createdAt' | 'updatedAt'>
-export type UpdateAgency = Partial<CreateAgency>
+export type Agency = z.infer<typeof agencySchema>
+export type CreateAgency = z.infer<typeof createAgencySchema>
+export type UpdateAgency = z.infer<typeof updateAgencySchema>
 
 // -------------------------- Labels  --------------------------------------//
 export type LabelType = z.infer<typeof labelSchema>

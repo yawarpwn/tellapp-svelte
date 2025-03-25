@@ -33,6 +33,11 @@
 			name: 'Etiquetas',
 			href: '/labels',
 			icon: PrinterIcon
+		},
+		{
+			name: 'Agencias',
+			href: '/agencies',
+			icon: TruckIcon
 		}
 	]
 </script>

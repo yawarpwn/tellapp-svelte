@@ -8,7 +8,7 @@
 		UserIcon,
 		UsersIcon
 	} from 'lucide-svelte'
-	import type { Customer, Product } from '$lib/types'
+	import type { CreateQuotationClient, Customer, Product, QuotationClient } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
 	import ItemsQuotationTable from '$lib/components/ItemsQuotationTable.svelte'
@@ -46,6 +46,12 @@
 	let showCustomerPickDialog = $state(false)
 
 	$inspect(store.quotation)
+
+	function isUpdateQuotation(
+		quotation: QuotationClient | CreateQuotationClient
+	): quotation is QuotationClient {
+		return 'id' in quotation
+	}
 </script>
 
 <!-- <div> -->
@@ -67,7 +73,6 @@
 			<div class="col-span-12 grid gap-1 lg:order-none lg:col-span-6">
 				<label class="label grid gap-2 text-sm" for="deadline"> Tiempo Entrega (Dias) </label>
 				<div class="input w-full">
-					<CalendarDaysIcon class="h-[1.2em] opacity-50" />
 					<input
 						class="w-full"
 						required
@@ -87,7 +92,6 @@
 					<p class="text-green-200" id="customer.name">{store.quotation.customer.name}</p>
 				{:else}
 					<div class="input w-full">
-						<UserIcon class="h-[1.2em] opacity-50" />
 						<input class="" type="text" disabled={store.pending} />
 						<span class="badge badge-neutral badge-xs">Opcional</span>
 					</div>
@@ -102,7 +106,6 @@
 					<p class="text-green-200" id="address">{store.quotation.customer.address}</p>
 				{:else}
 					<div class="input w-full" aria-disabled="true">
-						<MapPinIcon class="h-[1.2em] opacity-50" />
 						<input type="text" disabled={store.pending} />
 						<span class="badge badge-neutral badge-xs">Opcional</span>
 					</div>
@@ -146,7 +149,7 @@
 			<!-- Credito -->
 			<div class="col-span-12 grid gap-1">
 				<div class="label textsm">Crédito</div>
-				<div class="flex gap-2 overflow-x-auto">
+				<div class="flex gap-2 overflow-x-auto py-2">
 					{#each Object.entries(CREDIT_OPTION) as [key, value]}
 						<label
 							class="btn data-[active=true]:btn-primary min-w-[100px] md:min-w-[150px]"
@@ -218,13 +221,16 @@
 				}}
 			>
 				<input type="hidden" name="quotation" value={JSON.stringify(store.quotation)} />
-				<input type="hidden" name="id" defaultValue={store.quotation.id} />
+				{#if isUpdateQuotation(store.quotation)}
+					<input type="hidden" name="id" defaultValue={store.quotation.id} />
+					<input type="hidden" name="customerId" defaultValue={store.quotation.customerId} />
+				{/if}
 				<button
 					disabled={store.pending || store.quotation.items.length === 0}
 					class="btn btn-wide btn-primary"
 					type="submit"
 				>
-					{store.quotation.id ? 'Actualizar' : 'Crear'}
+					{isUpdateQuotation(store.quotation) ? 'Actualizar' : 'Crear'}
 					{#if store.pending}
 						<Loader2Icon class="animate-spin" />
 					{/if}
