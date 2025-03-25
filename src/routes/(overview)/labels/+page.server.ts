@@ -5,7 +5,7 @@ import type { PageServerLoad, Actions } from './$types'
 import { createLabelSchema, updateLabelSchema } from '$lib/schemas'
 
 export const load: PageServerLoad = async ({ params, platform, request }) => {
-	const [labels, agencies] = await Promise.all([
+	const promises = Promise.all([
 		fetchLabels(platform?.env.TELL_API_KEY!),
 		fetchAgencies(platform?.env.TELL_API_KEY!)
 	])
@@ -13,8 +13,7 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 		metadata: {
 			title: 'Etiquetas'
 		},
-		labels,
-		agencies
+		promises
 	}
 }
 

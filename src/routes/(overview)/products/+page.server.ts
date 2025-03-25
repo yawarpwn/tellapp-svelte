@@ -10,15 +10,8 @@ import { trycatch } from '$lib/utils'
 import { error, fail } from '@sveltejs/kit'
 import type { PageServerLoad, Actions } from './$types'
 import { createProductSchema, updateProductSchema } from '$lib/schemas'
-import type { Product } from '$lib/types'
 
 export const load: PageServerLoad = async ({ params, platform, request }) => {
-	// const { data, error } = await trycatch(fetchProducts(platform?.env.TELL_API_KEY!))
-	//
-	// if (error || !data) {
-	// 	return fail(400, { error: 'Interna server error' })
-	// }
-
 	const [products, productsCategories] = await Promise.all([
 		fetchProducts(platform?.env.TELL_API_KEY!),
 		fetchProductCategories(platform?.env.TELL_API_KEY!)
@@ -53,8 +46,6 @@ export const actions = {
 			success: true,
 			message: 'Producto Creado correctamente'
 		}
-
-		// console.log(formData)
 	},
 
 	update: async ({ cookies, request, platform }) => {
@@ -143,7 +134,5 @@ export const actions = {
 			success: true,
 			message: 'Producto eliminado correctamente'
 		}
-
-		// console.log(formData)
 	}
 } satisfies Actions
