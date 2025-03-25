@@ -5,6 +5,7 @@
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
 	import DataTableSkeleton from '$lib/components/DataTableSkeleton.svelte'
+	import { enhance } from '$app/forms'
 
 	let { data }: PageProps = $props()
 	let query = $state(page.url.searchParams.get('q') || '')

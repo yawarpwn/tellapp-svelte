@@ -91,7 +91,5 @@ export const actions = {
 			success: true,
 			message: 'Producto eliminado correctamente'
 		}
-
-		// console.log(formData)
 	}
 } satisfies Actions

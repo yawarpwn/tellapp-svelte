@@ -47,7 +47,7 @@
 			</div>
 
 			<div class="">
-				<label for="my-drawer-3" aria-label="open sidebar" class="cursor-pointer">
+				<label for="my-drawer-3" aria-label="open sidebar" class="btn btn-ghost cursor-pointer">
 					<svg
 						class=""
 						xmlns="http://www.w3.org/2000/svg"

@@ -31,6 +31,7 @@
 	}
 
 	setQuotationContext()
+
 	const { setQuotation, reset, store } = getQuotationContext()
 
 	// Efecto para recuperar la cotizacion desde el LocalStorage
@@ -46,7 +47,6 @@
 	//Efecto para guardar la cotizacion en localStorage
 	$effect(() => {
 		const quotationRaw = {
-			id: store.quotation.id,
 			credit: store.quotation.credit,
 			deadline: store.quotation.deadline,
 			isPaymentPending: store.quotation.isPaymentPending,

@@ -45,19 +45,17 @@
 <div class="flex p-4">
 	<Logo />
 </div>
-<ul class="menu w-ful gap-2 px-4 py-0">
+<ul class="menu w-full gap-4 px-4 py-0">
 	{#each menuItems as item}
 		{@const Icon = item.icon}
 		{@const isActive = page.url.pathname.startsWith(item.href)}
 		<li>
 			<a
-				class={`flex items-center gap-2 ${isActive ? 'menu-active' : ''}`}
+				class={`flex items-center gap-3 ${isActive ? 'menu-active' : ''}`}
 				href={item.href}
 				onclick={closeDrawer}
 			>
-				<span class="">
-					<Icon />
-				</span>
+				<Icon class="size-5" />
 				<span>
 					{item.name}
 				</span>
