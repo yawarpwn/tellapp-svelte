@@ -126,7 +126,7 @@
 				<form
 					method="POST"
 					action="?/delete"
-					class="btn"
+					class=""
 					use:enhance={() => {
 						loading = true
 						return async ({ update }) => {
@@ -135,10 +135,16 @@
 						}
 					}}
 				>
-					<button disabled={loading} name="ids" value={selectedIds?.join(',')} class="">
+					<button
+						type="submit"
+						disabled={loading}
+						name="ids"
+						value={selectedIds?.join(',')}
+						class="btn w-full"
+					>
 						<TrashIcon class="size-4" />
+						<span class="">Eliminar </span>
 					</button>
-					<span class="">Eliminar </span>
 				</form>
 				<button disabled={loading} onclick={clearSelectedIds} class="btn">
 					<XIcon class="size-4" />

@@ -12,6 +12,7 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 
 export const actions = {
 	delete: async ({ request, params, platform }) => {
+		console.log('delete watermark action')
 		const formData = await request.formData()
 		const ids = String(formData.get('ids')).split(',')
 		for (const id of ids) {
