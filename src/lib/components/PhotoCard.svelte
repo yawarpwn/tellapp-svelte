@@ -14,10 +14,10 @@
 	onmouseenter={() => (showActions = true)}
 	onmouseleave={() => (showActions = false)}
 	data-active={isSelected ? 'true' : 'false'}
-	class="absolute overflow-hidden rounded-md"
+	class="data-[active=true]:border-primary absolute overflow-hidden rounded-md border-2 border-dashed border-transparent"
 >
 	{#if isSelected || showActions}
-		<label class="absolute inset-0 z-50 cursor-pointer bg-black/70 p-1">
+		<label class="absolute inset-0 z-50 cursor-pointer bg-black/50 p-1">
 			<div class="flex justify-between">
 				<input
 					class="checkbox checkbox-neutral checkbox-sm bg-base-content/20"

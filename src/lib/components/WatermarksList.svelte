@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Watermark } from '$lib/types'
+	import { fly } from 'svelte/transition'
 
 	import MiniMasonry from 'minimasonry'
 
@@ -107,39 +108,51 @@
 </script>
 
 <section class="flex flex-col gap-4">
-	<div class="text-center">Fotos Selecionadas ({selectedIds?.length})</div>
-	<header class="flex items-center justify-between">
-		<div class="flex gap-2">
-			<button disabled={loading} class="btn" onclick={downLoadPhotos}>
-				<DownloadIcon class="size-4" />
-				<span class="hidden md:block">Descargar</span>
-			</button>
-			<button disabled={loading} onclick={sharePhotos} class="btn">
-				<Share2Icon class="size-4" />
-				<span class="hidden md:block">Compartir</span>
-			</button>
-			<form
-				method="POST"
-				action="?/delete"
-				use:enhance={() => {
-					loading = true
-					return async ({ update }) => {
-						await update()
-						loading = false
-					}
-				}}
+	<section class="md:bg-base-300 flex flex-col items-center justify-between gap-2 p-4 md:flex-row">
+		{#if selectedIds.length > 0}
+			<aside
+				class="flex w-full flex-col gap-2 rounded-md md:w-auto md:flex-row"
+				in:fly={{ y: 20 }}
+				out:fly={{ y: 20 }}
 			>
-				<button disabled={loading} name="ids" value={selectedIds?.join(',')} class="btn">
-					<TrashIcon class="size-4" />
-					<span class="hidden md:block">Eliminar</span>
+				<button disabled={loading} class="btn" onclick={downLoadPhotos}>
+					<DownloadIcon class="size-4" />
+					<span class="">Descargar </span>
 				</button>
-			</form>
-			<button disabled={loading} onclick={clearSelectedIds} class="btn">
-				<XIcon class="size-4" />
-			</button>
-		</div>
+				<button disabled={loading} onclick={sharePhotos} class="btn">
+					<Share2Icon class="size-4" />
+					<span class="">Compartir</span>
+				</button>
+				<form
+					method="POST"
+					action="?/delete"
+					class="btn"
+					use:enhance={() => {
+						loading = true
+						return async ({ update }) => {
+							await update()
+							loading = false
+						}
+					}}
+				>
+					<button disabled={loading} name="ids" value={selectedIds?.join(',')} class="">
+						<TrashIcon class="size-4" />
+					</button>
+					<span class="">Eliminar </span>
+				</form>
+				<button disabled={loading} onclick={clearSelectedIds} class="btn">
+					<XIcon class="size-4" />
+					<span> Deseleccionar</span>
+					<span
+						class="bg-base-content text-base-100 flex size-4 items-center justify-center rounded-full text-sm"
+						>{selectedIds.length}</span
+					>
+				</button>
+			</aside>
+		{/if}
+
 		<CreateWatermark bind:loading />
-	</header>
+	</section>
 	<div class="relative container mt-4" bind:this={containerRef}>
 		{#each watermarks as watermark}
 			<PhotoCard
