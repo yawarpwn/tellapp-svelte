@@ -3,6 +3,8 @@
 		FilesIcon,
 		HomeIcon,
 		type Icon as IconType,
+		ImageUpIcon,
+		PictureInPictureIcon,
 		PrinterIcon,
 		ShoppingCartIcon,
 		TruckIcon
@@ -38,6 +40,11 @@
 			name: 'Agencias',
 			href: '/agencies',
 			icon: TruckIcon
+		},
+		{
+			name: 'Marca Agua',
+			href: '/watermarks',
+			icon: ImageUpIcon
 		}
 	]
 </script>

@@ -17,15 +17,39 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      filepond:
+        specifier: ^4.32.7
+        version: 4.32.7
+      filepond-plugin-image-crop:
+        specifier: ^2.0.6
+        version: 2.0.6(filepond@4.32.7)
+      filepond-plugin-image-edit:
+        specifier: ^1.6.3
+        version: 1.6.3(filepond@4.32.7)
+      filepond-plugin-image-exif-orientation:
+        specifier: ^1.0.11
+        version: 1.0.11(filepond@4.32.7)
+      filepond-plugin-image-preview:
+        specifier: ^4.6.12
+        version: 4.6.12(filepond@4.32.7)
+      filepond-plugin-image-transform:
+        specifier: ^3.8.7
+        version: 3.8.7(filepond@4.32.7)
       just-compare:
         specifier: ^2.3.0
         version: 2.3.0
       lucide-svelte:
         specifier: ^0.476.0
         version: 0.476.0(svelte@5.20.4)
+      minimasonry:
+        specifier: ^1.3.2
+        version: 1.3.2
       pdfmake:
         specifier: ^0.2.18
         version: 0.2.18
+      svelte-filepond:
+        specifier: ^0.2.2
+        version: 0.2.2(filepond@4.32.7)
       svelte-sonner:
         specifier: ^0.3.28
         version: 0.3.28(svelte@5.20.4)
@@ -51,6 +75,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.0.0
         version: 4.0.9(vite@6.2.0(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.7.0))
+      '@types/minimasonry':
+        specifier: ^1.3.5
+        version: 1.3.5
       '@types/pdfmake':
         specifier: ^0.2.11
         version: 0.2.11
@@ -949,6 +976,9 @@ packages:
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
+  '@types/minimasonry@1.3.5':
+    resolution: {integrity: sha512-k06l7VDZHs8C+eLgK+FIvmKMvMI/CK4tOhLrUAGyB/Ms/QEciei7AwU5PhrsFkR4O+5yDl49P0i62gnVmIr9Hw==}
+
   '@types/node@22.13.10':
     resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
 
@@ -1162,6 +1192,34 @@ packages:
       picomatch:
         optional: true
 
+  filepond-plugin-image-crop@2.0.6:
+    resolution: {integrity: sha512-bSy/KND4EP/QtW8MxIj23qgSEPUVRrT8XdktJ+OU9y8xRjFjTG+qcuw1LsycARQYRtzi8cZrD3P4POOITfkywQ==}
+    peerDependencies:
+      filepond: '>=3.x <5.x'
+
+  filepond-plugin-image-edit@1.6.3:
+    resolution: {integrity: sha512-5q3RDaVlfvyI346ckF1DfKw4uN5rfAmUCv7HCG30jBZcGmepg8hFyjVM71uZXYeb4AgLhpCkSPP8Immwig8bzw==}
+    peerDependencies:
+      filepond: '>=3.7.2 <5.x'
+
+  filepond-plugin-image-exif-orientation@1.0.11:
+    resolution: {integrity: sha512-hLBc12Fk6Zkj3L8mSAn+elugHOqT5rLUbgVXQQIQjMe0FsGjtpoxqeVR6jt4IWHGat2L9sFAgU2TGmd1mqosCg==}
+    peerDependencies:
+      filepond: '>=3.x <5.x'
+
+  filepond-plugin-image-preview@4.6.12:
+    resolution: {integrity: sha512-Y8ETX5QVV0mbPB0586UH8AUmG9tZg8PuN5bdEAIlZVJFTct5ebViJ7+Am94/VhTPjLqZjBf1zmDq5JU6XRsZKw==}
+    peerDependencies:
+      filepond: '>=4.x <5.x'
+
+  filepond-plugin-image-transform@3.8.7:
+    resolution: {integrity: sha512-vgKwyIDG2y5twanf7YpqZvxkaLudTjwd9vRcoq5sQDB8egUlX5/NA0bQ0823pocrm0fjbFeetICu44mkqeDkIA==}
+    peerDependencies:
+      filepond: '>=3.6.0 <5.x'
+
+  filepond@4.32.7:
+    resolution: {integrity: sha512-L2idUfC31Qb2ZuFn8yAjX+Km6Ouq0kQn6JHcwhqrl5Ee9cB7xctLa0nkbbAeCML2+a1/cUsd0TqBgVcxYW08GA==}
+
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -1346,6 +1404,9 @@ packages:
     resolution: {integrity: sha512-NE66QV+2n9ZndaP5jgPlcVref3Arvizb+l2QqhgeXtKM5Orhi8UU2mijoiN3mHEUexKaBES2S1VubT4LDPqkxQ==}
     engines: {node: '>=16.13'}
     hasBin: true
+
+  minimasonry@1.3.2:
+    resolution: {integrity: sha512-ygvf5JIR4NT1LbM6o8z1oz1icTkta72gXKwidvSqIVxuzVd/P21UI0Wbq1J+MStAu50Vvr8qWYNSz1W4uycqMQ==}
 
   mlly@1.7.4:
     resolution: {integrity: sha512-qmdSIPC4bDJXgZTCR7XosJiNKySV7O215tsPtDN9iEO/7q/76b/ijtgRu/+epFXSJhijtTCCGp3DWS549P3xKw==}
@@ -1577,6 +1638,11 @@ packages:
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
+
+  svelte-filepond@0.2.2:
+    resolution: {integrity: sha512-MnXOiX5aiyLzyn+iuG2grZDPrLQsSOyalyQQ/tl04uBzllFu6kkXCbKHMXTx6rdco8SuJzd5b5j+klD7hiY6Zg==}
+    peerDependencies:
+      filepond: '>=3.7.x <5.x'
 
   svelte-sonner@0.3.28:
     resolution: {integrity: sha512-K3AmlySeFifF/cKgsYNv5uXqMVNln0NBAacOYgmkQStLa/UoU0LhfAACU6Gr+YYC8bOCHdVmFNoKuDbMEsppJg==}
@@ -2317,6 +2383,8 @@ snapshots:
 
   '@types/estree@1.0.6': {}
 
+  '@types/minimasonry@1.3.5': {}
+
   '@types/node@22.13.10':
     dependencies:
       undici-types: 6.20.0
@@ -2578,6 +2646,28 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.2
 
+  filepond-plugin-image-crop@2.0.6(filepond@4.32.7):
+    dependencies:
+      filepond: 4.32.7
+
+  filepond-plugin-image-edit@1.6.3(filepond@4.32.7):
+    dependencies:
+      filepond: 4.32.7
+
+  filepond-plugin-image-exif-orientation@1.0.11(filepond@4.32.7):
+    dependencies:
+      filepond: 4.32.7
+
+  filepond-plugin-image-preview@4.6.12(filepond@4.32.7):
+    dependencies:
+      filepond: 4.32.7
+
+  filepond-plugin-image-transform@3.8.7(filepond@4.32.7):
+    dependencies:
+      filepond: 4.32.7
+
+  filepond@4.32.7: {}
+
   fsevents@2.3.3:
     optional: true
 
@@ -2749,6 +2839,8 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+
+  minimasonry@1.3.2: {}
 
   mlly@1.7.4:
     dependencies:
@@ -2975,6 +3067,10 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - picomatch
+
+  svelte-filepond@0.2.2(filepond@4.32.7):
+    dependencies:
+      filepond: 4.32.7
 
   svelte-sonner@0.3.28(svelte@5.20.4):
     dependencies:

@@ -357,7 +357,7 @@ export async function fetchWatermarks(apiKey: string): Promise<Watermark[]> {
 			'TELL-API-KEY': apiKey
 		}
 	})
-	return data.items
+	return data.items.filter((w) => w.url !== null)
 }
 
 export async function fetchWatermarkById(id: string, apiKey: string) {
