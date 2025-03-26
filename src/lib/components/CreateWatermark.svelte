@@ -9,7 +9,13 @@
 	import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 	import FilePondPluginImageEdit from 'filepond-plugin-image-edit'
 	import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
-	import { PlusCircleIcon } from 'lucide-svelte'
+	import { Loader2Icon, LoaderIcon, PlusCircleIcon } from 'lucide-svelte'
+	import { goto } from '$app/navigation'
+
+	type Props = {
+		loading: boolean
+	}
+	let { loading = $bindable() }: Props = $props()
 
 	let pond: FilepondType
 	function uploadFile(inputEl: HTMLInputElement) {
@@ -27,12 +33,38 @@
 
 	let open = $state(false)
 
-	function handleUploadImage() {
+	async function handleUploadImage() {
+		const formData = new FormData()
 		const files = pond.getFiles()
-		files.forEach((file) => {
-			console.log(file.file)
+		for (const file of files) {
+			formData.append('files[]', file.file)
+		}
+
+		loading = true
+		fetch('/api/upload-watermark', {
+			method: 'POST',
+			body: formData
 		})
-		// console.log(pond.getFiles())
+			.then((res) => {
+				console.log(res)
+				if (!res.ok) throw new Error('error en coneción')
+				open = false
+				return res.json()
+			})
+			.then((data) => {
+				console.log(data)
+				open = false
+				goto('/watermarks', {
+					invalidateAll: true
+				})
+			})
+			.catch((err) => {
+				console.log('error enviando a api')
+				console.log(err)
+			})
+			.finally(() => {
+				loading = false
+			})
 	}
 	// Configurar FilePond
 </script>
@@ -45,8 +77,11 @@
 	<div>
 		<input use:uploadFile type="file" />
 		<div class="flex justify-between gap-2">
-			<button onclick={() => (open = false)} class="btn">Cancelar</button>
-			<button onclick={handleUploadImage} class="btn btn-primary">Crear</button>
+			<button disabled={loading} onclick={() => (open = false)} class="btn">Cancelar</button>
+			<button disabled={loading} onclick={handleUploadImage} class="btn btn-primary"
+				>Crear
+				{#if loading}<Loader2Icon class="size-4 animate-spin" />{/if}
+			</button>
 		</div>
 	</div>
 </Dialog>

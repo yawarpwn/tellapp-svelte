@@ -6,6 +6,8 @@
 	import { onMount } from 'svelte'
 	import CreateWatermark from './CreateWatermark.svelte'
 	import { DownloadIcon, Share2Icon, TrashIcon } from 'lucide-svelte'
+	import { enhance } from '$app/forms'
+	import PhotoCard from './PhotoCard.svelte'
 
 	type Props = {
 		watermarks: Watermark[]
@@ -20,18 +22,25 @@
 	// }
 
 	let containerRef: HTMLDivElement
+	let miniMasonry
 	onMount(() => {
-		const miniMasonry = new MiniMasonry({
+		miniMasonry = new MiniMasonry({
 			container: containerRef,
 			baseWidth: 150
 		})
 	})
+
+	$effect(() => {
+		miniMasonry.layout()
+	})
+
 	const { watermarks }: Props = $props()
 
-	let selectedIds = $state<null | string[]>(null)
+	let selectedIds = $state<string[]>([])
+	let loading = $state(false)
 
 	function downLoadPhotos() {
-		if (!selectedIds) return
+		if (selectedIds.length === 0) return
 		const photosToDownload = watermarks.filter((photo) => selectedIds?.includes(photo.id))
 
 		for (const photo of photosToDownload) {
@@ -48,13 +57,13 @@
 					anchor.click()
 					document.body.removeChild(anchor)
 
-					selectedIds = null
+					selectedIds = []
 				})
 		}
 	}
 
 	async function sharePhotos() {
-		if (!selectedIds) return
+		if (selectedIds.length === 0) return
 
 		const photosToShare = watermarks
 			.filter((photo) => selectedIds?.includes(photo.id))
@@ -83,7 +92,7 @@
 		} catch (error) {
 			console.error('Error al compartir la imagen:', error)
 		} finally {
-			selectedIds = null
+			selectedIds = []
 		}
 
 		console.log(photosToShare)
@@ -96,51 +105,36 @@
 	<div class="text-center">Fotos Selecionadas ({selectedIds?.length})</div>
 	<header class="flex items-center justify-between">
 		<div class="flex gap-2">
-			<button class="btn" onclick={downLoadPhotos}>
+			<button disabled={loading} class="btn" onclick={downLoadPhotos}>
 				<DownloadIcon class="size-4" />
+				<span class="hidden md:block">Descargar</span>
 			</button>
-			<button onclick={sharePhotos} class="btn">
+			<button disabled={loading} onclick={sharePhotos} class="btn">
 				<Share2Icon class="size-4" />
+				<span class="hidden md:block">Compartir</span>
 			</button>
-			<button class="btn">
-				<TrashIcon class="size-4" />
-			</button>
+			<form
+				method="POST"
+				action="?/delete"
+				use:enhance={() => {
+					loading = true
+					return async ({ update }) => {
+						await update()
+						loading = false
+					}
+				}}
+			>
+				<button disabled={loading} name="ids" value={selectedIds?.join(',')} class="btn">
+					<TrashIcon class="size-4" />
+					<span class="hidden md:block">Eliminar</span>
+				</button>
+			</form>
 		</div>
-		<CreateWatermark />
+		<CreateWatermark bind:loading />
 	</header>
-	<div class="container mt-4" bind:this={containerRef}>
+	<div class="relative container mt-4" bind:this={containerRef}>
 		{#each watermarks as watermark}
-			<article data-active={selectedIds?.includes(watermark.id) ? 'true' : 'false'}>
-				<label class="absolute inset-0 z-50 cursor-pointer">
-					<input class="sr-only" type="checkbox" value={watermark.id} bind:group={selectedIds} />
-				</label>
-				<img src={watermark.thumbUrl} alt={watermark.id} />
-			</article>
+			<PhotoCard isSelected={selectedIds?.includes(watermark.id)} bind:selectedIds {watermark} />
 		{/each}
 	</div>
 </section>
-
-<style>
-	.container {
-		position: relative;
-	}
-
-	article {
-		position: absolute;
-		cursor: pointer;
-		z-index: 1;
-		img {
-			display: block;
-			width: 100%;
-		}
-	}
-
-	/* article:hover::after, */
-	article[data-active='true']::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: rgba(0, 0, 0, 0.8);
-		z-index: 10;
-	}
-</style>
