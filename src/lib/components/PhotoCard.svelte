@@ -4,8 +4,9 @@
 		watermark: Watermark
 		isSelected: boolean
 		selectedIds: string[]
+		onChecked: (id: string) => void
 	}
-	let { watermark, isSelected, selectedIds }: Props = $props()
+	let { watermark, isSelected, selectedIds = $bindable() }: Props = $props()
 	let showActions = $state(false)
 </script>
 
@@ -21,8 +22,14 @@
 				<input
 					class="checkbox checkbox-neutral checkbox-sm bg-base-content/20"
 					type="checkbox"
-					value={watermark.id}
-					bind:group={selectedIds}
+					onchange={(ev) => {
+						const checked = (ev.target as HTMLInputElement).checked
+						if (checked) {
+							selectedIds = [...selectedIds, watermark.id]
+						} else {
+							selectedIds = selectedIds.filter((id) => id !== watermark.id)
+						}
+					}}
 				/>
 			</div>
 		</label>

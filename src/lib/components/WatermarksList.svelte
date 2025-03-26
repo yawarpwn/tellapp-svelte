@@ -5,7 +5,7 @@
 
 	import { onMount } from 'svelte'
 	import CreateWatermark from './CreateWatermark.svelte'
-	import { DownloadIcon, Share2Icon, TrashIcon } from 'lucide-svelte'
+	import { DownloadIcon, Share2Icon, TrashIcon, XIcon } from 'lucide-svelte'
 	import { enhance } from '$app/forms'
 	import PhotoCard from './PhotoCard.svelte'
 
@@ -98,6 +98,11 @@
 		console.log(photosToShare)
 	}
 
+	function clearSelectedIds() {
+		selectedIds = []
+	}
+
+	function handleChecked(id: string) {}
 	$inspect(selectedIds)
 </script>
 
@@ -129,12 +134,20 @@
 					<span class="hidden md:block">Eliminar</span>
 				</button>
 			</form>
+			<button disabled={loading} onclick={clearSelectedIds} class="btn">
+				<XIcon class="size-4" />
+			</button>
 		</div>
 		<CreateWatermark bind:loading />
 	</header>
 	<div class="relative container mt-4" bind:this={containerRef}>
 		{#each watermarks as watermark}
-			<PhotoCard isSelected={selectedIds?.includes(watermark.id)} bind:selectedIds {watermark} />
+			<PhotoCard
+				isSelected={selectedIds?.includes(watermark.id)}
+				{watermark}
+				onChecked={() => {}}
+				bind:selectedIds
+			/>
 		{/each}
 	</div>
 </section>
