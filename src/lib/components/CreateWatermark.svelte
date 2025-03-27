@@ -6,6 +6,12 @@
 	import * as FilePond from 'filepond'
 	import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 	import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+	import FilePondPluginImageEdit from 'filepond-plugin-image-edit'
+	import FilePondPluginImageResize from 'filepond-plugin-image-resize'
+	import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
+	import FilePondPluginImageCrop from 'filepond-plugin-image-crop'
+	import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
+	import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 	import { Loader2Icon, LoaderIcon, PlusCircleIcon } from 'lucide-svelte'
 	import { goto } from '$app/navigation'
 
@@ -17,7 +23,15 @@
 	let pond: FilepondType
 	function uploadFile(inputEl: HTMLInputElement) {
 		// Registrar plugins
-		FilePond.registerPlugin(FilePondPluginImagePreview)
+		FilePond.registerPlugin(
+			FilePondPluginFileValidateType,
+			FilePondPluginImageExifOrientation,
+			FilePondPluginImagePreview,
+			FilePondPluginImageCrop,
+			FilePondPluginImageResize,
+			FilePondPluginImageTransform,
+			FilePondPluginImageEdit
+		)
 		pond = FilePond.create(inputEl, {
 			// Otros ajustes
 			allowMultiple: true,
