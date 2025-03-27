@@ -105,9 +105,6 @@
 		selectedIds = []
 	}
 
-	function handleChecked(id: string) {}
-	$inspect(selectedIds)
-
 	const hasItems = $derived(selectedIds.length > 0)
 </script>
 
@@ -171,7 +168,7 @@
 
 		<CreateWatermark bind:loading={isDeleting} />
 	</div>
-	<div class="relative container mt-16 lg:mt-4" bind:this={containerRef}>
+	<div class="relative mt-16 lg:mt-4" bind:this={containerRef}>
 		{#each watermarks as watermark}
 			<PhotoCard
 				isSelected={selectedIds?.includes(watermark.id)}

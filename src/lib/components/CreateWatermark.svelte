@@ -5,10 +5,7 @@
 	import type { FilePond as FilepondType } from 'filepond'
 	import * as FilePond from 'filepond'
 	import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
-	import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 	import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-	import FilePondPluginImageEdit from 'filepond-plugin-image-edit'
-	import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 	import { Loader2Icon, LoaderIcon, PlusCircleIcon } from 'lucide-svelte'
 	import { goto } from '$app/navigation'
 
@@ -20,14 +17,13 @@
 	let pond: FilepondType
 	function uploadFile(inputEl: HTMLInputElement) {
 		// Registrar plugins
-		FilePond.registerPlugin(
-			FilePondPluginImagePreview,
-			FilePondPluginImageTransform,
-			FilePondPluginImageEdit
-		)
+		FilePond.registerPlugin(FilePondPluginImagePreview)
 		pond = FilePond.create(inputEl, {
 			// Otros ajustes
-			allowMultiple: true
+			allowMultiple: true,
+			labelIdle:
+				'Arrastra y suelta las fotos aquí o <span class="filepond--label-action">Buscar</span>',
+			credits: false
 		})
 	}
 
@@ -74,8 +70,10 @@
 	<span class="hidden md:block"> Agregar </span>
 </button>
 <Dialog bind:open>
-	<div>
-		<input use:uploadFile type="file" />
+	<div class="flex h-[90svh] flex-col gap-4">
+		<div class="h-full flex-1 overflow-y-auto">
+			<input use:uploadFile type="file" accept="image/png, image/jpeg, image/gif, image/webp" />
+		</div>
 		<div class="flex justify-between gap-2">
 			<button disabled={loading} onclick={() => (open = false)} class="btn">Cancelar</button>
 			<button disabled={loading} onclick={handleUploadImage} class="btn btn-primary"
