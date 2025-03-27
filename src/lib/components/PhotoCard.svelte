@@ -34,5 +34,5 @@
 			</div>
 		</label>
 	{/if}
-	<img loading="lazy" src={watermark.thumbUrl} alt={watermark.id} />
+	<img class="w-full object-cover" loading="lazy" src={watermark.thumbUrl} alt={watermark.id} />
 </article>

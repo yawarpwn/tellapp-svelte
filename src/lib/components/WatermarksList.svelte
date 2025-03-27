@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { Watermark } from '$lib/types'
-	import { fly } from 'svelte/transition'
 
 	import MiniMasonry from 'minimasonry'
 
 	import { onMount } from 'svelte'
 	import CreateWatermark from './CreateWatermark.svelte'
-	import { DownloadIcon, Share2Icon, TrashIcon, XIcon } from 'lucide-svelte'
+	import { DownloadIcon, Share2Icon, TrashIcon, XIcon, Loader2Icon } from 'lucide-svelte'
 	import { enhance } from '$app/forms'
 	import PhotoCard from './PhotoCard.svelte'
 
@@ -38,7 +37,9 @@
 	const { watermarks }: Props = $props()
 
 	let selectedIds = $state<string[]>([])
-	let loading = $state(false)
+	let isDeleting = $state(false)
+	let isSharing = $state(false)
+	let isDownloading = $state(false)
 
 	function downLoadPhotos() {
 		if (selectedIds.length === 0) return
@@ -57,7 +58,6 @@
 					document.body.appendChild(anchor)
 					anchor.click()
 					document.body.removeChild(anchor)
-
 					selectedIds = []
 				})
 		}
@@ -74,6 +74,7 @@
 			console.log('Share api no supported')
 			return
 		}
+		isSharing = true
 		const blobs = await Promise.all(
 			photosToShare.map((url) => fetch(url).then((res) => res.blob()))
 		)
@@ -94,6 +95,7 @@
 			console.error('Error al compartir la imagen:', error)
 		} finally {
 			selectedIds = []
+			isSharing = false
 		}
 
 		console.log(photosToShare)
@@ -105,61 +107,71 @@
 
 	function handleChecked(id: string) {}
 	$inspect(selectedIds)
+
+	const hasItems = $derived(selectedIds.length > 0)
 </script>
 
-<section class="flex flex-col gap-4">
-	<section class="md:bg-base-300 flex flex-col items-center justify-between gap-2 p-4 md:flex-row">
-		{#if selectedIds.length > 0}
-			<aside
-				class="flex w-full flex-col gap-2 rounded-md md:w-auto md:flex-row"
-				in:fly={{ y: 20 }}
-				out:fly={{ y: 20 }}
-			>
-				<button disabled={loading} class="btn" onclick={downLoadPhotos}>
-					<DownloadIcon class="size-4" />
-					<span class="">Descargar </span>
-				</button>
-				<button disabled={loading} onclick={sharePhotos} class="btn">
-					<Share2Icon class="size-4" />
-					<span class="">Compartir</span>
-				</button>
-				<form
-					method="POST"
-					action="?/delete"
-					class=""
-					use:enhance={() => {
-						loading = true
-						return async ({ update }) => {
-							await update()
-							loading = false
-						}
-					}}
-				>
-					<button
-						type="submit"
-						disabled={loading}
-						name="ids"
-						value={selectedIds?.join(',')}
-						class="btn w-full"
-					>
-						<TrashIcon class="size-4" />
-						<span class="">Eliminar </span>
+<section class="relative">
+	<div
+		class="bg-base-100 fixed top-14 right-0 left-0 z-40 flex items-center justify-between gap-2 p-3 lg:static"
+	>
+		<div>
+			<aside class="flex items-center justify-between gap-4 rounded-md">
+				<div class="flex items-center gap-2">
+					<button disabled={isDeleting} onclick={clearSelectedIds} class="btn btn-circle btn-xs">
+						<XIcon class="size-4" />
 					</button>
-				</form>
-				<button disabled={loading} onclick={clearSelectedIds} class="btn">
-					<XIcon class="size-4" />
-					<span> Deseleccionar</span>
-					<span
-						class="bg-base-content text-base-100 flex size-4 items-center justify-center rounded-full text-sm"
-						>{selectedIds.length}</span
+					<div class="flex items-center gap-2">
+						<span class="text-xs md:text-sm">({selectedIds.length}) Fotos </span>
+					</div>
+				</div>
+				<div class="flex gap-1">
+					<button disabled={isDeleting || !hasItems} class="btn btn-sm" onclick={downLoadPhotos}>
+						<DownloadIcon class="size-4" />
+						<span class="hidden md:block">Descargar </span>
+					</button>
+					<button disabled={isDeleting || !hasItems} onclick={sharePhotos} class="btn btn-sm">
+						{#if isSharing}
+							<Loader2Icon class="size-4 animate-spin" />
+						{:else}
+							<Share2Icon class="size-4" />
+						{/if}
+						<span class="hidden md:block">Compartir</span>
+					</button>
+					<form
+						method="POST"
+						action="?/delete"
+						class=""
+						use:enhance={() => {
+							isDeleting = true
+							return async ({ update }) => {
+								await update()
+								isDeleting = false
+							}
+						}}
 					>
-				</button>
+						<button
+							type="submit"
+							disabled={isDeleting || !hasItems}
+							name="ids"
+							value={selectedIds?.join(',')}
+							class="btn btn-sm w-full"
+						>
+							{#if isDeleting}
+								<Loader2Icon class="size-4 animate-spin" />
+							{:else}
+								<TrashIcon class="size-4" />
+							{/if}
+							<span class="hidden md:block">Eliminar </span>
+						</button>
+					</form>
+				</div>
 			</aside>
-		{/if}
+		</div>
 
-		<CreateWatermark bind:loading />
-	</section>
-	<div class="relative container mt-4" bind:this={containerRef}>
+		<CreateWatermark bind:loading={isDeleting} />
+	</div>
+	<div class="relative container mt-16 lg:mt-4" bind:this={containerRef}>
 		{#each watermarks as watermark}
 			<PhotoCard
 				isSelected={selectedIds?.includes(watermark.id)}

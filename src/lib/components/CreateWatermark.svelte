@@ -69,9 +69,9 @@
 	// Configurar FilePond
 </script>
 
-<button onclick={() => (open = true)} class="btn btn-primary w-full md:w-auto">
+<button onclick={() => (open = true)} class="btn btn-primary btn-sm">
 	<PlusCircleIcon class="size-4" />
-	<span> Agregar </span>
+	<span class="hidden md:block"> Agregar </span>
 </button>
 <Dialog bind:open>
 	<div>
