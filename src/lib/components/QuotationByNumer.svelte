@@ -19,7 +19,6 @@
 		quotation: QuotationClient
 	}
 	const { quotation }: Props = $props()
-
 	const { formatedTotal, formatedSubTotal, formatedIgv } = getIgv(quotation.items)
 </script>
 
