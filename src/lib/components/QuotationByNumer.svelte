@@ -1,19 +1,11 @@
 <script lang="ts">
-	import {
-		ArrowLeftIcon,
-		EditIcon,
-		ExternalLinkIcon,
-		FileIcon,
-		FilesIcon,
-		TrashIcon
-	} from 'lucide-svelte'
+	import { EditIcon, ExternalLinkIcon, FilesIcon, TrashIcon } from 'lucide-svelte'
 	import { formatDateToLocal, formatNumberToLocal, getIgv } from '$lib/utils'
 	import DownloadAndShareButton from '$lib/components/DownloadAndShareButton.svelte'
 	import ToggleRegularCustomerButton from '$lib/components/ToggleRegularCustomerButton.svelte'
 	import ConfirmAction from '$lib/components/ConfirmAction.svelte'
 	import CopyText from '$lib/components/CopyText.svelte'
 	import type { QuotationClient } from '$lib/types'
-	import Breadcrumbs from './Breadcrumbs.svelte'
 
 	type Props = {
 		quotation: QuotationClient
@@ -144,7 +136,7 @@
 					</tr>
 				{/each}
 			</tbody>
-			<tfoot class="justify-end" aria-colspan={7}>
+			<tfoot class="justify-end">
 				<tr>
 					<td colSpan={6}>
 						<div class="flex justify-end">
