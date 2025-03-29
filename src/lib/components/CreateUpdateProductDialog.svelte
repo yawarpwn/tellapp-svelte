@@ -74,7 +74,6 @@
 		<fieldset class="fieldset">
 			<legend class="fieldset-legend text-base-content/50">Link</legend>
 			<input
-				required
 				defaultvalue={productToEdit?.link ?? ''}
 				disabled={loading}
 				name="link"

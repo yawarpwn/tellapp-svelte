@@ -4,6 +4,7 @@
 	import type { Product, QuotationItem } from '$lib/types'
 	import { formatNumberToLocal } from '$lib/utils'
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
+	import Fuse from 'fuse.js'
 
 	const { store } = getQuotationContext()
 	const selectedItem = $derived(
@@ -43,13 +44,53 @@
 	let searchTerm = $state('')
 	let selectedId = $state<null | string>(null)
 
-	const hits = $derived(
-		products.filter(
-			(product) =>
-				product.description.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
-				product.code.toLowerCase().includes(searchTerm.trim().toLowerCase())
-		)
-	)
+	// const hits = $derived(
+	// 	products.filter(
+	// 		(product) =>
+	// 			product.description.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+	// 			product.code.toLowerCase().includes(searchTerm.trim().toLowerCase())
+	// 	)
+	// )
+	// let hits = $state<Product[]>([])
+
+	const fuse = new Fuse(products, {
+		keys: [
+			{
+				name: 'code',
+				weight: 1
+			},
+			{
+				name: 'description',
+				weight: 0.7
+			}
+		],
+		threshold: 0.3, // determina la similitud mínima para considerar una coincidencia
+		minMatchCharLength: 2, // número mínimo de caracteres para considerar una coincidencia
+		includeScore: false //default
+	})
+
+	let timeoutId: ReturnType<typeof setTimeout> | null = null
+
+	const hits = $derived.by(() => {
+		const result = fuse.search(searchTerm)
+		return result.map((r) => r.item)
+	})
+
+	// function handleSearch(searchTerm: string) {
+	// 	if (searchTerm) {
+	// 		showhCloseButton = true
+	// 	} else {
+	// 		showCloseButton = false
+	// 	}
+	// 	if (timeoutId) {
+	// 		clearTimeout(timeoutId)
+	// 	}
+	//
+	// 	timeoutId = setTimeout(() => {
+	// 		const result = fuse.search(searchTerm)
+	// 		hits = result.map((r) => r.item)
+	// 	}, 300)
+	// }
 </script>
 
 <Dialog bind:open={() => showCreateEditModal, closeModal}>
