@@ -64,7 +64,7 @@
 				defaultvalue={productToEdit?.code ?? ''}
 				disabled={loading}
 				name="code"
-				maxlength="8"
+				maxlength="12"
 				minlength="4"
 				type="text"
 				class="input w-full"
