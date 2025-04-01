@@ -29,29 +29,20 @@
 	let inputSearch: HTMLInputElement
 	let qtyInput: HTMLInputElement
 
+	const INITIAL_ITEM_STATE = {
+		description: '',
+		price: 0,
+		cost: undefined,
+		qty: 1,
+		unitSize: 'und',
+		link: undefined
+	}
+
 	//States
-	let item = $state<Omit<QuotationItem, 'id'>>(
-		selectedItem || {
-			description: '',
-			price: 0,
-			cost: 0,
-			qty: 0,
-			unitSize: '',
-			link: undefined
-		}
-	)
+	let item = $state<Omit<QuotationItem, 'id'>>(selectedItem || INITIAL_ITEM_STATE)
 
 	let searchTerm = $state('')
 	let selectedId = $state<null | string>(null)
-
-	// const hits = $derived(
-	// 	products.filter(
-	// 		(product) =>
-	// 			product.description.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
-	// 			product.code.toLowerCase().includes(searchTerm.trim().toLowerCase())
-	// 	)
-	// )
-	// let hits = $state<Product[]>([])
 
 	const fuse = new Fuse(products, {
 		keys: [
@@ -64,33 +55,15 @@
 				weight: 0.7
 			}
 		],
-		threshold: 0.3, // determina la similitud mínima para considerar una coincidencia
+		threshold: 0.5, // determina la similitud mínima para considerar una coincidencia
 		minMatchCharLength: 2, // número mínimo de caracteres para considerar una coincidencia
 		includeScore: false //default
 	})
-
-	let timeoutId: ReturnType<typeof setTimeout> | null = null
 
 	const hits = $derived.by(() => {
 		const result = fuse.search(searchTerm)
 		return result.map((r) => r.item)
 	})
-
-	// function handleSearch(searchTerm: string) {
-	// 	if (searchTerm) {
-	// 		showhCloseButton = true
-	// 	} else {
-	// 		showCloseButton = false
-	// 	}
-	// 	if (timeoutId) {
-	// 		clearTimeout(timeoutId)
-	// 	}
-	//
-	// 	timeoutId = setTimeout(() => {
-	// 		const result = fuse.search(searchTerm)
-	// 		hits = result.map((r) => r.item)
-	// 	}, 300)
-	// }
 </script>
 
 <Dialog bind:open={() => showCreateEditModal, closeModal}>
@@ -205,6 +178,7 @@
 				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="qty"> Cantidad </label>
 					<input
+						required
 						bind:this={qtyInput}
 						class="input"
 						id="qty"
@@ -216,6 +190,7 @@
 				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="unitSize"> Unidad/Medida </label>
 					<input
+						required
 						class="input"
 						id="unitSize"
 						type="text"
@@ -227,7 +202,15 @@
 			<div class="flex gap-4">
 				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="price"> Precio </label>
-					<input class="input" id="price" type="number" name="price" bind:value={item.price} />
+					<input
+						required
+						class="input"
+						min="1"
+						id="price"
+						type="number"
+						name="price"
+						bind:value={item.price}
+					/>
 				</div>
 				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="cost"> Costo </label>

@@ -3,6 +3,7 @@
 import { fail, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
 import { login } from '$lib/server/data'
+import { trycatch } from '$lib/utils'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.authToken) redirect(303, '/quotations')
@@ -18,10 +19,12 @@ export const actions = {
 			return fail(400, { email, missing: true })
 		}
 
-		const [error, authToken] = await login({
-			email,
-			password
-		})
+		const { data, error } = await trycatch(
+			login({
+				email,
+				password
+			})
+		)
 
 		if (error) {
 			return fail(403, {
@@ -30,9 +33,11 @@ export const actions = {
 			})
 		}
 
-		cookies.set('__svelte_session__', authToken, {
+		const week = 60 * 60 * 24 * 7
+
+		cookies.set('__svelte_session__', data.token, {
 			path: '/',
-			maxAge: 60 * 60 * 24,
+			maxAge: week,
 			secure: false,
 			sameSite: 'lax'
 		})
