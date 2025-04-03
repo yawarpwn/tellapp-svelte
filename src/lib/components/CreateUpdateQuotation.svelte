@@ -45,8 +45,6 @@
 
 	let showCustomerPickDialog = $state(false)
 
-	$inspect(store.quotation)
-
 	function isUpdateQuotation(
 		quotation: QuotationClient | CreateQuotationClient
 	): quotation is QuotationClient {

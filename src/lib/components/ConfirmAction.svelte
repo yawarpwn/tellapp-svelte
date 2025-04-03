@@ -21,8 +21,6 @@
 	function openModal() {
 		showModal = true
 	}
-
-	$inspect(showModal)
 </script>
 
 {@render trigger({ openModal })}

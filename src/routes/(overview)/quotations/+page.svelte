@@ -10,50 +10,23 @@
 	let { data }: PageProps = $props()
 	let query = $state(page.url.searchParams.get('q') || '')
 	const currentPage = $derived(page.url.searchParams.get('page') || 1)
-	let formEl: HTMLFormElement
-	let timeoutId: ReturnType<typeof setTimeout>
+	//TODO: mejorar codigo - no recarga el form con method GET
 </script>
 
 <div class="flex flex-col gap-4">
 	<div class="flex items-center justify-between">
 		<form
-			bind:this={formEl}
 			method="GET"
 			action={page.url.pathname}
 			class="relative max-w-[200px] md:max-w-[350px]"
-			data-sveltekit-keepfocus
+			data-sveltekit-reload
 		>
-			<label class="input px-2">
-				<SearchIcon class="h-[1em] opacity-50" />
-				<input
-					name="q"
-					type="search"
-					class=""
-					placeholder="Buscar..."
-					value={query}
-					oninput={(ev) => {
-						query = (ev.target as HTMLInputElement).value
-						if (timeoutId) {
-							clearTimeout(timeoutId)
-						}
-
-						timeoutId = setTimeout(() => {
-							formEl.submit()
-						}, 500)
-					}}
-				/>
+			<label class="input pr-1">
 				<input name="page" value={1} type="hidden" />
-				{#if query}
-					<button
-						type="button"
-						onclick={() => {
-							query = ''
-						}}
-						class="bg-base-100 text-base-content/50 hover:text-base-content cusrsor-pointer hover:bg-base-300 absolute right-1 z-10 flex size-6 items-center justify-center rounded-full"
-					>
-						<XIcon class="h-[1em]" />
-					</button>
-				{/if}
+				<input name="q" type="search" class="" placeholder="Buscar..." value={query} />
+				<button type="submit" class="btn btn-sm btn-square">
+					<SearchIcon class="h-[1em]" />
+				</button>
 			</label>
 		</form>
 		<a class="btn btn-primary" href="/quotations/create">

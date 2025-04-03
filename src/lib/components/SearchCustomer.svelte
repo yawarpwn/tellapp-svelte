@@ -71,13 +71,25 @@
 			id="ruc"
 			name="ruc"
 			disabled={store.pending}
-			type="search"
+			type="number"
 			class="grow"
-			value={store.quotation?.customer?.ruc || ''}
-			oninput={(ev) => {
+			value={store.quotation?.customer?.ruc}
+			onpaste={(ev) => {
+				ev.preventDefault()
+				const text = ev.clipboardData?.getData('text')
+				const copyText = text?.replace(/\D+/g, '')
 				setCustomer({
 					name: '',
-					ruc: (ev.target as HTMLInputElement).value,
+					ruc: copyText || '',
+					address: '',
+					isRegular: false
+				})
+			}}
+			oninput={(ev) => {
+				const value = (ev.target as HTMLInputElement).value
+				setCustomer({
+					name: '',
+					ruc: value,
 					address: '',
 					isRegular: false
 				})

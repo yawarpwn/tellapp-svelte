@@ -31,6 +31,7 @@
 	})
 
 	$effect(() => {
+		console.log('before mount')
 		miniMasonry.layout()
 	})
 

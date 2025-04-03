@@ -28,8 +28,6 @@
 		}
 	)
 
-	$inspect('label', label)
-
 	function isEditLabel(label: LabelType | CreateLabel): label is LabelType {
 		return 'id' in label
 	}
