@@ -13,28 +13,6 @@
 		watermarks: Watermark[]
 	}
 
-	// function masonryLayout(containerEl: HTMLDivElement) {
-	// 	const miniMasonry = new MiniMasonry({
-	// 		container: containerEl
-	// 	})
-	//
-	// 	miniMasonry.layout()
-	// }
-
-	let containerRef: HTMLDivElement
-	let miniMasonry
-	onMount(() => {
-		miniMasonry = new MiniMasonry({
-			container: containerRef,
-			baseWidth: 150
-		})
-	})
-
-	$effect(() => {
-		console.log('before mount')
-		miniMasonry.layout()
-	})
-
 	const { watermarks }: Props = $props()
 
 	let selectedIds = $state<string[]>([])
@@ -107,6 +85,15 @@
 	}
 
 	const hasItems = $derived(selectedIds.length > 0)
+
+	function masonryLayout(container: HTMLDivElement) {
+		const miniMasonry = new MiniMasonry({
+			container: container,
+			baseWidth: 150,
+			gutter: 10,
+			minify: true
+		})
+	}
 </script>
 
 <section class="relative">
@@ -169,7 +156,7 @@
 
 		<CreateWatermark bind:loading={isDeleting} />
 	</div>
-	<div class="relative mt-16 lg:mt-4" bind:this={containerRef}>
+	<div class="relative mt-16 lg:mt-4" use:masonryLayout>
 		{#each watermarks as watermark}
 			<PhotoCard
 				isSelected={selectedIds?.includes(watermark.id)}
