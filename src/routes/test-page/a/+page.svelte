@@ -16,7 +16,7 @@
 		pushState(new URL('/quotations'), { replaceState: true })
 	}}>acccion</button
 >
-<form data-sveltekit-reload>
+<form action="/test-page/a" data-sveltekit-reload>
 	<input class="input" type="search" name="q" value={data.q} />
 	<button>aceptar</button>
 </form>

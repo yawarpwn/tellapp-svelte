@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { CirclePlusIcon, PlusIcon, SearchIcon, XIcon } from 'lucide-svelte'
+	import { CirclePlusIcon, SearchIcon } from 'lucide-svelte'
 	import type { PageProps } from './$types'
 	import { page } from '$app/state'
 	import QuotationDataTable from '$lib/components/QuotationDataTable.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
 	import DataTableSkeleton from '$lib/components/DataTableSkeleton.svelte'
-	import { enhance } from '$app/forms'
 
 	let { data }: PageProps = $props()
 	let query = $state(page.url.searchParams.get('q') || '')
@@ -16,14 +15,25 @@
 <div class="flex flex-col gap-4">
 	<div class="flex items-center justify-between">
 		<form
-			method="GET"
 			action={page.url.pathname}
 			class="relative max-w-[200px] md:max-w-[350px]"
 			data-sveltekit-reload
 		>
 			<label class="input pr-1">
 				<input name="page" value={1} type="hidden" />
-				<input name="q" type="search" class="" placeholder="Buscar..." value={query} />
+				<input
+					name="q"
+					type="search"
+					class=""
+					placeholder="Buscar..."
+					value={query}
+					oninput={(ev) => {
+						const q = (ev.target as HTMLInputElement).value
+						const url = new URL(page.url)
+						url.searchParams.set('q', q)
+						window.history.replaceState(null, '', url)
+					}}
+				/>
 				<button type="submit" class="btn btn-sm btn-square">
 					<SearchIcon class="h-[1em]" />
 				</button>
