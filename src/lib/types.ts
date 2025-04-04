@@ -88,6 +88,7 @@ export type Watermark = {
 	createdAt: string
 	updatedAt: string
 	thumbUrl: string
+	watermarkedUrl: string
 }
 export type CreateWatermark = Omit<Watermark, 'id' | 'createdAt' | 'updatedAt' | 'thumbUrl'>
 export type UpdateWatermark = Partial<CreateWatermark>

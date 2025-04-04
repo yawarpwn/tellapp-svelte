@@ -25,7 +25,7 @@
 		const photosToDownload = watermarks.filter((photo) => selectedIds?.includes(photo.id))
 
 		for (const photo of photosToDownload) {
-			fetch(photo.url)
+			fetch(photo.watermarkedUrl)
 				.then((res) => res.blob())
 				.then((blob) => {
 					const blobUrl = URL.createObjectURL(blob)
@@ -60,7 +60,7 @@
 		try {
 			await navigator.share({
 				title: 'Imagen para compartir',
-				text: 'Mira esta imagen interesante!',
+				text: 'Señales de seguridad | tellsenales.com',
 				files: [
 					...blobs.map(
 						(blob, index) =>

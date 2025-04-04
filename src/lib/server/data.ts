@@ -359,7 +359,8 @@ export async function fetchWatermarks(apiKey: string): Promise<Watermark[]> {
 	})
 	return data.items.map((photo) => ({
 		...photo,
-		url: photo.url.replace(/v\d+/, 'fl_layer_apply,l_watermark-tellsenales')
+		// watermarkedUrl: photo.url.replace(/v\d+/, 'fl_layer_apply,l_watermark-tellsenales')
+		watermarkedUrl: `https://res.cloudinary.com/tellsenales-cloud/image/upload/l_watermark-tellsenales/c_limit,w_0.75/fl_layer_apply/${photo.publicId}.webp`
 	}))
 }
 
