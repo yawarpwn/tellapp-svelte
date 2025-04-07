@@ -205,9 +205,9 @@
 					<input
 						required
 						class="input"
-						min="1"
 						id="price"
 						type="number"
+						step="any"
 						name="price"
 						bind:value={item.price}
 					/>

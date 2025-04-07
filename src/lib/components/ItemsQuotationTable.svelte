@@ -101,6 +101,7 @@
 								onEditItem({ ...item, qty: Number(value) })
 							}}
 							name="qty"
+							step="1"
 							type="number"
 						/>
 					</td>
@@ -111,6 +112,8 @@
 								onEditItem({ ...item, price: Number(value) })
 							}}
 							value={item.price}
+							min="0"
+							step="0.5"
 							name="price"
 							type="number"
 						/>

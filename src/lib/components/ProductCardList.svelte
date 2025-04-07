@@ -97,6 +97,8 @@
 							onEditItem({ ...item, qty: Number(value) })
 						}}
 						name="qty"
+						min="0"
+						step="1"
 						type="number"
 					/>
 					<TextEditInput
@@ -106,6 +108,8 @@
 						}}
 						value={item.price}
 						name="price"
+						min="0"
+						step="0.5"
 						type="number"
 					/>
 					<div class="text-base-content/80 flex justify-center rounded px-2 md:px-8">

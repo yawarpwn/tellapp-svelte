@@ -4,6 +4,8 @@
 	type Props = {
 		value: string | number
 		type?: HTMLInputTypeAttribute
+		step?: string
+		min?: string
 		name: string
 		as?: 'input' | 'textarea'
 		onEdit: (_value: string) => void
@@ -11,7 +13,7 @@
 
 	let inputRef: HTMLInputElement | HTMLTextAreaElement
 
-	const { value, type, onEdit, name, as = 'input' }: Props = $props()
+	const { value, type, onEdit, name, as = 'input', step, min }: Props = $props()
 
 	let isEditing = $state(false)
 	const isTextarea = as === 'textarea'
@@ -74,6 +76,8 @@
 			onblur={handleBlur}
 			{type}
 			{value}
+			{step}
+			{min}
 			onkeydown={handleKeyDown}
 		/>
 	{/if}
