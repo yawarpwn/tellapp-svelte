@@ -19,20 +19,16 @@
 
 		ruc?: string
 	}
-	const { onSearchCustomer, ruc }: Props = $props()
+	const { onSearchCustomer }: Props = $props()
 
-	async function handleSubmit(ev: SubmitEvent) {
-		ev.preventDefault()
-		const formData = new FormData(ev.currentTarget as HTMLFormElement)
-		const ruc = formData.get('ruc') as string
-
+	async function handleSubmit() {
+		const ruc = store.quotation.customer?.ruc
 		if (ruc === '') {
-			resetCustomer()
 			return
 		}
 
 		// Válida si el ruc es de 11 digitos
-		if (ruc.length !== 11) {
+		if (ruc?.length !== 11) {
 			toast('Ruc inválido')
 			return
 		}
@@ -64,7 +60,7 @@
 	}
 </script>
 
-<form onsubmit={handleSubmit} class="col-span-12 grid gap-1 lg:col-span-6">
+<div class="col-span-12 grid gap-1 lg:col-span-6">
 	<label class="label text-sm" for="ruc"> Ruc </label>
 	<div class="input w-full">
 		<input
@@ -85,6 +81,12 @@
 					isRegular: false
 				})
 			}}
+			onkeydown={(ev) => {
+				const keyPressed = ev.key
+				if (keyPressed === 'Enter') {
+					handleSubmit()
+				}
+			}}
 			oninput={(ev) => {
 				const value = (ev.target as HTMLInputElement).value
 				setCustomer({
@@ -97,7 +99,7 @@
 			placeholder="20610555536"
 		/>
 
-		<button class="btn btn-sm btn-square absolute right-1" type="submit">
+		<button onclick={handleSubmit} class="btn btn-sm btn-square absolute right-1" type="submit">
 			{#if store.pending}
 				<Loader2Icon class="h-[1.2em] animate-spin opacity-50" />
 			{:else}
@@ -115,4 +117,4 @@
 			</button>
 		{/if}
 	</div>
-</form>
+</div>

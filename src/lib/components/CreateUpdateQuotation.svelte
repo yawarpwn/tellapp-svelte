@@ -1,13 +1,5 @@
 <script lang="ts">
-	import {
-		CalendarDaysIcon,
-		CirclePlusIcon,
-		Loader2Icon,
-		MapPinIcon,
-		StarIcon,
-		UserIcon,
-		UsersIcon
-	} from 'lucide-svelte'
+	import { CirclePlusIcon, Loader2Icon, StarIcon, UsersIcon } from 'lucide-svelte'
 	import type { CreateQuotationClient, Customer, Product, QuotationClient } from '$lib/types'
 	import CustomerPickDialog from '$lib/components/CustomerPickDialog.svelte'
 	import { enhance } from '$app/forms'
@@ -15,6 +7,7 @@
 	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
 	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
+	import { QUOTATIONS_KEY } from '$lib/constants'
 
 	const CREDIT_OPTION = {
 		Contado: null,
@@ -61,7 +54,20 @@
 	<CustomerPickDialog {customersPromise} bind:showModal={showCustomerPickDialog} {setCustomer} />
 {/if}
 <div class="flex flex-col gap-8 pt-4 pb-8">
-	<article class="">
+	<form
+		class=""
+		method="POST"
+		use:enhance={() => {
+			store.pending = true
+			return ({ update }) => {
+				store.pending = false
+				localStorage.removeItem(QUOTATIONS_KEY)
+				update({
+					reset: false
+				})
+			}
+		}}
+	>
 		<!-- Inputs -->
 		<div class="grid grid-cols-12 gap-5">
 			<!-- Search customer by ruc form -->
@@ -74,6 +80,7 @@
 					<input
 						class="w-full"
 						required
+						min="1"
 						type="number"
 						id="deadline"
 						bind:value={store.quotation.deadline}
@@ -168,6 +175,7 @@
 				<button
 					aria-label="seleccionar cliente"
 					class="btn"
+					type="button"
 					onclick={() => (showCustomerPickDialog = true)}
 				>
 					<UsersIcon size={20} /> Clientes
@@ -175,7 +183,7 @@
 				{#await productsPromise}
 					...loading
 				{:then products}
-					<button onclick={onOpenCreateEditItemDialog} class="btn">
+					<button type="button" onclick={onOpenCreateEditItemDialog} class="btn">
 						<CirclePlusIcon size={20} />
 						<span class="">Agregar</span>
 					</button>
@@ -205,19 +213,7 @@
 			<button disabled={store.pending} type="button" class="btn min-w-[150px]">
 				<a href="/quotations">Cancelar</a>
 			</button>
-			<form
-				class="min-w-[150px]"
-				method="POST"
-				use:enhance={() => {
-					store.pending = true
-					return ({ update }) => {
-						store.pending = false
-						update({
-							reset: false
-						})
-					}
-				}}
-			>
+			<div class="min-w-[150px]">
 				<input type="hidden" name="quotation" value={JSON.stringify(store.quotation)} />
 				{#if isUpdateQuotation(store.quotation)}
 					<input type="hidden" name="id" defaultValue={store.quotation.id} />
@@ -233,7 +229,7 @@
 						<Loader2Icon class="animate-spin" />
 					{/if}
 				</button>
-			</form>
+			</div>
 		</footer>
-	</article>
+	</form>
 </div>
