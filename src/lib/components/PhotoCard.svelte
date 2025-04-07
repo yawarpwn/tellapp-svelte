@@ -11,7 +11,6 @@
 	let { watermark, isSelected, selectedIds = $bindable() }: Props = $props()
 	let showActions = $state(false)
 
-	console.log('watermarkurl', watermark.watermarkedUrl)
 	let openModal = $state(false)
 </script>
 

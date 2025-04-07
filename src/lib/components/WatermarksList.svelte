@@ -2,8 +2,6 @@
 	import type { Watermark } from '$lib/types'
 
 	import MiniMasonry from 'minimasonry'
-
-	import { onMount } from 'svelte'
 	import CreateWatermark from './CreateWatermark.svelte'
 	import { DownloadIcon, Share2Icon, TrashIcon, XIcon, Loader2Icon } from 'lucide-svelte'
 	import { enhance } from '$app/forms'
@@ -47,7 +45,7 @@
 
 		const photosToShare = watermarks
 			.filter((photo) => selectedIds?.includes(photo.id))
-			.map((photo) => photo.url)
+			.map((photo) => photo.watermarkedUrl)
 
 		if (!navigator.share) {
 			console.log('Share api no supported')
