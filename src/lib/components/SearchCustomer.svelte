@@ -99,7 +99,7 @@
 			placeholder="20610555536"
 		/>
 
-		<button onclick={handleSubmit} class="btn btn-sm btn-square absolute right-1" type="submit">
+		<button onclick={handleSubmit} class="btn btn-sm btn-square absolute right-1" type="button">
 			{#if store.pending}
 				<Loader2Icon class="h-[1.2em] animate-spin opacity-50" />
 			{:else}

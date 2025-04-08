@@ -8,10 +8,11 @@ import { redirect } from '@sveltejs/kit'
 import type { Actions } from './$types'
 import type { PageServerLoad } from './$types'
 
-export const load: PageServerLoad = async ({ request, params }) => {
-	const quotationPromise = fetchQuotaitonByNumber(+params.number, 'kakapichipoto')
+export const load: PageServerLoad = async ({ request, params, platform }) => {
+	const quotationPromise = fetchQuotaitonByNumber(+params.number, platform?.env.TELL_API_KEY!)
 	return {
-		quotationPromise,
+		// quotationPromise,
+		quotation: await quotationPromise,
 		quotationNumber: params.number,
 		metadata: {
 			title: `Cotización #${params.number}`
@@ -45,12 +46,21 @@ export const actions = {
 		const status = formData.get('status') as string
 		//not-favorite == favorite // false
 		//favorite   == favorite // true
-		updateCustomer(
+		console.log('toggle-regular-customer', {
+			id,
+			status,
+			isRegular: status !== 'favorite'
+		})
+		await updateCustomer(
 			id,
 			{
 				isRegular: status !== 'favorite'
 			},
 			platform?.env.TELL_API_KEY!
 		)
+
+		return {
+			success: true
+		}
 	}
 } satisfies Actions

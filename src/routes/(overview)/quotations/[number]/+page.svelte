@@ -5,6 +5,13 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
 	import { FileIcon, FilesIcon } from 'lucide-svelte'
 	let { data }: PageProps = $props()
+
+	// {#await data.quotationPromise}
+	// 	<QuotationByNumberSkeleton />
+	// {:then quotation}
+	// {:catch}
+	// 	<div>algo salio mal pipipi</div>
+	// {/await}
 </script>
 
 <Breadcrumbs
@@ -13,10 +20,4 @@
 		{ label: `#${data.quotationNumber}`, icon: FileIcon }
 	]}
 />
-{#await data.quotationPromise}
-	<QuotationByNumberSkeleton />
-{:then quotation}
-	<QuotationByNumer {quotation} />
-{:catch}
-	<div>algo salio mal pipipi</div>
-{/await}
+<QuotationByNumer quotation={data.quotation} />

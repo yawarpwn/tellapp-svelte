@@ -54,7 +54,7 @@
 			<div class="mt-1 flex justify-end gap-1 text-2xl">
 				<span class="text-primary">#</span>
 				<span
-					class="from-primary bg-gradient-to-r to-orange-500 bg-clip-text font-bold text-transparent"
+					class="from-primary to-secondary bg-gradient-to-r bg-clip-text font-bold text-transparent"
 				>
 					{String(quotation.number).padStart(4, '0')}
 				</span>

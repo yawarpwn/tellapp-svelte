@@ -7,16 +7,26 @@
 		customerId: string
 	}
 	const { isRegular, customerId }: Props = $props()
-	let status = $state(isRegular ? 'favorite' : 'not-favorite')
+	let status = $derived(isRegular ? 'favorite' : 'not-favorite')
+	let updating = $state(false)
+
+	$inspect(isRegular)
 </script>
 
-<form use:enhance method="POST" action="?/toggle-regular-customer">
+<form
+	method="POST"
+	action="?/toggle-regular-customer"
+	use:enhance={() => {
+		updating = true
+		return async ({ update }) => {
+			await update()
+			updating = false
+		}
+	}}
+>
 	<input type="hidden" name="id" value={customerId} />
 	<input type="hidden" name="status" value={isRegular ? 'favorite' : 'not-favorite'} />
-	<button
-		class="btn btn-sm"
-		onclick={() => (status = status === 'favorite' ? 'not-favorite' : 'favorite')}
-	>
+	<button type="submit" class="btn btn-sm" disabled={updating}>
 		{#if status === 'favorite'}
 			<StarIcon fill="var(--color-primary)" class="text-primary" size={18} />
 		{:else}
