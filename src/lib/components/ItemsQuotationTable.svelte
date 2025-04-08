@@ -90,6 +90,7 @@
 							onEdit={(value) => onEditItem({ ...item, unitSize: value })}
 							value={item.unitSize}
 							type="text"
+							as="input"
 							name="unitSize"
 						/>
 					</td>

@@ -3,12 +3,30 @@
 	import CreateUpdateProductDialog from '$lib/components/CreateUpdateProductDialog.svelte'
 	import ProductList from '$lib/components/ProductList.svelte'
 	import type { Product, ProductCategory } from '$lib/types'
+	import { page } from '$app/state'
+	import Fuse from 'fuse.js'
 
 	type Props = {
 		products: Product[]
 		productsCategories: ProductCategory[]
 	}
 	const { products, productsCategories }: Props = $props()
+
+	const search = new Fuse(products, {
+		keys: [
+			{
+				name: 'code',
+				weight: 1
+			},
+			{
+				name: 'description',
+				weight: 0.7
+			}
+		],
+		threshold: 0.5, // determina la similitud mínima para considerar una coincidencia
+		minMatchCharLength: 2, // número mínimo de caracteres para considerar una coincidencia
+		includeScore: false //default
+	})
 
 	let searchTerm = $state('')
 	let open = $state(false)
@@ -20,14 +38,11 @@
 		selectedId = id
 	}
 
-	const filteredProducts = $derived(
-		products.filter((p) => {
-			const results =
-				p.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				p.description.toLowerCase().includes(searchTerm.toLowerCase())
-			return results
-		})
-	)
+	const filteredProducts = $derived.by(() => {
+		if (!searchTerm) return products
+		const result = search.search(searchTerm)
+		return result.map((r) => r.item)
+	})
 
 	let timeoutid: ReturnType<typeof setTimeout>
 </script>

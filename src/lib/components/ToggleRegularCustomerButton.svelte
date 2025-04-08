@@ -18,9 +18,9 @@
 		onclick={() => (status = status === 'favorite' ? 'not-favorite' : 'favorite')}
 	>
 		{#if status === 'favorite'}
-			<StarIcon fill="var(--color-primary)" size={18} />
+			<StarIcon fill="var(--color-primary)" class="text-primary" size={18} />
 		{:else}
-			<StarIcon size={18} />
+			<StarIcon class="text-base-content/50" size={18} />
 		{/if}
 		<span class="hidden lg:block">Favorito</span>
 	</button>
