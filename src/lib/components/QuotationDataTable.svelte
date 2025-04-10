@@ -3,7 +3,6 @@
 	import { formatDateToLocal, getIgv } from '$lib/utils'
 	import type { QuotationClient } from '$lib/types'
 	import FloatingBar from '$lib//components/FloatingBar.svelte'
-	import Pagination from '$lib/components/Pagination.svelte'
 
 	type Props = {
 		quotations: QuotationClient[]

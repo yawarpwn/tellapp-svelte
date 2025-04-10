@@ -7,10 +7,11 @@
 		customerId: string
 	}
 	const { isRegular, customerId }: Props = $props()
+
 	let status = $derived(isRegular ? 'favorite' : 'not-favorite')
 	let updating = $state(false)
 
-	$inspect(isRegular)
+	$inspect(status)
 </script>
 
 <form

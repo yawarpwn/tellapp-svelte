@@ -31,7 +31,11 @@
 				{/snippet}
 			</ConfirmAction>
 
-			<ConfirmAction action={`?/duplicate`} message={`Duplicar la cotización ${quotation.number}?`}>
+			<ConfirmAction
+				shootConfetti
+				action={`?/duplicate`}
+				message={`Duplicar la cotización ${quotation.number}?`}
+			>
 				{#snippet trigger({ openModal })}
 					<button onclick={openModal} class="btn btn-sm flex items-center gap-2">
 						<FilesIcon size={18} />
@@ -64,11 +68,11 @@
 
 	<div class="mt-6 grid gap-3 sm:grid-cols-2">
 		<div>
-			<h3 class="text-lg font-semibold">{quotation?.customer?.name ?? 'SIN NOMBRE'}</h3>
+			<h3 class="text-lg font-semibold">{quotation.customer?.name ?? 'SIN NOMBRE'}</h3>
 			<address class="text-muted-foreground mt-2 not-italic">
-				{quotation?.customer?.address ?? 'SIN DIRECCION'}
+				{quotation.customer?.address ?? 'SIN DIRECCION'}
 			</address>
-			<p class="text-muted-foreground mt-2">{quotation?.customer?.ruc ?? 'SIN RUC'}</p>
+			<p class="text-muted-foreground mt-2">{quotation.customer?.ruc ?? 'SIN RUC'}</p>
 		</div>
 		<div class="space-y-2 sm:text-right">
 			<div class="grid grid-cols-2 gap-3 sm:grid-cols-1 sm:gap-2">

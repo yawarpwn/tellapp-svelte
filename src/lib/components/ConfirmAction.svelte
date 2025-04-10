@@ -2,15 +2,17 @@
 	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import { enhance } from '$app/forms'
 	import { LoaderCircleIcon } from 'lucide-svelte'
+	import { shootCoffeti } from '$lib/confetti'
 	import type { Snippet } from 'svelte'
 	type Props = {
 		action: string
 		message: string
+		shootConfetti?: boolean
 		id?: string
 		trigger: Snippet<[{ openModal: () => void }]>
 	}
 
-	const { action, message = 'default message', trigger, id }: Props = $props()
+	const { action, message = 'default message', trigger, id, shootConfetti }: Props = $props()
 	let showModal = $state(false)
 	let loading = $state(false)
 
@@ -35,7 +37,10 @@
 						loading = true
 						return async ({ update }) => {
 							await update()
-							console.log('updated')
+							if (shootConfetti) {
+								shootCoffeti()
+							}
+							showModal = false
 							loading = false
 						}
 					}}
