@@ -31,20 +31,28 @@
 	let searchTerm = $state('')
 	let open = $state(false)
 	let selectedId = $state<null | string>(null)
+	let selectedCategory = $state('Todos')
+	let timeoutid: ReturnType<typeof setTimeout>
 	const productToEdit = $derived(products.find((p) => p.id === selectedId))
+
+	const filteredProducts = $derived.by(() => {
+		let results = products
+		if (searchTerm.trim()) {
+			const result = search.search(searchTerm)
+			results = result.map((r) => r.item)
+		}
+		if (selectedCategory !== 'Todos') {
+			results = results.filter((p) => p.category === selectedCategory)
+		}
+		return results
+	})
 
 	function onEdit(id: string) {
 		open = true
 		selectedId = id
 	}
 
-	const filteredProducts = $derived.by(() => {
-		if (!searchTerm) return products
-		const result = search.search(searchTerm)
-		return result.map((r) => r.item)
-	})
-
-	let timeoutid: ReturnType<typeof setTimeout>
+	$inspect(selectedCategory)
 </script>
 
 {#if open}
@@ -89,10 +97,18 @@
 				{/if}
 			</label>
 		</form>
-		<button onclick={() => (open = true)} class="btn btn-primary">
-			<CirclePlusIcon />
-			Crear</button
-		>
+		<div class="flex gap-2">
+			<select bind:value={selectedCategory} class="select hidden md:block">
+				<option selected value="Todos">Todos</option>
+				{#each productsCategories as category}
+					<option value={category.name}>{category.name}</option>
+				{/each}
+			</select>
+			<button onclick={() => (open = true)} class="btn btn-primary">
+				<CirclePlusIcon />
+				Crear</button
+			>
+		</div>
 	</div>
 	<ProductList {onEdit} products={filteredProducts.slice(0, 20)} />
 </div>
