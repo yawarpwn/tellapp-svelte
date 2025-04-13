@@ -82,13 +82,13 @@
 					<td class="text-center">
 						{formatNumberToLocal(product.cost)}
 					</td>
-					<td class="text-base-content/80 text-center">
+					<td class="text-center">
 						{formatNumberToLocal(product.price)}
 					</td>
 					<td>
 						<div class="flex items-center gap-1">
 							<button
-								class="btn btn-xs btn-square"
+								class="btn btn-sm btn-square btn-ghost"
 								type="button"
 								onclick={() =>
 									openConfirmModal({
@@ -101,7 +101,7 @@
 								<FilesIcon class="size-4" />
 							</button>
 							<button
-								class="btn btn-xs btn-square"
+								class="btn btn-sm btn-square btn-ghost"
 								type="button"
 								onclick={() => onEdit(product.id)}
 							>
@@ -115,7 +115,7 @@
 										description: product.description,
 										title: 'Borrar Producto'
 									})}
-								class="btn btn-square btn-sm"
+								class="btn btn-square btn-ghost btn-sm text-error"
 							>
 								<TrashIcon class="size-4" />
 							</button>

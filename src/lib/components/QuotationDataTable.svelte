@@ -120,14 +120,14 @@
 					<td>
 						<div class="flex gap-2">
 							<a
-								class="btn btn-square btn-sm"
+								class="btn btn-square btn-sm btn-ghost"
 								href={`/quotations/${number}`}
 								data-sveltekit-preload-data
 							>
 								<EyeIcon class="size-4" />
 							</a>
 							<a
-								class="btn btn-sm btn-square"
+								class="btn btn-sm btn-square btn-ghost"
 								data-sveltekit-preload-data
 								href={`/quotations/${number}/update`}
 							>

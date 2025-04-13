@@ -91,6 +91,7 @@
 					defaultvalue={productToEdit?.cost ?? ''}
 					disabled={loading}
 					name="cost"
+					step="any"
 					type="number"
 					class="input w-full"
 					placeholder="10.00"
@@ -104,6 +105,7 @@
 					disabled={loading}
 					inputmode="decimal"
 					name="price"
+					step="any"
 					type="number"
 					class="input w-full"
 					placeholder="20.00"

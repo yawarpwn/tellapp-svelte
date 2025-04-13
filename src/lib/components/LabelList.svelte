@@ -130,10 +130,18 @@
 					</td>
 					<td>
 						<div class="flex items-center gap-1">
-							<button class="btn btn-xs btn-square" type="button" onclick={() => printLabel(label)}>
+							<button
+								class="btn btn-sm btn-ghost btn-square"
+								type="button"
+								onclick={() => printLabel(label)}
+							>
 								<PrinterIcon class="size-4" />
 							</button>
-							<button class="btn btn-xs btn-square" type="button" onclick={() => onEdit(label.id)}>
+							<button
+								class="btn btn-sm btn-ghost btn-square"
+								type="button"
+								onclick={() => onEdit(label.id)}
+							>
 								<EditIcon class="size-4" />
 							</button>
 							<button
@@ -144,7 +152,7 @@
 										description: label.recipient,
 										title: 'Borrar Cliente'
 									})}
-								class="btn btn-square btn-sm"
+								class="btn btn-square btn-sm btn-ghost text-error"
 							>
 								<TrashIcon class="size-4" />
 							</button>

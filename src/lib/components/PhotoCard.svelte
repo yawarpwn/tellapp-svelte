@@ -6,12 +6,13 @@
 		watermark: Watermark
 		isSelected: boolean
 		selectedIds: string[]
-		onChecked: (id: string) => void
 	}
 	let { watermark, isSelected, selectedIds = $bindable() }: Props = $props()
 	let showActions = $state(false)
 
 	let openModal = $state(false)
+	// const aspectRatio = watermark.width / watermark.height
+	const aspectRatio = `${watermark.width}/${watermark.height}`
 </script>
 
 {#if openModal}
@@ -22,14 +23,10 @@
 		}}
 	>
 		<div
-			style="aspect-ratio: {watermark.width}/{watermark.height};"
+			style="aspect-ratio: {aspectRatio}; width: {watermark.width} height: {watermark.height}"
 			class="skeleton relative overflow-hidden"
 		>
-			<img
-				alt="Screenshot"
-				class="w-ful absolute inset-0 h-full object-cover"
-				src={watermark.watermarkedUrl}
-			/>
+			<img class="absolute inset-0 h-full w-full object-cover" src={watermark.watermarkedUrl} />
 		</div>
 		<button
 			class="bg-base-100/80 hover:bg-base-100/50 absolute top-2 right-2 cursor-pointer rounded-full p-1"
@@ -45,7 +42,7 @@
 	onmouseenter={() => (showActions = true)}
 	onmouseleave={() => (showActions = false)}
 	data-active={isSelected ? 'true' : 'false'}
-	style="width: {watermark.width / 5}px; height: {watermark.height / 5}px; "
+	style="aspect-ratio: {aspectRatio}"
 	class="data-[active=true]:border-primary absolute overflow-hidden rounded-md border-2 border-dashed border-transparent"
 >
 	<div class="skeleton absolute inset-0">

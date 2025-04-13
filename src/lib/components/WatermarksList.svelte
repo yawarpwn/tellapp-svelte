@@ -22,6 +22,7 @@
 		if (selectedIds.length === 0) return
 		const photosToDownload = watermarks.filter((photo) => selectedIds?.includes(photo.id))
 
+		isDownloading = true
 		for (const photo of photosToDownload) {
 			fetch(photo.watermarkedUrl)
 				.then((res) => res.blob())
@@ -38,6 +39,7 @@
 					selectedIds = []
 				})
 		}
+		isDownloading = false
 	}
 
 	async function sharePhotos() {
@@ -109,7 +111,11 @@
 					</div>
 				</div>
 				<div class="flex gap-1">
-					<button disabled={isDeleting || !hasItems} class="btn btn-sm" onclick={downLoadPhotos}>
+					<button
+						disabled={isDownloading || isDeleting || !hasItems}
+						class="btn btn-sm"
+						onclick={downLoadPhotos}
+					>
 						<DownloadIcon class="size-4" />
 						<span class="hidden md:block">Descargar </span>
 					</button>
@@ -156,12 +162,7 @@
 	</div>
 	<div class="relative mt-16 lg:mt-4" use:masonryLayout>
 		{#each watermarks as watermark}
-			<PhotoCard
-				isSelected={selectedIds?.includes(watermark.id)}
-				{watermark}
-				onChecked={() => {}}
-				bind:selectedIds
-			/>
+			<PhotoCard isSelected={selectedIds?.includes(watermark.id)} {watermark} bind:selectedIds />
 		{/each}
 	</div>
 </section>
