@@ -14,15 +14,11 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 		page,
 		limit: ROW_PER_PAGES
 	})
-	try {
-		return {
-			dataPromise: data,
-			metadata: {
-				title: 'Cotizaciones'
-			}
+	return {
+		dataPromise: data,
+		metadata: {
+			title: 'Cotizaciones'
 		}
-	} catch (err) {
-		error(404, 'Not found')
 	}
 }
 

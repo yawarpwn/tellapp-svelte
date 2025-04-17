@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { MenuIcon } from 'lucide-svelte'
 	import { Toaster } from 'svelte-sonner'
 	import Sidebar from '$lib/components/Sidebar.svelte'
 	import type { LayoutProps } from './$types'

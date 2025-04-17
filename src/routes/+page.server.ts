@@ -6,6 +6,7 @@ import { login } from '$lib/server/data'
 import { trycatch } from '$lib/utils'
 
 export const load: PageServerLoad = async ({ locals }) => {
+	console.log('authToken', locals.authToken)
 	if (locals.authToken) redirect(303, '/quotations')
 }
 
@@ -27,9 +28,9 @@ export const actions = {
 		)
 
 		if (error) {
-			return fail(403, {
+			return fail(401, {
 				email,
-				error: error
+				error: 'Email o contraseña incorrectos'
 			})
 		}
 

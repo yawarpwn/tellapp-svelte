@@ -53,7 +53,7 @@
 						</fieldset>
 						{#if form?.missing}<p class="text-error text-sm">Los campos son requeridos</p>{/if}
 						{#if form?.error}<p class="text-error text-sm">{form.error}</p>{/if}
-						<button class="btn btn-primary">
+						<button disabled={loading} class="btn btn-primary">
 							Entrar
 							{#if loading}
 								<div class="loading loading-dots"></div>
