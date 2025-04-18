@@ -1,8 +1,11 @@
 <script lang="ts">
 	import Dialog from '$lib/components/ui/Dialog.svelte'
+	import type { FilePond } from 'filepond'
 	import { enhance } from '$app/forms'
 	import { Loader2Icon } from 'lucide-svelte'
 	import type { Signal, SignalCategory } from '$lib/types'
+	import UploadFile from './UploadFile.svelte'
+	import { toast } from 'svelte-sonner'
 
 	type Props = {
 		open: boolean
@@ -13,6 +16,8 @@
 
 	let { open = $bindable(false), signalCategories, signalToEdit, closeModal }: Props = $props()
 
+	let pond = $state<FilePond | null>(null)
+
 	let loading = $state(false)
 </script>
 
@@ -21,8 +26,16 @@
 		method="POST"
 		action={signalToEdit ? '?/update' : '?/create'}
 		class="flex flex-col gap-2"
-		use:enhance={() => {
-			loading = true
+		enctype="multipart/form-data"
+		use:enhance={({ formData, submitter, action, controller }) => {
+			if (!pond) {
+				toast.error('No se ha cargado ninguna imagen')
+				return
+			}
+
+			console.log({ action, controller })
+			const file = pond.getFile()
+			formData.append('file', file.file)
 
 			return async ({ update, result }) => {
 				if (result.type === 'success') {
@@ -34,6 +47,7 @@
 			}
 		}}
 	>
+		<UploadFile bind:instance={pond} name="files[]" />
 		<fieldset class="fieldset">
 			<legend class="fieldset-legend text-base-content/50">Titulo</legend>
 			<input

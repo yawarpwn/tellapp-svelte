@@ -155,7 +155,7 @@
 							<img class="h-full w-full object-contain" src={signal.thumbUrl} />
 						</div>
 					</td>
-					<td>
+					<td class="min-w-[250px]">
 						{signal.title}
 					</td>
 					<td class="text-center">

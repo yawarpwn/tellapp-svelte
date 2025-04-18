@@ -25,5 +25,17 @@ export const actions = {
 				message: 'Error al eliminar la señal'
 			})
 		}
+	},
+
+	create: async ({ request, params, platform }) => {
+		try {
+			const formData = await request.formData()
+			console.log(formData.get('file'))
+		} catch (error) {
+			console.log('ERROR DELETINg SIGNAL', error)
+			return fail(500, {
+				message: 'Error al eliminar la señal'
+			})
+		}
 	}
 } satisfies Actions
