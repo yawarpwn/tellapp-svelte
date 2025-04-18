@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms'
 	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import { Loader2Icon } from 'lucide-svelte'
+	import { toast } from 'svelte-sonner'
 	type Props = {
 		open: boolean
 		dialogTitle: string
@@ -23,7 +24,7 @@
 	let loading = $state(false)
 </script>
 
-<Dialog bind:open>
+<Dialog bind:open onOpenChange={closeModal}>
 	<div>
 		<h3 class="text-center text-lg font-bold">{dialogTitle}</h3>
 		<p class="py-4 text-center">{dialogDescription}</p>
@@ -34,7 +35,10 @@
 			method="POST"
 			use:enhance={() => {
 				loading = true
-				return async ({ update }) => {
+				return async ({ update, result }) => {
+					if (result.type === 'failure') {
+						toast.error('No se pudo realizar la acción')
+					}
 					await update()
 					loading = false
 					closeModal()

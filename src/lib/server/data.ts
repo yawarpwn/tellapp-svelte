@@ -18,7 +18,8 @@ import type {
 	UpdateQuotationClient,
 	UpdateWatermark,
 	Watermark,
-	Signal
+	Signal,
+	SignalCategory
 } from '$lib/types'
 import { fetchData } from '$lib/utils'
 
@@ -420,6 +421,7 @@ export async function fetchSignals(apiKey: string): Promise<Signal[]> {
 			'TELL-API-KEY': apiKey
 		}
 	})
+
 	//res.cloudinary.com/tellsenales-cloud/image/upload/c_thumb,w_200/v1/signals/jmkpwcwuyu2wciaahnx6.webp?_a=BAMABkcc0
 	https: return data.items.map((photo) => ({
 		...photo,
@@ -427,6 +429,27 @@ export async function fetchSignals(apiKey: string): Promise<Signal[]> {
 		// watermarkedUrl: photo.url.replace(/v\d+/, 'fl_layer_apply,l_watermark-tellsenales')
 		// watermarkedUrl: `https://res.cloudinary.com/tellsenales-cloud/image/upload/l_watermark-tellsenales/c_limit,w_0.75/fl_layer_apply/${photo.publicId}.webp`
 	}))
+}
+
+export async function deleteSignal(id: string, apiKey: string) {
+	const url = `${BASE_URL}/api/signals/${id}`
+	const data = await fetchData<Signal>(url, {
+		method: 'DELETE',
+		headers: {
+			'TELL-API-KEY': apiKey
+		}
+	})
+	return data
+}
+
+export async function fetchSingalCategories(apiKey: string) {
+	const url = `${BASE_URL}/api/signal-categories`
+	const data = await fetchData<DataResponse<SignalCategory>>(url, {
+		headers: {
+			'TELL-API-KEY': apiKey
+		}
+	})
+	return data.items
 }
 //----------------------------- Auth -----------------------------\
 

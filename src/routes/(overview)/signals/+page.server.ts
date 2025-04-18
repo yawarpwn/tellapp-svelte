@@ -1,4 +1,5 @@
-import { deleteWatermark, fetchSignals } from '$lib/server/data'
+import { deleteSignal, fetchSignals, fetchSingalCategories } from '$lib/server/data'
+import { fail } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ params, platform, request }) => {
@@ -6,18 +7,23 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 		metadata: {
 			title: 'Señales'
 		},
-		signals: await fetchSignals(platform?.env.TELL_API_KEY!)
+		signals: await fetchSignals(platform?.env.TELL_API_KEY!),
+		signalCategories: await fetchSingalCategories(platform?.env.TELL_API_KEY!)
 	}
 }
 
 export const actions = {
 	delete: async ({ request, params, platform }) => {
-		console.log('delete watermark action')
-		const formData = await request.formData()
-		const ids = String(formData.get('ids')).split(',')
-		for (const id of ids) {
-			await deleteWatermark(id, platform?.env.TELL_API_KEY!)
+		try {
+			const formData = await request.formData()
+			const id = String(formData.get('id'))
+			console.log('delete watermark action, id: ', id)
+			await deleteSignal(id, platform?.env.TELL_API_KEY!)
+		} catch (error) {
+			console.log('ERROR DELETINg SIGNAL', error)
+			return fail(500, {
+				message: 'Error al eliminar la señal'
+			})
 		}
-		console.log(ids)
 	}
 } satisfies Actions

@@ -99,7 +99,9 @@ export type Signal = {
 	publicId: string
 	format: string
 	createdAt: string
+	category: string
 	updatedAt: string
+	categoryId: string
 	code: string
 	title: string
 	description?: string | null
@@ -117,6 +119,11 @@ export type CloudinarySignature = {
 }
 
 export type ProductCategory = {
+	id: number
+	name: string
+}
+
+export type SignalCategory = {
 	id: number
 	name: string
 }
