@@ -7,6 +7,7 @@
 		PictureInPictureIcon,
 		PrinterIcon,
 		ShoppingCartIcon,
+		SquareArrowRightIcon,
 		TruckIcon
 	} from 'lucide-svelte'
 	import Logo from '$lib/components/Logo.svelte'
@@ -45,6 +46,11 @@
 			name: 'Marca Agua',
 			href: '/watermarks',
 			icon: ImageUpIcon
+		},
+		{
+			name: 'Señales',
+			href: '/signals',
+			icon: SquareArrowRightIcon
 		}
 	]
 </script>

@@ -17,7 +17,8 @@ import type {
 	UpdateProduct,
 	UpdateQuotationClient,
 	UpdateWatermark,
-	Watermark
+	Watermark,
+	Signal
 } from '$lib/types'
 import { fetchData } from '$lib/utils'
 
@@ -410,6 +411,23 @@ export async function deleteWatermark(id: string, apiKey: string) {
 	return data
 }
 
+//----------------------------- Signals -----------------------------\
+
+export async function fetchSignals(apiKey: string): Promise<Signal[]> {
+	const url = `${BASE_URL}/api/signals`
+	const data = await fetchData<DataResponse<Signal>>(url, {
+		headers: {
+			'TELL-API-KEY': apiKey
+		}
+	})
+	//res.cloudinary.com/tellsenales-cloud/image/upload/c_thumb,w_200/v1/signals/jmkpwcwuyu2wciaahnx6.webp?_a=BAMABkcc0
+	https: return data.items.map((photo) => ({
+		...photo,
+		thumbUrl: photo.url.replace(/v\d+/, 'c_thumb,w_200')
+		// watermarkedUrl: photo.url.replace(/v\d+/, 'fl_layer_apply,l_watermark-tellsenales')
+		// watermarkedUrl: `https://res.cloudinary.com/tellsenales-cloud/image/upload/l_watermark-tellsenales/c_limit,w_0.75/fl_layer_apply/${photo.publicId}.webp`
+	}))
+}
 //----------------------------- Auth -----------------------------\
 
 class AuthError extends Error {}

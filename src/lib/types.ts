@@ -90,6 +90,22 @@ export type Watermark = {
 	thumbUrl: string
 	watermarkedUrl: string
 }
+
+export type Signal = {
+	id: string
+	width: number
+	height: number
+	url: string
+	publicId: string
+	format: string
+	createdAt: string
+	updatedAt: string
+	code: string
+	title: string
+	description?: string | null
+	thumbUrl: string
+}
+
 export type CreateWatermark = Omit<Watermark, 'id' | 'createdAt' | 'updatedAt' | 'thumbUrl'>
 export type UpdateWatermark = Partial<CreateWatermark>
 
