@@ -91,7 +91,7 @@
 	/>
 {/if}
 
-<div class="flex items-center justify-between">
+<div class="mb-4 flex items-center justify-between">
 	<form method="GET" class="relative max-w-[180px] md:max-w-[350px]">
 		<label class="input px-2">
 			<SearchIcon class="h-[1em] opacity-50" />
@@ -158,10 +158,10 @@
 					<td class="min-w-[250px]">
 						{signal.title}
 					</td>
-					<td class="text-center">
+					<td class="text-center uppercase">
 						{signal.code}
 					</td>
-					<td class="text-center"> categoria </td>
+					<td class="text-center">{signal.category}</td>
 					<td class="text-center">
 						{signal.width}
 					</td>

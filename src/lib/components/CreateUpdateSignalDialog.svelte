@@ -2,10 +2,11 @@
 	import Dialog from '$lib/components/ui/Dialog.svelte'
 	import type { FilePond } from 'filepond'
 	import { enhance } from '$app/forms'
-	import { Loader2Icon } from 'lucide-svelte'
+	import { Loader2Icon, XIcon } from 'lucide-svelte'
 	import type { Signal, SignalCategory } from '$lib/types'
 	import UploadFile from './UploadFile.svelte'
 	import { toast } from 'svelte-sonner'
+	import { goto } from '$app/navigation'
 
 	type Props = {
 		open: boolean
@@ -15,6 +16,7 @@
 	}
 
 	let { open = $bindable(false), signalCategories, signalToEdit, closeModal }: Props = $props()
+	let showImage = $state(Boolean(signalToEdit?.url))
 
 	let pond = $state<FilePond | null>(null)
 
@@ -27,34 +29,55 @@
 		action={signalToEdit ? '?/update' : '?/create'}
 		class="flex flex-col gap-2"
 		enctype="multipart/form-data"
-		use:enhance={({ formData, submitter, action, controller }) => {
-			if (!pond) {
-				toast.error('No se ha cargado ninguna imagen')
-				return
+		use:enhance={({ formData }) => {
+			loading = true
+			if (pond && pond.getFile()) {
+				const file = pond.getFile()
+				formData.append('file', file.file)
 			}
 
-			console.log({ action, controller })
-			const file = pond.getFile()
-			formData.append('file', file.file)
-
 			return async ({ update, result }) => {
-				if (result.type === 'success') {
-					await update({ reset: false })
-					open = false
+				if (result.type === 'failure') {
+					loading = false
+					toast.error('Algo salio mal')
+					return
 				}
 
+				await update({ reset: false })
+				open = false
 				loading = false
 			}
 		}}
 	>
-		<UploadFile bind:instance={pond} name="files[]" />
+		{#if showImage}
+			<div class="bg-base-content relative overflow-hidden rounded-md border p-4">
+				<button
+					class="bg-base-300 hover:bg-base-100 absolute top-1 right-1 z-10 cursor-pointer rounded-full p-1"
+					onclick={() => {
+						showImage = false
+					}}
+					type="button"
+				>
+					<XIcon size={16} />
+				</button>
+				<div class="relative min-h-[400px] border pb-[56.25%]">
+					<img
+						class="absolute inset-0 h-full w-full object-contain"
+						src={signalToEdit?.url}
+						alt="Imaen para editar"
+					/>
+				</div>
+			</div>
+		{:else}
+			<UploadFile bind:instance={pond} name="files[]" />
+		{/if}
 		<fieldset class="fieldset">
 			<legend class="fieldset-legend text-base-content/50">Titulo</legend>
 			<input
 				required
 				defaultvalue={signalToEdit?.title ?? ''}
 				disabled={loading}
-				name="unitSize"
+				name="title"
 				type="text"
 				class="input w-full"
 				placeholder="Señal hombres trabajando"
@@ -80,7 +103,6 @@
 				defaultvalue={signalToEdit?.description ?? ''}
 				disabled={loading}
 				name="description"
-				required
 				class="textarea min-h-[150px] w-full resize-none md:min-h-[100px]"
 				placeholder="Descripción se la señál..."
 			></textarea>

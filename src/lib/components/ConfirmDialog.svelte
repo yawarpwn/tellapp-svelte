@@ -38,10 +38,11 @@
 				return async ({ update, result }) => {
 					if (result.type === 'failure') {
 						toast.error('No se pudo realizar la acción')
+						return
 					}
 					await update()
 					loading = false
-					closeModal()
+					open = false
 				}
 			}}
 			action={currentAction}
