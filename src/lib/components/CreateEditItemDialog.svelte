@@ -45,19 +45,36 @@
 	let selectedId = $state<null | string>(null)
 
 	const fuse = new Fuse(products, {
+		// Búsqueda básica
+		isCaseSensitive: false, // Si la búsqueda distingue mayúsculas/minúsculas
+		includeScore: false, // Incluir puntuación de coincidencia (0 = perfecto, 1 = nada)
+		includeMatches: false, // Mostrar rangos de caracteres coincidentes (para resaltar)
+		findAllMatches: false, // Buscar todas las coincidencias, no solo la primera
+		minMatchCharLength: 1, // Longitud mínima de caracteres para considerar coincidencia
+
+		// Ubicación y proximidad
+		location: 0, // Posición aproximada esperada del texto coincidente
+		threshold: 0.6, // Umbral de coincidencia (0 = exacto, 1 = cualquier cosa)hreshold: 0.5, // determina la similitud mínima para considerar una coincidencia
+		distance: 100, // Distancia máxima entre caracteres coincidentes
+
+		// Ponderación
 		keys: [
 			{
 				name: 'code',
-				weight: 1
+				weight: 0.5
 			},
 			{
 				name: 'description',
-				weight: 0.7
+				weight: 1
 			}
 		],
-		threshold: 0.5, // determina la similitud mínima para considerar una coincidencia
-		minMatchCharLength: 2, // número mínimo de caracteres para considerar una coincidencia
-		includeScore: false //default
+		shouldSort: true, // Ordenar resultados por relevancia
+		sortFn: (a, b) => a.score - b.score, // Función personalizada para ordenar
+
+		// Coincidencia difusa
+		ignoreLocation: false, // Ignorar la ubicación de coincidencias en el texto
+		ignoreFieldNorm: false, // Ignorar la ponderación por longitud del campo
+		fieldNormWeight: 1 // Peso de la normalización por longitud del campo
 	})
 
 	const hits = $derived.by(() => {

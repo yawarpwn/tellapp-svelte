@@ -38,9 +38,9 @@ export const quotationSchema = z.object({
 	items: z.array(quotationItemSchema),
 	customer: z
 		.object({
-			name: z.string().optional(),
-			ruc: z.string().optional(),
-			address: z.string().optional(),
+			name: z.string().optional().nullable(),
+			ruc: z.string().optional().nullable(),
+			address: z.string().optional().nullable(),
 			isRegular: z.boolean().default(false)
 		})
 		.optional()
