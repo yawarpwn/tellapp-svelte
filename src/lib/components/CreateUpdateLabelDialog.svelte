@@ -54,6 +54,10 @@
 			loading = false
 		}
 	}
+
+	let isValid = $derived.by(() => {
+		return label.dniRuc.length === 8 || label.dniRuc.length === 11
+	})
 </script>
 
 <Dialog bind:open onOpenChange={closeModal}>
@@ -81,7 +85,7 @@
 					disabled={loading}
 					name="dniRuc"
 					required
-					type="number"
+					type="text"
 					minlength="8"
 					maxlength="11"
 					placeholder="46226410"
@@ -94,6 +98,7 @@
 				/>
 				<button
 					onclick={searchCustomer}
+					disabled={!isValid || loading}
 					name="ruc"
 					value={label.dniRuc}
 					type="button"

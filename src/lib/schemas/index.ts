@@ -85,7 +85,18 @@ export const updateProductSchema = createProductSchema.partial()
 //-------------------------Product Schema -------------------------------------\\
 export const labelSchema = z.object({
 	id: z.string(),
-	dniRuc: z.coerce.string().nonempty(),
+	dniRuc: z
+		.string()
+		.nonempty()
+		.refine(
+			(value) => {
+				if (value.length === 8 || value.length === 11) {
+					return true
+				}
+				return false
+			},
+			{ message: 'Ruc o Dni debe ser de 8 digitos o 11 digitos' }
+		),
 	recipient: z.string().nonempty(),
 	destination: z.string().nonempty(),
 	observations: z.string().optional(),

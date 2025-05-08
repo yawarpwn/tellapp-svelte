@@ -19,17 +19,17 @@ export const load: PageServerLoad = async ({ params, platform, request }) => {
 
 export const actions = {
 	create: async ({ cookies, request, platform }) => {
-		console.log('create  product action --->')
+		console.log('create  label  action --->')
 		const formData = await request.formData()
 		const entries = Object.fromEntries(formData.entries())
 		const result = createLabelSchema.safeParse(entries)
 
 		if (!result.success) {
+			console.log('Error')
 			return fail(403, { error: result.error.flatten().fieldErrors })
 		}
-
-		console.log(result.data, result.error)
-
+		// 01088218
+		console.log({ result })
 		const { data, error } = await trycatch(createLabel(result.data, platform?.env.TELL_API_KEY!))
 
 		if (error) {
