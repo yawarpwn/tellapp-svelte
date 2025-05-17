@@ -25,7 +25,8 @@
 		labels.filter((p) => {
 			const results =
 				p.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				p.recipient.toLowerCase().includes(searchTerm.toLowerCase())
+				p.recipient.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				p.dniRuc.includes(searchTerm.toLowerCase())
 			return results
 		})
 	)

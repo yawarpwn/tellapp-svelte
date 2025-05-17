@@ -17,7 +17,6 @@ export const quotationItemSchema = z.object({
 		.optional()
 		.nullable(),
 	unitSize: z.string(),
-	// code: z.string().optional().nullable(),
 	link: z.string().optional().nullable()
 })
 

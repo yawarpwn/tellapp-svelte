@@ -77,7 +77,7 @@
 						{product.unitSize}
 					</td>
 					<td class="min-w-[120px] text-center">
-						{product.code}
+						{product.code.toUpperCase()}
 					</td>
 					<td class="text-center">
 						{formatNumberToLocal(product.cost)}

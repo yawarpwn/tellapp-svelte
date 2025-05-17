@@ -64,7 +64,7 @@
 				defaultvalue={productToEdit?.code ?? ''}
 				disabled={loading}
 				name="code"
-				maxlength="12"
+				maxlength="20"
 				minlength="4"
 				type="text"
 				class="input w-full"
@@ -91,7 +91,7 @@
 					defaultvalue={productToEdit?.cost ?? ''}
 					disabled={loading}
 					name="cost"
-					step="any"
+					step="0.1"
 					type="number"
 					class="input w-full"
 					placeholder="10.00"
@@ -105,7 +105,7 @@
 					disabled={loading}
 					inputmode="decimal"
 					name="price"
-					step="any"
+					step="0.1"
 					type="number"
 					class="input w-full"
 					placeholder="20.00"

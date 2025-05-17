@@ -231,7 +231,7 @@
 				</div>
 				<div class="grid w-full gap-1">
 					<label class="label text-xs" for="cost"> Costo </label>
-					<input class="input" id="cost" disabled name="cost" value={item.cost} />
+					<input type="number" step="0.1" class="input" id="cost" name="cost" value={item.cost} />
 				</div>
 			</div>
 			<footer class="flex items-center justify-between">
