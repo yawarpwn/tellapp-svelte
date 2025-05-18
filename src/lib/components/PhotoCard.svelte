@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Watermark } from '$lib/types'
-	import { EyeIcon, XIcon } from 'lucide-svelte'
+	import { DownloadIcon, EyeIcon, XIcon } from 'lucide-svelte'
 	import Dialog from './ui/Dialog.svelte'
 	type Props = {
 		watermark: Watermark
@@ -13,6 +13,23 @@
 	let openModal = $state(false)
 	// const aspectRatio = watermark.width / watermark.height
 	const aspectRatio = `${watermark.width}/${watermark.height}`
+	function downloadPhotoWithoutWatermark() {
+		console.log(watermark.url)
+		const jpgUrl = watermark.url.replace(/upload/, 'upload/f_jpg/')
+		fetch(jpgUrl)
+			.then((res) => res.blob())
+			.then((blob) => {
+				const blobUrl = URL.createObjectURL(blob)
+				const anchor = document.createElement('a')
+				anchor.href = blobUrl
+				const hash = new Date().getTime().toString()
+				anchor.download = `tellsenales-photo-${hash}`
+				anchor.target = '_blank'
+				document.body.appendChild(anchor)
+				anchor.click()
+				document.body.removeChild(anchor)
+			})
+	}
 </script>
 
 {#if openModal}
@@ -28,6 +45,12 @@
 		>
 			<img class="absolute inset-0 h-full w-full object-cover" src={watermark.watermarkedUrl} />
 		</div>
+		<button
+			onclick={downloadPhotoWithoutWatermark}
+			class="bg-base-100/80 hover:bg-base-100/50 absolute top-2 right-10 cursor-pointer rounded-full p-1"
+		>
+			<DownloadIcon class="size-4" />
+		</button>
 		<button
 			class="bg-base-100/80 hover:bg-base-100/50 absolute top-2 right-2 cursor-pointer rounded-full p-1"
 			onclick={() => (openModal = false)}
