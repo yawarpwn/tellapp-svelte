@@ -18,6 +18,7 @@
 		onAddItem: (_item: QuotationItem) => void
 		onEditItem: (_item: QuotationItem) => void
 	}
+
 	let {
 		products,
 		onAddItem,
@@ -104,7 +105,7 @@
 							searchTerm = ''
 							inputSearch.focus()
 						}}
-						class="bg-base-content/10 hover:bg-base-content/20 rounded-full p-1"
+						class="bg-base-content/10 hover:bg-base-content/20 cursor-pointer rounded-full p-1"
 					>
 						<XIcon class="size-3" />
 					</button>
@@ -235,7 +236,9 @@
 				</div>
 			</div>
 			<footer class="flex items-center justify-between">
-				<button class="btn" type="button" onclick={closeModal}>Cancelar</button>
+				<button disabled={item.description === ''} class="btn" type="button" onclick={closeModal}
+					>Cancelar</button
+				>
 				<button type="submit" class="btn btn-primary">
 					{selectedItem ? 'Actualizar' : 'Agregar'}
 				</button>
