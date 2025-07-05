@@ -114,7 +114,7 @@
 							}}
 							value={item.price}
 							min="0"
-							step="0.1"
+							step="any"
 							name="price"
 							type="number"
 						/>
