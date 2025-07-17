@@ -1,8 +1,8 @@
 import { browser, building, dev, version } from '$app/environment'
 
 export const PRODUCTION_URL = 'https://app.tellsenales.workers.dev'
-// export const BASE_URL = 'https://api.tellsignals.workers.dev'
-export const BASE_URL = dev ? 'http://localhost:8787/v2' : 'https://api.tellsignals.workers.dev'
+// export const BASE_URL = 'https://api.tellsignals.workers.dev/v2'
+export const BASE_URL = dev ? 'http://localhost:8787/v2' : 'https://api.tellsignals.workers.dev/v2'
 
 export const PRODUCT_CATEGORIES = {
 	CINTAS_SEGURIDAD: 'cintas seguridad',
