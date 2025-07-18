@@ -83,12 +83,26 @@ export type Watermark = {
 	width: number
 	height: number
 	url: string
-	publicId: string
+	public_id: string
 	format: string
 	createdAt: string
 	updatedAt: string
 	thumbUrl: string
 	watermarkedUrl: string
+}
+
+export type Gallery = {
+	id: string
+	title: string
+	width: number
+	height: number
+	url: string
+	publicId: string
+	category_id: string
+	format: string
+	createdAt: string
+	updatedAt: string
+	thumbUrl: string
 }
 
 export type Signal = {

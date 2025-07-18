@@ -91,7 +91,7 @@
 			</div>
 
 			<!-- Cliente -->
-			<div class="col-span-12 grid gap-1 md:col-span-3 lg:col-span-6">
+			<div class="col-span-12 grid gap-1 lg:col-span-6">
 				<label class="label text-sm" for="customer.name"> Razón Social / Nombre Cliente </label>
 				{#if store.quotation.customer?.name}
 					<p class="text-green-200" id="customer.name">{store.quotation.customer.name}</p>
@@ -104,7 +104,7 @@
 			</div>
 
 			<!-- Direccion -->
-			<div class="col-span-12 grid gap-1 md:col-span-6">
+			<div class="col-span-12 grid gap-1 lg:col-span-6">
 				<label class="label grid gap-2 text-sm" for="address"> Dirección Cliente</label>
 
 				{#if store.quotation.customer?.address}
@@ -115,6 +115,39 @@
 						<span class="badge badge-neutral badge-xs">Opcional</span>
 					</div>
 				{/if}
+			</div>
+
+			<!-- Validez -->
+			<div class="col-span-12 grid gap-1 lg:col-span-6">
+				<label class="label grid gap-2 text-sm" for="validityDays"> Oferta valida (Días)</label>
+
+				<div class="input w-full" aria-disabled="true">
+					<input
+						id="validityDays"
+						name="validityDays"
+						type="number"
+						disabled={store.pending}
+						value={store.quotation.validityDays || 15}
+					/>
+					<span class="badge badge-neutral badge-xs">Opcional</span>
+				</div>
+			</div>
+
+			<!-- Observaciones -->
+			<div class="col-span-12 grid gap-1">
+				<label class="label grid gap-2 text-sm" for="observations"> Observaciones</label>
+
+				<div class="relative" aria-disabled="true">
+					<textarea
+						id="observations"
+						class="textarea h-full w-full resize-none"
+						name="observations"
+						disabled={store.pending}
+					></textarea>
+					<span class="badge badge-neutral badge-xs absolute top-1/2 right-3 -translate-y-1/2"
+						>Opcional</span
+					>
+				</div>
 			</div>
 
 			<!-- Incluir Igv -->
