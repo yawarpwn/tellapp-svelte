@@ -28,7 +28,8 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 									quotation?.customer?.name || ''
 								],
 								[{ text: 'R.U.C.', bold: true }, ':', quotation?.customer?.ruc || ''],
-								[{ text: 'DIRECCIÓN', bold: true }, ':', quotation?.customer?.address || '']
+								[{ text: 'DIRECCIÓN', bold: true }, ':', quotation?.customer?.address || ''],
+								[{ text: 'VENDEDOR', bold: true }, ':', 'RAQUEL MALDONADO R.']
 							]
 						},
 						layout: {
@@ -69,6 +70,20 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 										text: formatDateToLocal(quotation.updatedAt),
 										alignment: 'right'
 									}
+								],
+								[
+									{
+										text: 'COND. PAGO',
+										colSpan: 2,
+										bold: true,
+										alignment: 'right'
+									},
+									{},
+									':',
+									{
+										text: 'CONTADO / EFECTIVO',
+										alignment: 'right'
+									}
 								]
 							]
 						},
@@ -85,10 +100,6 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 			// Term and coditions
 			getTermAndTotal(quotation),
 			{
-				text: 'muuu',
-				leadingIndent: 50
-			},
-			{
 				stack: [
 					{
 						text: 'OBSERVACIONES:',
@@ -101,22 +112,28 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 				],
 				marginTop: 25
 			},
+
 			{
+				marginTop: 100,
 				columns: [
 					{
 						stack: [
 							{
 								text: 'NUESTRAS CUENTAS PARA PAGOS:',
 								fontSize: 10,
-								bold: true
+								bold: true,
+								marginBottom: 2
 							},
 							{
-								text: 'Cuenta Corriente Banco de Crédito del Perú (BCP)'
+								text: 'Cuenta Corriente Banco de Crédito del Perú (BCP)',
+								italics: true,
+								leadingIndent: 5
 							},
 							{
 								text: 'SOLES: 19276743336019 / CCI: 00219217674333601938',
 								bold: true,
-								fontSize: 10
+								fontSize: 10,
+								leadingIndent: 5
 							}
 						],
 						marginTop: 20
@@ -140,13 +157,20 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 						],
 						alignment: 'right'
 					}
-				],
-				marginTop: 5
+				]
 			}
 		],
+		footer: function (currentPage, pageCount) {
+			return [
+				{
+					text: 'Página ' + currentPage.toString() + ' de ' + pageCount,
+					alignment: 'center'
+				}
+			]
+		},
 		language: 'es-US',
 		pageSize: 'A4',
-		pageMargins: [20, 20],
+		pageMargins: [20, 20, 20, 20],
 		defaultStyle: {
 			fontSize: 8,
 			bold: false

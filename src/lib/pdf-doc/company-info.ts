@@ -17,105 +17,105 @@ const logo = `
 
 `
 export const companyInfo: Content = {
-  columns: [
-    {
-      stack: [
-        {
-          svg: logo,
-          marginBottom: 6,
-        },
-        {
-          text: 'SEÑALIZACIONES Y DISPOSITIVOS DE SEGURIDAD',
-          fontSize: 8.5,
-        },
-        {
-          text: 'Maquinaria #325 - Carmen de la Legua - Callao',
-          marginLeft: 15,
-          italics: true,
-          marginBottom: 2,
-        },
-      ],
-    },
+	columns: [
+		{
+			stack: [
+				{
+					svg: logo,
+					marginBottom: 6
+				},
+				{
+					text: 'SEÑALIZACIONES Y DISPOSITIVOS DE SEGURIDAD',
+					fontSize: 8.5
+				},
+				{
+					text: 'Maquinaria #325 - Carmen de la Legua - Callao',
+					marginLeft: 15,
+					italics: true,
+					marginBottom: 2
+				}
+			]
+		},
 
-    {
-      table: {
-        widths: ['*', 30, 'auto', 100],
-        body: [
-          [
-            {},
-            {
-              text: 'Ruc',
-              border: [false, true, false, false],
-              marginTop: 5,
-            },
+		{
+			table: {
+				widths: ['*', 30, 'auto', 100],
+				body: [
+					[
+						{},
+						{
+							text: 'Ruc',
+							border: [false, true, false, false],
+							marginTop: 5
+						},
 
-            {
-              text: ':',
-              border: [false, true, false, false],
-            },
-            {
-              marginTop: 5,
-              text: '20610555536',
-              border: [false, true, false, false],
-              alignment: 'right',
-            },
-          ],
+						{
+							text: ':',
+							border: [false, true, false, false]
+						},
+						{
+							marginTop: 5,
+							text: '20610555536',
+							border: [false, true, false, false],
+							alignment: 'right'
+						}
+					],
 
-          [
-            {},
-            {
-              text: 'Email',
-            },
-            ':',
-            {
-              text: 'ventas@tellsenales.com',
-              link: 'mailto:tellsenales@gmail.com?Subject=Estoy interesado en adquirir: ',
-              alignment: 'right',
-              style: 'linkText',
-            },
-          ],
+					[
+						{},
+						{
+							text: 'Email'
+						},
+						':',
+						{
+							text: 'ventas@tellsenales.com',
+							link: 'mailto:tellsenales@gmail.com?Subject=Estoy interesado en adquirir: ',
+							alignment: 'right',
+							style: 'linkText'
+						}
+					],
 
-          [
-            {},
-            {
-              text: 'Web',
-            },
-            ':',
-            {
-              text: 'tellsenales.com',
-              link: 'https://tellsenales.com',
-              alignment: 'right',
-              style: 'linkText',
-            },
-          ],
+					[
+						{},
+						{
+							text: 'Web'
+						},
+						':',
+						{
+							text: 'tellsenales.com',
+							link: 'https://tellsenales.com',
+							alignment: 'right',
+							style: 'linkText'
+						}
+					],
 
-          [
-            {},
-            {
-              text: 'Tel',
-              border: [false, false, false, true],
-              marginBottom: 5,
-            },
-            {
-              text: ':',
-              border: [false, false, false, true],
-            },
-            {
-              text: '971531018',
-              border: [false, false, false, true],
-              marginBottom: 5,
-              alignment: 'right',
-            },
-          ],
-        ],
-      },
-      layout: {
-        paddingRight: () => 0,
-        paddingLeft: () => 0,
-        paddingBottom: () => 1,
-        paddingTop: () => 1,
-        defaultBorder: false,
-      },
-    },
-  ],
+					[
+						{},
+						{
+							text: 'Tel',
+							border: [false, false, false, true],
+							marginBottom: 5
+						},
+						{
+							text: ':',
+							border: [false, false, false, true]
+						},
+						{
+							text: '971531018',
+							border: [false, false, false, true],
+							marginBottom: 5,
+							alignment: 'right'
+						}
+					]
+				]
+			},
+			layout: {
+				paddingRight: () => 0,
+				paddingLeft: () => 0,
+				paddingBottom: () => 1,
+				paddingTop: () => 1,
+				defaultBorder: false
+			}
+		}
+	]
 }
