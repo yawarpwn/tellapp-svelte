@@ -20,8 +20,7 @@ export function getTermAndTotal(quotation: QuotationClient) {
 					body: [
 						[
 							{
-								text: 'Términos y condiciones:',
-								color: COLORS.PRIMARY,
+								text: 'Términos y condiciones:'.toUpperCase(),
 								fontSize: 10,
 								bold: true,
 								colSpan: 3
@@ -73,6 +72,7 @@ export function getTermAndTotal(quotation: QuotationClient) {
 				}
 			},
 			{
+				marginLeft: 80,
 				table: {
 					widths: ['*', 80],
 					body: [
@@ -110,11 +110,12 @@ export function getTermAndTotal(quotation: QuotationClient) {
 						],
 						[
 							{
+								border: [true, true, false, true],
+								borderColor: COLORS.PRIMARY,
 								text: [
 									{
 										text: quotation.includeIgv ? 'IMPORTE TOTAL' : 'TOTAL',
-										bold: true,
-										color: COLORS.PRIMARY
+										bold: true
 									},
 									{
 										text: quotation.includeIgv ? '' : ' (No Incluye IGV)',
@@ -127,11 +128,11 @@ export function getTermAndTotal(quotation: QuotationClient) {
 								fontSize: 10
 							},
 							{
+								border: [false, true, true, true],
 								text: formatedTotal,
 								alignment: 'right',
 								bold: true,
-								fontSize: 10,
-								color: COLORS.PRIMARY
+								fontSize: 10
 							}
 						]
 					]

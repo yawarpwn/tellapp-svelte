@@ -17,11 +17,18 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 				columns: [
 					{
 						table: {
-							widths: [35, 'auto', '*'],
+							widths: [45, 'auto', '*'],
 							body: [
-								['Cliente', ':', quotation?.customer?.name || ''],
-								['Ruc', ':', quotation?.customer?.ruc || ''],
-								['Dirección', ':', quotation?.customer?.address || '']
+								[
+									{
+										text: 'SEÑOR(ES)',
+										bold: true
+									},
+									':',
+									quotation?.customer?.name || ''
+								],
+								[{ text: 'R.U.C.', bold: true }, ':', quotation?.customer?.ruc || ''],
+								[{ text: 'DIRECCIÓN', bold: true }, ':', quotation?.customer?.address || '']
 							]
 						},
 						layout: {
@@ -35,7 +42,8 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 							body: [
 								[
 									{
-										text: 'Cotización #',
+										text: 'COTIZACIÓN N°',
+										bold: true,
 										colSpan: 2,
 										alignment: 'right'
 									},
@@ -50,8 +58,9 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 								],
 								[
 									{
-										text: 'Fecha',
+										text: 'FECHA',
 										colSpan: 2,
+										bold: true,
 										alignment: 'right'
 									},
 									{},
@@ -71,30 +80,48 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 					}
 				]
 			},
-			// Table
+			// Table Items
 			getItemsTable(quotation),
 			// Term and coditions
 			getTermAndTotal(quotation),
+			{
+				text: 'muuu',
+				leadingIndent: 50
+			},
+			{
+				stack: [
+					{
+						text: 'OBSERVACIONES:',
+						bold: true,
+						fontSize: 10
+					},
+					{
+						text: 'ATT SRA RAQUEL \n PRECIO EN DOLARES YA INC IGV \nT/CAMBIO DE HOY 3.56 TOTAL SOLES S/.3296.40'
+					}
+				],
+				marginTop: 25
+			},
 			{
 				columns: [
 					{
 						stack: [
 							{
-								text: 'Cuenta Banco de Crédito del Perú (BCP) Soles'
-							},
-							{ text: '19276743336019', bold: true, fontSize: 10 },
-							{
-								text: 'Cuenta interbancaria BCP (CCI) Soles',
-								marginTop: 8
-							},
-							{
-								text: '00219217674333601938',
+								text: 'NUESTRAS CUENTAS PARA PAGOS:',
 								fontSize: 10,
 								bold: true
+							},
+							{
+								text: 'Cuenta Corriente Banco de Crédito del Perú (BCP)'
+							},
+							{
+								text: 'SOLES: 19276743336019 / CCI: 00219217674333601938',
+								bold: true,
+								fontSize: 10
 							}
 						],
-						columnGap: 20
+						marginTop: 20
 					},
+
 					{
 						stack: [
 							{
@@ -114,7 +141,7 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 						alignment: 'right'
 					}
 				],
-				marginTop: 25
+				marginTop: 5
 			}
 		],
 		language: 'es-US',

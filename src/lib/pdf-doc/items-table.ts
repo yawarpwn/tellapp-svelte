@@ -11,26 +11,29 @@ export function getItemsTable(quotation: QuotationClient) {
 			headerRows: 1,
 			body: [
 				[
-					{ text: 'No', color: '#fff', alignment: 'center' },
+					{ text: 'No', alignment: 'center', border: [true, true, true, true], bold: true },
 					{
 						text: 'DESCRIPCION',
+						border: [false, true, true, true],
 						alignment: 'center',
-						color: '#fff'
+						bold: true
 					},
 					{
 						text: 'LINK',
+						border: [false, true, true, true],
 						alignment: 'center',
-						color: '#fff'
+						bold: true
 					},
 					{
 						text: 'U/M',
+						border: [false, true, true, true],
 						alignment: 'center',
-						color: '#fff'
+						bold: true
 					},
-					{ text: 'CANT', color: '#fff', alignment: 'center' },
+					{ text: 'CANT', alignment: 'center', border: [false, true, true, true], bold: true },
 					// { text: 'P. BASE', color: '#fff', alignment: 'center' },
-					{ text: 'P. UNT', color: '#fff', alignment: 'center' },
-					{ text: 'IMPORTE', color: '#fff', alignment: 'center' }
+					{ text: 'P. UNT', alignment: 'center', border: [false, true, true, true], bold: true },
+					{ text: 'IMPORTE', alignment: 'center', border: [false, true, true, true], bold: true }
 				],
 				...quotation.items.map((item, index) => {
 					const unitPrice = quotation.includeIgv ? item.price / 1.18 : item.price
@@ -94,16 +97,16 @@ export function getItemsTable(quotation: QuotationClient) {
 		},
 		layout: {
 			fillColor: function (rowIndex, node, columnIndex) {
-				if (rowIndex === 0) return '#222'
+				if (rowIndex === 0) return '#fff'
 
-				return rowIndex % 2 === 0 ? '#ededed' : null
+				return rowIndex % 2 === 0 ? '#efefef' : null
 			},
-			hLineColor: (index, node) => (index == 1 ? '#000' : '#aaa'),
+			// hLineColor: (index, node) => (index == 1 ? '#000' : '#aaa'),
 			// paddingTop: index => (index === 0 ? 4 : 8),
 			// paddingBottom: index => (index === 0 ? 4 : 8),
-			hLineWidth: (index) => (index === 0 ? 5 : 10),
+			// hLineWidth: (index) => (index === 0 ? 5 : 10),
 			vLineWidth: () => 1,
-			vLineColor: '#0d3',
+			// vLineColor: '#0d3',
 			vLineStyle: (index, node) => null,
 			defaultBorder: false
 		},
