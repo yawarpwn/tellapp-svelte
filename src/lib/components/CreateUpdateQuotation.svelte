@@ -43,6 +43,7 @@
 	): quotation is QuotationClient {
 		return 'id' in quotation
 	}
+	$inspect(store.quotation)
 </script>
 
 <!-- <div> -->
@@ -127,7 +128,7 @@
 						name="validityDays"
 						type="number"
 						disabled={store.pending}
-						value={store.quotation.validityDays || 15}
+						bind:value={store.quotation.validityDays}
 					/>
 					<span class="badge badge-neutral badge-xs">Opcional</span>
 				</div>
@@ -143,6 +144,7 @@
 						class="textarea h-full w-full resize-none"
 						name="observations"
 						disabled={store.pending}
+						bind:value={store.quotation.observations}
 					></textarea>
 					<span class="badge badge-neutral badge-xs absolute top-1/2 right-3 -translate-y-1/2"
 						>Opcional</span

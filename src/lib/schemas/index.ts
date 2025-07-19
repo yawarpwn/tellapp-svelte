@@ -26,6 +26,7 @@ export const quotationSchema = z.object({
 	credit: z.number().positive().optional().nullable(),
 	includeIgv: z.boolean(),
 	validityDays: z.number().optional().nullable(),
+	observations: z.string().optional().nullable(),
 	deadline: z
 		.number({
 			message: 'Fecha de entrega debe ser mayor a 0'

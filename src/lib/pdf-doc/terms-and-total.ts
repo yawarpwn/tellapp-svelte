@@ -7,79 +7,82 @@ import { COLORS } from './constants'
 export function getTermAndTotal(quotation: QuotationClient) {
 	const { formatedIgv, formatedTotal, formatedSubTotal } = getIgv(quotation.items)
 
-	const deadlineText =
-		quotation.deadline === 1
-			? `${quotation.deadline} día útil`
-			: `${quotation.deadline} días útiles`
-
 	const content: Content = {
-		table: {
-			widths: ['*', 80],
-			body: [
-				[
-					{
-						text: 'Descuentos',
-						alignment: 'right'
-					},
-					{
-						text: '- S/ 0.00',
-						alignment: 'right'
-					}
-				],
-
-				[
-					{
-						text: 'Sub Total Ventas Gravadas',
-						alignment: 'right'
-					},
-					{
-						text: quotation.includeIgv ? formatedSubTotal : 'S/ 0.00',
-						alignment: 'right'
-					}
-				],
-
-				[
-					{
-						text: 'IGV (18%)',
-						alignment: 'right'
-					},
-					{
-						text: quotation.includeIgv ? formatedIgv : 'S/ 0.00',
-						alignment: 'right'
-					}
-				],
-				[
-					{
-						border: [true, true, false, true],
-						borderColor: COLORS.PRIMARY,
-						text: [
+		columns: [
+			{
+				text: ''
+			},
+			{
+				marginLeft: 30,
+				table: {
+					widths: ['*', 80],
+					body: [
+						[
 							{
-								text: quotation.includeIgv ? 'IMPORTE TOTAL' : 'TOTAL',
-								bold: true
+								text: 'Descuentos',
+								alignment: 'right'
 							},
 							{
-								text: quotation.includeIgv ? '' : ' (No Incluye IGV)',
-								fontSize: 8,
-								color: COLORS.PRIMARY,
-								bold: true
+								text: '- S/ 0.00',
+								alignment: 'right'
 							}
 						],
-						alignment: 'right',
-						fontSize: 10
-					},
-					{
-						border: [false, true, true, true],
-						text: formatedTotal,
-						alignment: 'right',
-						bold: true,
-						fontSize: 10
-					}
-				]
-			]
-		},
-		layout: {
-			defaultBorder: false
-		}
+
+						[
+							{
+								text: 'Sub Total Ventas Gravadas',
+								alignment: 'right'
+							},
+							{
+								text: quotation.includeIgv ? formatedSubTotal : 'S/ 0.00',
+								alignment: 'right'
+							}
+						],
+
+						[
+							{
+								text: 'IGV (18%)',
+								alignment: 'right'
+							},
+							{
+								text: quotation.includeIgv ? formatedIgv : 'S/ 0.00',
+								alignment: 'right'
+							}
+						],
+						[
+							{
+								border: [true, true, false, true],
+								borderColor: COLORS.PRIMARY,
+								text: [
+									{
+										text: quotation.includeIgv ? 'IMPORTE TOTAL' : 'TOTAL',
+										bold: true
+									},
+									{
+										text: quotation.includeIgv ? '' : ' (No Incluye IGV)',
+										fontSize: 8,
+										color: COLORS.PRIMARY,
+										bold: true
+									}
+								],
+								alignment: 'right',
+								fontSize: 10
+							},
+							{
+								border: [false, true, true, true],
+								text: formatedTotal,
+								alignment: 'right',
+								bold: true,
+								fontSize: 10
+							}
+						]
+					]
+				},
+				layout: {
+					defaultBorder: false
+				}
+			}
+		]
 	}
 
 	return content

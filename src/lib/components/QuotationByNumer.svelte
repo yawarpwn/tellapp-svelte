@@ -97,9 +97,21 @@
 						{quotation.credit ? `${quotation.credit} días` : '50% Adelanto '}
 					</dd>
 				</dl>
+				<dl class="grid gap-x-3 sm:grid-cols-6">
+					<dt class="col-span-3 font-semibold">Validez</dt>
+					<dd class="col-span-3">
+						{quotation.validityDays + ' días'}
+					</dd>
+				</dl>
 			</div>
 		</div>
 	</div>
+	{#if quotation.observations}
+		<div>
+			<p>OBSERVACIONES:</p>
+			<p>{quotation.observations}</p>
+		</div>
+	{/if}
 	<div class="rounded-box border-base-content/5 bg-base-10 overflow-x-auto border">
 		<table class="table-zebra table [&_td]:p-2">
 			<thead>

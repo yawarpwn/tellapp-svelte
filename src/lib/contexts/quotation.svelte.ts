@@ -9,6 +9,7 @@ import { getContext, setContext } from 'svelte'
 
 export const INITIAL_QUOTATION_STATE: CreateQuotationClient = {
 	credit: null,
+	validityDays: 15,
 	deadline: undefined,
 	isPaymentPending: false,
 	customerId: null,

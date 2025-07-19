@@ -14,6 +14,12 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 			// Company info
 			// Customer Info
 			{
+				text: `COTIZACIÓN N° 00${quotation.number}`,
+				bold: true,
+				fontSize: 16,
+				alignment: 'center'
+			},
+			{
 				marginTop: 15,
 				marginBottom: 15,
 				columns: [
@@ -41,24 +47,8 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 					},
 					{
 						table: {
-							widths: ['*', 'auto', 'auto', '*'],
+							widths: ['*', 'auto', 'auto', 100],
 							body: [
-								[
-									{
-										text: 'COTIZACIÓN N°',
-										bold: true,
-										colSpan: 2,
-										alignment: 'right'
-									},
-									{},
-									':',
-									{
-										text: `00${quotation.number}`,
-										bold: true,
-										alignment: 'right',
-										fontSize: 10
-									}
-								],
 								[
 									{
 										text: 'FECHA',
@@ -83,7 +73,9 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 									{},
 									':',
 									{
-										text: '50% ADELANTO, 50% CONTRAENTREGA',
+										text: quotation.credit
+											? `CRÉDITO ${quotation.credit} DÍAS`
+											: '50% ADELANTO,\n 50% CONTRAENTREGA',
 										alignment: 'right'
 									}
 								],
@@ -111,7 +103,7 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 									{},
 									':',
 									{
-										text: `15 DÍAS`,
+										text: `${quotation.validityDays} DÍAS`,
 										alignment: 'right'
 									}
 								]
@@ -137,14 +129,14 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 						fontSize: 10
 					},
 					{
-						text: ''
+						text: quotation.observations || ''
 					}
 				],
 				marginTop: 25
 			},
 
 			{
-				marginTop: 20,
+				marginTop: quotation.items.length > 12 ? 20 : (12 - quotation.items.length) * 30,
 				columns: [
 					{
 						stack: [
@@ -200,7 +192,7 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 		},
 		language: 'es-US',
 		pageSize: 'A4',
-		pageMargins: [20, 70, 20, 20],
+		pageMargins: [20, 80, 20, 20],
 		defaultStyle: {
 			fontSize: 8,
 			bold: false
