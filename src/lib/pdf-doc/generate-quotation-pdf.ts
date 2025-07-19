@@ -7,9 +7,11 @@ import { getTermAndTotal } from './terms-and-total'
 
 export function generateQuotationPdf(quotation: QuotationClient) {
 	const pdfDoc: TDocumentDefinitions = {
+		header: function (currentPage, pageCount) {
+			return companyInfo
+		},
 		content: [
 			// Company info
-			companyInfo,
 			// Customer Info
 			{
 				marginTop: 15,
@@ -81,7 +83,35 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 									{},
 									':',
 									{
-										text: 'CONTADO / EFECTIVO',
+										text: '50% ADELANTO, 50% CONTRAENTREGA',
+										alignment: 'right'
+									}
+								],
+								[
+									{
+										text: 'F. ENTREGA',
+										colSpan: 2,
+										bold: true,
+										alignment: 'right'
+									},
+									{},
+									':',
+									{
+										text: `${quotation.deadline} ${quotation.deadline === 1 ? 'ÐÍA HÁBIL' : 'DÍAS HÁBILES'}`,
+										alignment: 'right'
+									}
+								],
+								[
+									{
+										text: 'VALIDEZ',
+										colSpan: 2,
+										bold: true,
+										alignment: 'right'
+									},
+									{},
+									':',
+									{
+										text: `15 DÍAS`,
 										alignment: 'right'
 									}
 								]
@@ -107,14 +137,14 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 						fontSize: 10
 					},
 					{
-						text: 'ATT SRA RAQUEL \n PRECIO EN DOLARES YA INC IGV \nT/CAMBIO DE HOY 3.56 TOTAL SOLES S/.3296.40'
+						text: ''
 					}
 				],
 				marginTop: 25
 			},
 
 			{
-				marginTop: 100,
+				marginTop: 20,
 				columns: [
 					{
 						stack: [
@@ -170,7 +200,7 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 		},
 		language: 'es-US',
 		pageSize: 'A4',
-		pageMargins: [20, 20, 20, 20],
+		pageMargins: [20, 70, 20, 20],
 		defaultStyle: {
 			fontSize: 8,
 			bold: false

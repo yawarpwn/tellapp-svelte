@@ -1,10 +1,11 @@
+import { text } from '@sveltejs/kit'
 import type { Content, Table } from 'pdfmake/interfaces'
 
 const logo = `
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xml:space="preserve"
-    width="189.7"
+    width="220.7"
     height="22.6"
   >
       <path
@@ -17,105 +18,64 @@ const logo = `
 
 `
 export const companyInfo: Content = {
-	columns: [
+	margin: [20, 20, 20, 0],
+	stack: [
 		{
-			stack: [
+			columns: [
 				{
-					svg: logo,
-					marginBottom: 6
+					stack: [
+						{
+							svg: logo,
+							marginBottom: 4
+						},
+						{
+							text: 'SEÑALIZACIONES Y DISPOSITIVOS DE SEGURIDAD',
+							fontSize: 8.5
+						}
+						// {
+						// 	text: 'www.tellsenales.com',
+						// 	link: 'https://tellsenales.com',
+						// 	style: 'linkText',
+						// 	marginLeft: 60
+						// }
+					]
 				},
 				{
-					text: 'SEÑALIZACIONES Y DISPOSITIVOS DE SEGURIDAD',
-					fontSize: 8.5
-				},
-				{
-					text: 'Maquinaria #325 - Carmen de la Legua - Callao',
-					marginLeft: 15,
-					italics: true,
-					marginBottom: 2
+					stack: [
+						{
+							text: 'Maquinaria N° 325 - Carmen de la Legua Reynoso - Callao',
+							marginBottom: 3
+						},
+						{
+							text: 'RUC: 20610555536 / TEL: 9751 531 018',
+							marginBottom: 3
+						},
+						{
+							text: [
+								{
+									text: 'ventas@tellsenales.com',
+									link: 'mailto:tellsenales@gmail.com?Subject=Estoy interesado en adquirir: ',
+									style: 'linkText',
+									marginBottom: 3
+								}
+							]
+						}
+					],
+					alignment: 'right'
 				}
 			]
 		},
-
 		{
-			table: {
-				widths: ['*', 30, 'auto', 100],
-				body: [
-					[
-						{},
-						{
-							text: 'Ruc',
-							border: [false, true, false, false],
-							marginTop: 5
-						},
-
-						{
-							text: ':',
-							border: [false, true, false, false]
-						},
-						{
-							marginTop: 5,
-							text: '20610555536',
-							border: [false, true, false, false],
-							alignment: 'right'
-						}
-					],
-
-					[
-						{},
-						{
-							text: 'Email'
-						},
-						':',
-						{
-							text: 'ventas@tellsenales.com',
-							link: 'mailto:tellsenales@gmail.com?Subject=Estoy interesado en adquirir: ',
-							alignment: 'right',
-							style: 'linkText'
-						}
-					],
-
-					[
-						{},
-						{
-							text: 'Web'
-						},
-						':',
-						{
-							text: 'tellsenales.com',
-							link: 'https://tellsenales.com',
-							alignment: 'right',
-							style: 'linkText'
-						}
-					],
-
-					[
-						{},
-						{
-							text: 'Tel',
-							border: [false, false, false, true],
-							marginBottom: 5
-						},
-						{
-							text: ':',
-							border: [false, false, false, true]
-						},
-						{
-							text: '971531018',
-							border: [false, false, false, true],
-							marginBottom: 5,
-							alignment: 'right'
-						}
-					]
-				]
-			},
-			layout: {
-				paddingRight: () => 0,
-				paddingLeft: () => 0,
-				paddingBottom: () => 1,
-				paddingTop: () => 1,
-				defaultBorder: false
-			}
+			canvas: [
+				{
+					type: 'line',
+					x1: 0,
+					y1: 10,
+					x2: 555,
+					y2: 10,
+					lineWidth: 1
+				}
+			]
 		}
 	]
 }
