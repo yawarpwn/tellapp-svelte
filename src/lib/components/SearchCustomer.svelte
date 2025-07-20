@@ -60,7 +60,7 @@
 	}
 </script>
 
-<div class="col-span-12 grid gap-1 lg:col-span-6">
+<div class="col-span-12 grid">
 	<label class="label text-sm" for="ruc"> Ruc </label>
 	<div class="input w-full">
 		<input

@@ -75,7 +75,7 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 									{
 										text: quotation.credit
 											? `CRÉDITO ${quotation.credit} DÍAS`
-											: '50% ADELANTO,\n 50% CONTRAENTREGA',
+											: '50% ADELANTO,\n 50% CONTRA ENTREGA',
 										alignment: 'right'
 									}
 								],
@@ -122,21 +122,41 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 			// Term and coditions
 			getTermAndTotal(quotation),
 			{
-				stack: [
+				marginTop: 25,
+				columns: [
 					{
-						text: 'OBSERVACIONES:',
-						bold: true,
-						fontSize: 10
+						stack: [
+							{
+								text: 'OBSERVACIONES:',
+								bold: true,
+								fontSize: 10
+							},
+							// {
+							// 	marginLeft: 5,
+							// 	ul: [
+							// 		'Los diseños / modelos de las señales se enviara para aprobación antes de proceder con la impresión'.toUpperCase(),
+							// 		'Las señales con lamina 3M cuenta con certificado de garantia y calidad por 10 años'.toUpperCase()
+							// 	]
+							// }
+
+							{
+								text: quotation.observations?.toUpperCase() || ''
+							}
+						]
 					},
 					{
-						text: quotation.observations || ''
+						text: ''
 					}
-				],
-				marginTop: 25
+				]
+			},
+			{
+				marginTop: quotation.items.length > 12 ? 20 : (12 - quotation.items.length) * 30,
+				text: 'Nota: Los envíos fuera de la ciudad requieren el pago íntegro de la cotización como requisito para coordinar el transporte.',
+				alignment: 'center'
 			},
 
 			{
-				marginTop: quotation.items.length > 12 ? 20 : (12 - quotation.items.length) * 30,
+				marginTop: 5,
 				columns: [
 					{
 						stack: [
@@ -148,8 +168,7 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 							},
 							{
 								text: 'Cuenta Corriente Banco de Crédito del Perú (BCP)',
-								italics: true,
-								leadingIndent: 5
+								italics: true
 							},
 							{
 								text: 'SOLES: 19276743336019 / CCI: 00219217674333601938',

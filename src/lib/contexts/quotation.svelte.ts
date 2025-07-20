@@ -10,6 +10,8 @@ import { getContext, setContext } from 'svelte'
 export const INITIAL_QUOTATION_STATE: CreateQuotationClient = {
 	credit: null,
 	validityDays: 15,
+	observations:
+		'Una vez aprobada la cotización, enviaremos los diseños para su aprobación antes de fabricar.',
 	deadline: undefined,
 	isPaymentPending: false,
 	customerId: null,

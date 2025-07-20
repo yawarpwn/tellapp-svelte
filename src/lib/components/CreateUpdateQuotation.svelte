@@ -74,23 +74,6 @@
 			<!-- Search customer by ruc form -->
 			<SearchCustomer onSearchCustomer={setCustomer} ruc={store.quotation.customer?.ruc} />
 
-			<!-- Tiempo Entrega -->
-			<div class="col-span-12 grid gap-1 lg:order-none lg:col-span-6">
-				<label class="label grid gap-2 text-sm" for="deadline"> Tiempo Entrega (Dias) </label>
-				<div class="input w-full">
-					<input
-						class="w-full"
-						required
-						min="1"
-						type="number"
-						id="deadline"
-						bind:value={store.quotation.deadline}
-						disabled={store.pending}
-					/>
-					<span class="badge badge-warning badge-xs">Requerido</span>
-				</div>
-			</div>
-
 			<!-- Cliente -->
 			<div class="col-span-12 grid gap-1 lg:col-span-6">
 				<label class="label text-sm" for="customer.name"> Razón Social / Nombre Cliente </label>
@@ -118,9 +101,26 @@
 				{/if}
 			</div>
 
+			<!-- Tiempo Entrega -->
+			<div class="col-span-6 grid gap-1 lg:col-span-6">
+				<label class="label grid gap-2 text-sm" for="deadline"> T. Entrega </label>
+				<div class="input w-full">
+					<input
+						class="w-full"
+						required
+						min="1"
+						type="number"
+						id="deadline"
+						bind:value={store.quotation.deadline}
+						disabled={store.pending}
+					/>
+					<span class="badge badge-warning badge-xs">Requerido</span>
+				</div>
+			</div>
+
 			<!-- Validez -->
-			<div class="col-span-12 grid gap-1 lg:col-span-6">
-				<label class="label grid gap-2 text-sm" for="validityDays"> Oferta valida (Días)</label>
+			<div class="col-span-6 grid gap-1 lg:col-span-6">
+				<label class="label grid gap-2 text-sm" for="validityDays"> Validez</label>
 
 				<div class="input w-full" aria-disabled="true">
 					<input
@@ -188,7 +188,7 @@
 
 			<!-- Credito -->
 			<div class="col-span-12 grid gap-1">
-				<div class="label textsm">Crédito</div>
+				<div class="label textsm">Codición de Pago</div>
 				<div class="flex gap-2 overflow-x-auto py-2">
 					{#each Object.entries(CREDIT_OPTION) as [key, value]}
 						<label
