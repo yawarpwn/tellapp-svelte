@@ -7,7 +7,7 @@
 	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
 	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
-	import { QUOTATIONS_KEY } from '$lib/constants'
+	import { QUOTATIONS_KEY, STANDARD_TERMS } from '$lib/constants'
 
 	const CREDIT_OPTION = {
 		Contado: null,
@@ -134,24 +134,6 @@
 				</div>
 			</div>
 
-			<!-- Observaciones -->
-			<div class="col-span-12 grid gap-1">
-				<label class="label grid gap-2 text-sm" for="observations"> Observaciones</label>
-
-				<div class="relative" aria-disabled="true">
-					<textarea
-						id="observations"
-						class="textarea h-full w-full resize-none"
-						name="observations"
-						disabled={store.pending}
-						bind:value={store.quotation.observations}
-					></textarea>
-					<span class="badge badge-neutral badge-xs absolute top-1/2 right-3 -translate-y-1/2"
-						>Opcional</span
-					>
-				</div>
-			</div>
-
 			<!-- Incluir Igv -->
 			<div class="col-span-6 flex items-center gap-2">
 				<label class="fieldset-label" for="includeIgv">
@@ -188,7 +170,7 @@
 
 			<!-- Credito -->
 			<div class="col-span-12 grid gap-1">
-				<div class="label textsm">Codición de Pago</div>
+				<div class="label text-sm">Codición de Pago</div>
 				<div class="flex gap-2 overflow-x-auto py-2">
 					{#each Object.entries(CREDIT_OPTION) as [key, value]}
 						<label
@@ -199,6 +181,45 @@
 							<input bind:group={store.quotation.credit} {value} type="radio" class="hidden" />
 						</label>
 					{/each}
+				</div>
+			</div>
+
+			<!-- Standard Terms -->
+			<div class="col-span-12 grid gap-1">
+				<div class="label text-sm">Términos y codiciones standard</div>
+				<div class="flex gap-2 overflow-x-auto py-2">
+					{#each Object.entries(STANDARD_TERMS) as [key, term] (term)}
+						<label
+							class="btn data-[active=true]:btn-secondary min-w-[100px] md:min-w-[150px]"
+							data-active={store.quotation.standardTerms.includes(key) ? 'true' : 'false'}
+						>
+							{term.key}
+							<input
+								value={key}
+								bind:group={store.quotation.standardTerms}
+								type="checkbox"
+								class="hidden"
+							/>
+						</label>
+					{/each}
+				</div>
+			</div>
+
+			<!-- Observaciones -->
+			<div class="col-span-12 grid gap-1">
+				<label class="label grid gap-2 text-sm" for="observations"> Observaciones</label>
+
+				<div class="relative" aria-disabled="true">
+					<textarea
+						id="observations"
+						class="textarea h-full w-full resize-none"
+						name="observations"
+						disabled={store.pending}
+						bind:value={store.quotation.observations}
+					></textarea>
+					<span class="badge badge-neutral badge-xs absolute top-1/2 right-3 -translate-y-1/2"
+						>Opcional</span
+					>
 				</div>
 			</div>
 		</div>

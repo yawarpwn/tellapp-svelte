@@ -4,6 +4,7 @@ import type { TDocumentDefinitions } from 'pdfmake/interfaces'
 import { companyInfo } from './company-info'
 import { getItemsTable } from './items-table'
 import { getTermAndTotal } from './terms-and-total'
+import { STANDARD_TERMS } from '$lib/constants'
 
 export function generateQuotationPdf(quotation: QuotationClient) {
 	const pdfDoc: TDocumentDefinitions = {
@@ -125,6 +126,7 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 				marginTop: 25,
 				columns: [
 					{
+						width: 500,
 						stack: [
 							{
 								text: 'OBSERVACIONES:',
@@ -140,7 +142,13 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 							// }
 
 							{
-								text: quotation.observations?.toUpperCase() || ''
+								marginTop: 3,
+								ul: [
+									...(quotation.standardTerms.length > 0
+										? quotation.standardTerms.map((t) => STANDARD_TERMS[t].value.toUpperCase())
+										: ''),
+									quotation.observations?.toUpperCase() ?? ''
+								]
 							}
 						]
 					},
@@ -149,14 +157,14 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 					}
 				]
 			},
-			{
-				marginTop: quotation.items.length > 12 ? 20 : (12 - quotation.items.length) * 30,
-				text: 'Nota: Los envíos fuera de la ciudad requieren el pago íntegro de la cotización como requisito para coordinar el transporte.',
-				alignment: 'center'
-			},
+			// {
+			// 	marginTop: quotation.items.length > 12 ? 20 : (12 - quotation.items.length) * 30,
+			// 	text: 'Nota: Los envíos fuera de la ciudad requieren el pago íntegro de la cotización como requisito para coordinar el transporte.',
+			// 	alignment: 'center'
+			// },
 
 			{
-				marginTop: 5,
+				marginTop: quotation.items.length > 12 ? 20 : (12 - quotation.items.length) * 30,
 				columns: [
 					{
 						stack: [
@@ -173,8 +181,7 @@ export function generateQuotationPdf(quotation: QuotationClient) {
 							{
 								text: 'SOLES: 19276743336019 / CCI: 00219217674333601938',
 								bold: true,
-								fontSize: 10,
-								leadingIndent: 5
+								fontSize: 10
 							}
 						],
 						marginTop: 20
