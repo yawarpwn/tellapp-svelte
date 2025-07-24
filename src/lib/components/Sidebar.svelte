@@ -8,6 +8,7 @@
 		PrinterIcon,
 		ShoppingCartIcon,
 		SquareArrowRightIcon,
+		PaperclipIcon,
 		TruckIcon
 	} from 'lucide-svelte'
 	import Logo from '$lib/components/Logo.svelte'
@@ -51,6 +52,12 @@
 			name: 'Señales',
 			href: '/signals',
 			icon: SquareArrowRightIcon
+		},
+
+		{
+			name: 'Certificados',
+			href: '/certificate',
+			icon: PaperclipIcon
 		}
 	]
 </script>
