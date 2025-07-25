@@ -139,6 +139,8 @@ export async function searchCustomerByDniOrRuc(dniRuc: string, apiKey: string) {
 		}
 	})
 
+	console.log('fond customer', customer)
+
 	return customer
 }
 
