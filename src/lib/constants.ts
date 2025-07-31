@@ -4,6 +4,14 @@ export const PRODUCTION_URL = 'https://app.tellsenales.workers.dev'
 // export const BASE_URL = 'https://api.tellsignals.workers.dev/v2'
 export const BASE_URL = dev ? 'http://localhost:8787/v2' : 'https://api.tellsignals.workers.dev/v2'
 
+export const PAYMENT_CODITION = {
+	ADVANCE_50: 'Adelanto 50%',
+	FULL_PREPAYMENT: 'Previo Pago',
+	CREDIT: 'Crédito',
+	ADVANCE_20: 'Adelanto 20%',
+	ADVANCE_80: 'Adelanto 80%'
+}
+
 export const PRODUCT_CATEGORIES = {
 	CINTAS_SEGURIDAD: 'cintas seguridad',
 	OBRAS: 'obras',

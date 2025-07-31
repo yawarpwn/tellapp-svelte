@@ -6,6 +6,7 @@
 	import ConfirmAction from '$lib/components/ConfirmAction.svelte'
 	import CopyText from '$lib/components/CopyText.svelte'
 	import type { QuotationClient } from '$lib/types'
+	import { getPaymentCodition } from '$lib/utils'
 
 	type Props = {
 		quotation: QuotationClient
@@ -95,7 +96,7 @@
 				<dl class="grid gap-x-3 sm:grid-cols-6">
 					<dt class="col-span-3 font-semibold">Codición de Pago</dt>
 					<dd class="col-span-3">
-						{quotation.credit ? `${quotation.credit} días` : '50% Adelanto '}
+						{getPaymentCodition(quotation.paymentCodition, quotation.credit)}
 					</dd>
 				</dl>
 				<dl class="grid gap-x-3 sm:grid-cols-6">

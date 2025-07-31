@@ -7,20 +7,12 @@
 	import CreateEditItemDialog from '$lib/components/CreateEditItemDialog.svelte'
 	import SearchCustomer from '$lib/components/SearchCustomer.svelte'
 	import { getQuotationContext } from '$lib/contexts/quotation.svelte'
-	import { QUOTATIONS_KEY, STANDARD_TERMS } from '$lib/constants'
+	import { QUOTATIONS_KEY, STANDARD_TERMS, PAYMENT_CODITION } from '$lib/constants'
 
 	const CREDIT_OPTION = {
 		'1 Semana': 7,
 		'2 Semanas': 15,
 		'1 Mes': 30
-	}
-
-	export const PAYMENT_CODITION = {
-		ADVANCE_50: 'Adelanto 50%',
-		FULL_PREPAYMENT: 'Previo Pago',
-		CREDIT: 'Crédito',
-		ADVANCE_20: 'Adelanto 20%',
-		ADVANCE_80: 'Adelanto 80%'
 	}
 
 	type Props = {
