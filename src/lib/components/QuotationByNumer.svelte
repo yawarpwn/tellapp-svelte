@@ -12,6 +12,7 @@
 	}
 	const { quotation }: Props = $props()
 	const { formatedTotal, formatedSubTotal, formatedIgv } = getIgv(quotation.items)
+	console.log({ quotation })
 </script>
 
 <div class="mt-2 flex flex-col gap-6">

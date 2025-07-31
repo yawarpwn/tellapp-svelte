@@ -10,10 +10,17 @@
 	import { QUOTATIONS_KEY, STANDARD_TERMS } from '$lib/constants'
 
 	const CREDIT_OPTION = {
-		Contado: null,
 		'1 Semana': 7,
 		'2 Semanas': 15,
 		'1 Mes': 30
+	}
+
+	export const PAYMENT_CODITION = {
+		ADVANCE_50: 'Adelanto 50%',
+		FULL_PREPAYMENT: 'Previo Pago',
+		CREDIT: 'Crédito',
+		ADVANCE_20: 'Adelanto 20%',
+		ADVANCE_80: 'Adelanto 80%'
 	}
 
 	type Props = {
@@ -44,6 +51,15 @@
 		return 'id' in quotation
 	}
 	$inspect(store.quotation)
+
+	$effect(() => {
+		console.log('effect')
+		if (store.quotation.paymentCodition === 'CREDIT') {
+			store.quotation.credit = 7
+		} else {
+			store.quotation.credit = null
+		}
+	})
 </script>
 
 <!-- <div> -->
@@ -168,38 +184,65 @@
 				{/if}
 			</div>
 
-			<!-- Credito -->
+			<!-- Payment Codition -->
 			<div class="col-span-12 grid gap-1">
 				<div class="label text-sm">Codición de Pago</div>
-				<div class="flex gap-2 overflow-x-auto py-2">
-					{#each Object.entries(CREDIT_OPTION) as [key, value]}
-						<label
-							class="btn data-[active=true]:btn-primary min-w-[100px] md:min-w-[150px]"
-							data-active={store.quotation.credit === value ? 'true' : 'false'}
-						>
-							{key}
-							<input bind:group={store.quotation.credit} {value} type="radio" class="hidden" />
+				<div class="flex flex-wrap gap-4 py-2">
+					{#each Object.entries(PAYMENT_CODITION) as [key, value]}
+						<label class="flex shrink-0 items-center gap-2">
+							<input
+								bind:group={store.quotation.paymentCodition}
+								value={key}
+								type="radio"
+								class="radio radio-sm"
+							/>
+							<span>
+								{value}
+							</span>
 						</label>
 					{/each}
 				</div>
 			</div>
 
+			<!-- Credito -->
+			{#if store.quotation.paymentCodition === 'CREDIT'}
+				<div class="col-span-12 grid gap-1">
+					<div class="label text-sm">Días de crédito</div>
+					<div class="flex flex-wrap gap-4 py-4">
+						{#each Object.entries(CREDIT_OPTION) as [key, value]}
+							<label
+								class="flex items-center gap-2"
+								data-active={store.quotation.credit === value ? 'true' : 'false'}
+							>
+								<input
+									bind:group={store.quotation.credit}
+									{value}
+									type="radio"
+									class="radio radio-sm"
+								/>
+								{key}
+							</label>
+						{/each}
+					</div>
+				</div>
+			{/if}
+
 			<!-- Standard Terms -->
 			<div class="col-span-12 grid gap-1">
-				<div class="label text-sm">Términos y codiciones standard</div>
-				<div class="flex gap-2 overflow-x-auto py-2">
+				<div class="label text-sm">Términos y Garantías</div>
+				<div class="flex flex-wrap items-center gap-4 py-4">
 					{#each Object.entries(STANDARD_TERMS) as [key, term] (term)}
 						<label
-							class="btn data-[active=true]:btn-secondary min-w-[100px] md:min-w-[150px]"
+							class="flex shrink-0 items-center gap-2"
 							data-active={store.quotation.standardTerms.includes(key) ? 'true' : 'false'}
 						>
-							{term.key}
 							<input
 								value={key}
 								bind:group={store.quotation.standardTerms}
 								type="checkbox"
-								class="hidden"
+								class="checkbox checkbox-sm"
 							/>
+							{term.key}
 						</label>
 					{/each}
 				</div>

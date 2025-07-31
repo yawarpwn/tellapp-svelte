@@ -12,6 +12,7 @@ export const INITIAL_QUOTATION_STATE: CreateQuotationClient = {
 	credit: null,
 	validityDays: 15,
 	standardTerms: [Object.keys(STANDARD_TERMS)[0]],
+	paymentCodition: 'ADVANCE_50',
 	observations: '',
 	deadline: undefined,
 	isPaymentPending: false,
