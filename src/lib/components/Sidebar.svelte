@@ -9,7 +9,8 @@
 		ShoppingCartIcon,
 		SquareArrowRightIcon,
 		PaperclipIcon,
-		TruckIcon
+		TruckIcon,
+		FileTextIcon
 	} from 'lucide-svelte'
 	import Logo from '$lib/components/Logo.svelte'
 	import Logout from '$lib/components/Logout.svelte'
@@ -42,6 +43,11 @@
 			name: 'Agencias',
 			href: '/agencies',
 			icon: TruckIcon
+		},
+		{
+			name: 'Comprobantes',
+			href: '/vouchers',
+			icon: FileTextIcon
 		},
 		{
 			name: 'Marca Agua',
