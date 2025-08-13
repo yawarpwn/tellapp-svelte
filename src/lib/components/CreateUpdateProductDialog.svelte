@@ -65,7 +65,7 @@
 				disabled={loading}
 				name="code"
 				maxlength="20"
-				minlength="4"
+				minlength="3"
 				type="text"
 				class="input w-full"
 				placeholder="FHIP40"
